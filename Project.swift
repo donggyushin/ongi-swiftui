@@ -22,14 +22,14 @@ let project = Project(
                 with: [
                     "UIAppFonts": [
                         "Pretendard-Thin.otf",
-                        "Fonts/Pretendard/Pretendard-ExtraLight.otf",
-                        "Fonts/Pretendard/Pretendard-Light.otf",
-                        "Fonts/Pretendard/Pretendard-Regular.otf",
-                        "Fonts/Pretendard/Pretendard-Medium.otf",
-                        "Fonts/Pretendard/Pretendard-SemiBold.otf",
-                        "Fonts/Pretendard/Pretendard-Bold.otf",
-                        "Fonts/Pretendard/Pretendard-ExtraBold.otf",
-                        "Fonts/Pretendard/Pretendard-Black.otf",
+                        "Pretendard-ExtraLight.otf",
+                        "Pretendard-Light.otf",
+                        "Pretendard-Regular.otf",
+                        "Pretendard-Medium.otf",
+                        "Pretendard-SemiBold.otf",
+                        "Pretendard-Bold.otf",
+                        "Pretendard-ExtraBold.otf",
+                        "Pretendard-Black.otf",
                     ]
                 ]
             ),

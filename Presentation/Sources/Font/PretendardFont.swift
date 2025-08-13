@@ -1,4 +1,5 @@
 import SwiftUI
+import CoreText
 
 public enum PretendardFont: String, CaseIterable {
     case thin = "Pretendard-Thin"
@@ -11,13 +12,47 @@ public enum PretendardFont: String, CaseIterable {
     case extraBold = "Pretendard-ExtraBold"
     case black = "Pretendard-Black"
     
+    private static var isRegistered = false
+    
+    public static func registerCustomFonts() {
+        guard !isRegistered else { return }
+        
+        let fontFiles = [
+            "Pretendard-Thin",
+            "Pretendard-ExtraLight",
+            "Pretendard-Light",
+            "Pretendard-Regular",
+            "Pretendard-Medium",
+            "Pretendard-SemiBold",
+            "Pretendard-Bold",
+            "Pretendard-ExtraBold",
+            "Pretendard-Black"
+        ]
+        
+        for font in fontFiles {
+            guard let url = Bundle.module.url(forResource: "\(font)", withExtension: "otf") else {
+                print("Failed to find font file: \(font)")
+                continue
+            }
+            
+            let result = CTFontManagerRegisterFontsForURL(url as CFURL, .process, nil)
+            if !result {
+                print("Failed to register font: \(font)")
+            }
+        }
+        
+        isRegistered = true
+    }
+    
     public func font(size: CGFloat) -> Font {
+        PretendardFont.registerCustomFonts()
         return Font.custom(self.rawValue, size: size)
     }
 }
 
 public extension Font {
     static func pretendard(_ weight: PretendardFont, size: CGFloat) -> Font {
+        PretendardFont.registerCustomFonts()
         return weight.font(size: size)
     }
     
