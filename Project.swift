@@ -34,7 +34,6 @@ let project = Project(
                 ]
             ),
             sources: ["Presentation/Sources/**"],
-            resources: ["Presentation/Resources/**"],
             dependencies: [.target(name: "Domain")]
         ),
         .target(
