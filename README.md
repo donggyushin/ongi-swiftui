@@ -9,17 +9,19 @@ This project uses [Tuist](https://tuist.io/) to generate and maintain the Xcode 
 ## Requirements
 
 - Xcode 15.0+
-- iOS 17.0+
+- iOS 18.0+
 - Tuist
 
 ## Setup
 
 1. Install Tuist if you haven't already:
+
    ```bash
    curl -Ls https://install.tuist.io | bash
    ```
 
 2. Generate the Xcode project:
+
    ```bash
    tuist generate
    ```
