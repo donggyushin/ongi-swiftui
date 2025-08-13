@@ -8,6 +8,7 @@ let project = Project(
             destinations: .iOS,
             product: .app,
             bundleId: "io.tuist.ongi-swiftui",
+            deploymentTargets: .iOS("18.0"),
             infoPlist: .extendingDefault(
                 with: [
                     "UILaunchScreen": [
