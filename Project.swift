@@ -18,6 +18,21 @@ let project = Project(
             product: .framework,
             bundleId: "io.tuist.ongi-swiftui.Presentation",
             deploymentTargets: .iOS("18.0"),
+            infoPlist: .extendingDefault(
+                with: [
+                    "UIAppFonts": [
+                        "Fonts/Pretendard/Pretendard-Thin.otf",
+                        "Fonts/Pretendard/Pretendard-ExtraLight.otf",
+                        "Fonts/Pretendard/Pretendard-Light.otf",
+                        "Fonts/Pretendard/Pretendard-Regular.otf",
+                        "Fonts/Pretendard/Pretendard-Medium.otf",
+                        "Fonts/Pretendard/Pretendard-SemiBold.otf",
+                        "Fonts/Pretendard/Pretendard-Bold.otf",
+                        "Fonts/Pretendard/Pretendard-ExtraBold.otf",
+                        "Fonts/Pretendard/Pretendard-Black.otf",
+                    ]
+                ]
+            ),
             sources: ["Presentation/Sources/**"],
             resources: ["Presentation/Resources/**"],
             dependencies: [.target(name: "Domain")]
