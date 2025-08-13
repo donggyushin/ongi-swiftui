@@ -7,7 +7,7 @@ public struct ContentView: View {
     public var body: some View {
         VStack {
             Text("안녕")
-                .font(.pretendard(.bold, size: 40))
+                .pretendardTitle1()
             
             Text("안녕")
                 .font(.custom("asd", size: 40))
