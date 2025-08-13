@@ -8,7 +8,7 @@ This project uses [Tuist](https://tuist.io/) to generate and maintain the Xcode 
 
 ## Requirements
 
-- Xcode 15.0+
+- Xcode 16.4+
 - iOS 18.0+
 - Tuist
 
