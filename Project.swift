@@ -21,7 +21,7 @@ let project = Project(
             infoPlist: .extendingDefault(
                 with: [
                     "UIAppFonts": [
-                        "Fonts/Pretendard/Pretendard-Thin.otf",
+                        "Pretendard-Thin.otf",
                         "Fonts/Pretendard/Pretendard-ExtraLight.otf",
                         "Fonts/Pretendard/Pretendard-Light.otf",
                         "Fonts/Pretendard/Pretendard-Regular.otf",
@@ -34,6 +34,7 @@ let project = Project(
                 ]
             ),
             sources: ["Presentation/Sources/**"],
+            resources: ["Presentation/Resources/**"],
             dependencies: [.target(name: "Domain")]
         ),
         .target(
