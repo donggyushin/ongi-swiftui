@@ -13,6 +13,16 @@ let project = Project(
             dependencies: []
         ),
         .target(
+            name: "Presentation",
+            destinations: .iOS,
+            product: .framework,
+            bundleId: "io.tuist.ongi-swiftui.Presentation",
+            deploymentTargets: .iOS("18.0"),
+            sources: ["Presentation/Sources/**"],
+            resources: ["Presentation/Resources/**"],
+            dependencies: [.target(name: "Domain")]
+        ),
+        .target(
             name: "ongi-swiftui",
             destinations: .iOS,
             product: .app,
@@ -28,7 +38,7 @@ let project = Project(
             ),
             sources: ["ongi-swiftui/Sources/**"],
             resources: ["ongi-swiftui/Resources/**"],
-            dependencies: [.target(name: "Domain")]
+            dependencies: [.target(name: "Domain"), .target(name: "Presentation")]
         ),
         .target(
             name: "ongi-swiftuiTests",
