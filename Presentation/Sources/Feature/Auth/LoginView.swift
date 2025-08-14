@@ -19,35 +19,22 @@ public struct LoginView: View {
     }
     
     public var body: some View {
-        GeometryReader { geometry in
-            ScrollView {
-                VStack(spacing: 0) {
-                    // Header Section
-                    headerSection
-                        .frame(height: geometry.size.height * 0.4)
-                    
-                    appleSignInButton
-                        .padding(.horizontal, 24)
-                        .padding(.top, 40)
-                }
-            }
+        VStack(spacing: 0) {
+            // Header Section
+            headerSection
+                .padding(.top, 40)
+            
+            Spacer()
+            
+            appleSignInButton
+                .padding(.horizontal, 24)
+                .padding(.top, 40)
         }
-        .background(
-            LinearGradient(
-                colors: [
-                    Color(.systemBackground),
-                    Color(.systemGray6)
-                ],
-                startPoint: .top,
-                endPoint: .bottom
-            )
-        )
-        .ignoresSafeArea()
+        .modifier(BackgroundModifier())
     }
     
     private var headerSection: some View {
         VStack(spacing: 24) {
-            Spacer()
             
             // App Logo/Icon
             AppLogo()
@@ -67,8 +54,6 @@ public struct LoginView: View {
                     .foregroundColor(.secondary)
                     .padding(.top, 8)
             }
-            
-            Spacer()
         }
     }
     

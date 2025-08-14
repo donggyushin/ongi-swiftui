@@ -4,13 +4,14 @@ import Factory
 public struct ContentView: View {
     
     @StateObject var model: ContentViewModel
+    @State var splash = true
 
     public init(model: ContentViewModel) {
         _model = .init(wrappedValue: model)
     }
 
     public var body: some View {
-        VStack {
+        Group {
             if model.isLogin {
                 ZStack {
                     ProfileListView(model: model.container.profileListViewModel())
@@ -25,5 +26,27 @@ public struct ContentView: View {
         .onAppear {
             model.getMe()
         }
+        .overlay {
+            if splash {
+                SplashView()
+                    .onComplete {
+                        withAnimation {
+                            splash = false
+                        }
+                    }
+            }
+        }
     }
 }
+
+#if DEBUG
+private struct ContentViewPreview: View {
+    var body: some View {
+        ContentView(model: Container.shared.contentViewModel())
+    }
+}
+
+#Preview {
+    ContentViewPreview()
+}
+#endif

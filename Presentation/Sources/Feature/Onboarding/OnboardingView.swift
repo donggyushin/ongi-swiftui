@@ -19,45 +19,29 @@ public struct OnboardingView: View {
     
     public var body: some View {
         NavigationStack {
-            GeometryReader { geometry in
-                ScrollView {
-                    VStack(spacing: 0) {
-                        // Header Section
-                        headerSection
-                            .frame(height: geometry.size.height * 0.35)
-                        
-                        // Content Section  
-                        contentSection
-                            .padding(.horizontal, 24)
-                            .frame(minHeight: geometry.size.height * 0.5)
-                        
-                        Spacer()
-                        
-                        // Action Button
-                        actionButton
-                            .padding(.horizontal, 24)
-                            .padding(.bottom, 40)
-                    }
-                }
+            VStack(spacing: 0) {
+                // Header Section
+                headerSection
+                    .padding(.top, 20)
+                
+                // Content Section
+                contentSection
+                    .padding(.horizontal, 24)
+                    .padding(.top, 30)
+                
+                Spacer()
+                
+                // Action Button
+                actionButton
+                    .padding(.horizontal, 24)
+                    .padding(.bottom, 40)
             }
-            .background(
-                LinearGradient(
-                    colors: [
-                        Color(.systemBackground),
-                        Color(.systemGray6)
-                    ],
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-            )
-            .ignoresSafeArea()
+            .modifier(BackgroundModifier())
         }
     }
     
     private var headerSection: some View {
         VStack(spacing: 24) {
-            Spacer()
-            
             // App Icon
             AppLogo()
                 .frame(width: 80, height: 80)
@@ -72,8 +56,6 @@ public struct OnboardingView: View {
                     .foregroundColor(.secondary)
                     .multilineTextAlignment(.center)
             }
-            
-            Spacer()
         }
     }
     
@@ -179,10 +161,6 @@ public struct OnboardingView: View {
             HStack {
                 Text("시작하기")
                     .pretendardCallout(.semiBold)
-                    .foregroundColor(.white)
-                
-                Image(systemName: "arrow.right")
-                    .font(.callout)
                     .foregroundColor(.white)
             }
             .frame(maxWidth: .infinity)
