@@ -83,6 +83,10 @@ let project = Project(
             settings: .settings(
                 base: [
                     "DEVELOPMENT_TEAM": "YV58Q28W8Z"
+                ],
+                configurations: [
+                    .debug(name: "Debug", settings: ["CODE_SIGN_ENTITLEMENTS": "ongi-swiftui/ongi-swiftui.entitlements"]),
+                    .release(name: "Release", settings: ["CODE_SIGN_ENTITLEMENTS": "ongi-swiftui/ongi-swiftui.entitlements"])
                 ]
             )
         ),
