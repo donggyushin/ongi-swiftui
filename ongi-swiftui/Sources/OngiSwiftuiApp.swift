@@ -5,7 +5,7 @@ import Presentation
 struct OngiSwiftuiApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(model: ContentViewModel())
         }
     }
 }

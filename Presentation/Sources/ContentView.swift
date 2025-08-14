@@ -1,8 +1,12 @@
 import SwiftUI
 
 public struct ContentView: View {
+    
+    @StateObject var model: ContentViewModel
 
-    public init() { }
+    public init(model: ContentViewModel) {
+        _model = .init(wrappedValue: model)
+    }
 
     public var body: some View {
         VStack {
@@ -14,9 +18,3 @@ public struct ContentView: View {
         }
     }
 }
-
-#if DEBUG
-#Preview {
-    ContentView()
-}
-#endif
