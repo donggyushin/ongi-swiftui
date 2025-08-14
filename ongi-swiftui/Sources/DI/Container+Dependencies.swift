@@ -54,4 +54,10 @@ extension Container {
             ContentViewModel(profileUseCase: self.profileUseCase())
         }
     }
+    
+    var loginViewModel: Factory<LoginViewModel> {
+        self {
+            LoginViewModel()
+        }
+    }
 }
