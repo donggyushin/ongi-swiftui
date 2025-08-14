@@ -1,4 +1,5 @@
 import SwiftUI
+import Factory
 
 public struct ContentView: View {
     
@@ -18,3 +19,17 @@ public struct ContentView: View {
         }
     }
 }
+
+#if DEBUG
+private struct ContentViewPreview: View {
+    var body: some View {
+        ContentView(model: Container.shared.contentViewModel())
+    }
+}
+
+#Preview {
+    ContentViewPreview()
+}
+#endif
+
+

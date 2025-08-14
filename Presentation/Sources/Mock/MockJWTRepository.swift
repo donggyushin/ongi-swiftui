@@ -9,7 +9,9 @@ import Domain
 
 public final class MockJWTRepository: PJWTRepository {
     
-    public init() { }
+    public init() {
+        print("mock init")
+    }
     
     public func saveTokens(_ tokens: Domain.AuthTokensEntity) {
         

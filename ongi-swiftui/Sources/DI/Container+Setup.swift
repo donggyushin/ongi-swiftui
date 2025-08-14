@@ -63,33 +63,3 @@ extension Container {
         shared.manager.pop()
     }
 }
-
-// MARK: - Context-based Registration Support
-extension Container: @retroactive AutoRegistering {
-    
-    public func autoRegister() {
-        #if DEBUG
-        setupContextualRegistrations()
-        #endif
-    }
-    
-    #if DEBUG
-    private func setupContextualRegistrations() {
-        // Setup context-based registrations for different environments
-        
-        // Preview context
-        jwtRepository
-            .onPreview { MockJWTRepository() }
-        
-        profileRepository
-            .onPreview { MockProfileRepository() }
-        
-        // Test context  
-        jwtRepository
-            .onTest { MockJWTRepository() }
-        
-        profileRepository
-            .onTest { MockProfileRepository() }
-    }
-    #endif
-}
