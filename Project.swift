@@ -79,7 +79,12 @@ let project = Project(
                 .target(name: "ThirdParty"),
                 .target(name: "DataSource"),
                 .target(name: "Presentation")
-            ]
+            ],
+            settings: .settings(
+                base: [
+                    "DEVELOPMENT_TEAM": "YV58Q28W8Z"
+                ]
+            )
         ),
         .target(
             name: "ongi-swiftuiTests",
