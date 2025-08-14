@@ -35,6 +35,7 @@ extension Container {
                 profileRepository: self.profileRepository()
             )
         }
+        .singleton
     }
     
     // Add other use cases here as they are created
@@ -49,7 +50,7 @@ extension Container {
     
     // MARK: View Models
     var contentViewModel: Factory<ContentViewModel> {
-        self { 
+        self {
             ContentViewModel(profileUseCase: self.profileUseCase())
         }
     }
