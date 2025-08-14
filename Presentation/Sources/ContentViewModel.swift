@@ -8,16 +8,17 @@
 import Combine
 import Domain
 import Foundation
+import Factory
 
 public final class ContentViewModel: ObservableObject {
     
     let profileUseCase: ProfileUseCase
+    let loginViewModel = Container.shared.loginViewModel()
     
     @Published var me: ProfileEntitiy?
     @Published var isLogin = false
     
     private var cancellables = Set<AnyCancellable>()
-    
     
     public init(profileUseCase: ProfileUseCase) {
         self.profileUseCase = profileUseCase
@@ -37,5 +38,12 @@ public final class ContentViewModel: ObservableObject {
             .removeDuplicates()
             .receive(on: DispatchQueue.main)
             .assign(to: &$isLogin)
+        
+        loginViewModel
+            .loginSuccessSubject
+            .sink { [weak self] in
+                self?.getMe()
+            }
+            .store(in: &cancellables)
     }
 }

@@ -17,6 +17,8 @@ public final class LoginViewModel: ObservableObject {
     // MARK: - Private Properties
     private var cancellables = Set<AnyCancellable>()
     
+    var loginSuccessSubject = PassthroughSubject<Void, Never>()
+    
     // MARK: - Initialization
     public init(
         authUseCase: AuthUseCase
@@ -44,7 +46,7 @@ public final class LoginViewModel: ObservableObject {
         
         Task { @MainActor in
             try await authUseCase.loginOrSignup(id: userID, type: "apple")
-            // ContentViewModel에서 프로필을 한 번 업데이트 해야함
+            loginSuccessSubject.send()
         }
     }
 }

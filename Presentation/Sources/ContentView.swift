@@ -15,7 +15,7 @@ public struct ContentView: View {
                 Text("로그인 상태입니다.")
                     .pretendardTitle1()
             } else {
-                LoginView(model: Container.shared.loginViewModel())
+                LoginView(model: model.loginViewModel)
             }
         }
         .onAppear {
