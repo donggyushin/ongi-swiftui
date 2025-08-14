@@ -99,3 +99,17 @@ public struct LoginView: View {
         .cornerRadius(12)
     }
 }
+
+#if DEBUG
+private struct LoginViewPreview: View {
+    var body: some View {
+        LoginView(model: Container.shared.loginViewModel())
+    }
+}
+
+#Preview {
+    LoginViewPreview()
+}
+#endif
+
+

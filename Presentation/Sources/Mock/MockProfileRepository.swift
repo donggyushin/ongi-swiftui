@@ -7,11 +7,11 @@
 
 import Domain
 
-public final class MockProfileRepository: PProfileRepository {
+final class MockProfileRepository: PProfileRepository {
     
-    public init() { }
+    init() { }
     
-    public func getMe(accessToken: String) async throws -> ProfileEntitiy {
+    func getMe(accessToken: String) async throws -> ProfileEntitiy {
         throw AppError.custom("로그인 안되어져있음")
     }
 }
