@@ -1,6 +1,7 @@
 import Foundation
 import ThirdParty
 import Alamofire
+import os.log
 
 public final class NetworkManager {
     
@@ -9,10 +10,17 @@ public final class NetworkManager {
     private let session: Session
     private let jwtLocalDataSource: JWTLocalDataSource
     
+    public var isLoggingEnabled: Bool = true {
+        didSet {
+            NetworkLogger.shared.isEnabled = isLoggingEnabled
+        }
+    }
+    
     private init() {
         self.jwtLocalDataSource = JWTLocalDataSource()
         let interceptor = JWTInterceptor()
-        self.session = Session(interceptor: interceptor)
+        let logger = NetworkLogger.shared
+        self.session = Session(interceptor: interceptor, eventMonitors: [logger])
     }
     
     public func request<T: Decodable>(
@@ -40,6 +48,64 @@ public final class NetworkManager {
                     continuation.resume(throwing: error)
                 }
             }
+        }
+    }
+}
+
+private final class NetworkLogger: EventMonitor {
+    static let shared = NetworkLogger()
+    
+    private let logger = Logger(subsystem: "com.ongi.swiftui", category: "Network")
+    private let _isEnabled = OSAllocatedUnfairLock(initialState: true)
+    
+    var isEnabled: Bool {
+        get { _isEnabled.withLock { $0 } }
+        set { _isEnabled.withLock { $0 = newValue } }
+    }
+    
+    private init() {}
+    
+    func requestDidResume(_ request: Request) {
+        guard isEnabled else { return }
+        
+        let method = request.request?.httpMethod ?? "Unknown"
+        let url = request.request?.url?.absoluteString ?? "Unknown URL"
+        let headers = request.request?.allHTTPHeaderFields ?? [:]
+        
+        logger.info("🚀 Request Started:")
+        logger.info("Method: \(method)")
+        logger.info("URL: \(url)")
+        logger.info("Headers: \(String(describing: headers))")
+        
+        if let body = request.request?.httpBody,
+           let bodyString = String(data: body, encoding: .utf8) {
+            logger.info("Body: \(bodyString)")
+        }
+    }
+    
+    func request<Value>(_ request: DataRequest, didParseResponse response: DataResponse<Value, AFError>) {
+        guard isEnabled else { return }
+        
+        let statusCode = response.response?.statusCode ?? 0
+        let url = response.request?.url?.absoluteString ?? "Unknown URL"
+        
+        logger.info("📥 Response Received:")
+        logger.info("URL: \(url)")
+        logger.info("Status Code: \(statusCode)")
+        
+        if let headers = response.response?.allHeaderFields {
+            logger.info("Response Headers: \(headers)")
+        }
+        
+        if let data = response.data,
+           let responseString = String(data: data, encoding: .utf8) {
+            logger.info("Response Body: \(responseString)")
+        }
+        
+        if let error = response.error {
+            logger.error("❌ Request Failed: \(error.localizedDescription)")
+        } else {
+            logger.info("✅ Request Succeeded")
         }
     }
 }

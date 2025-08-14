@@ -1,5 +1,6 @@
 import Factory
 import Foundation
+import DataSource
 
 // MARK: - Container Setup and Configuration
 extension Container {
@@ -28,6 +29,13 @@ extension Container {
     private static func setupEnvironmentDefaults() {
         // Configure default scopes and behaviors
         shared.manager.defaultScope = .singleton
+        
+        // Enable network logging
+        #if DEBUG
+        NetworkManager.shared.isLoggingEnabled = true
+        #else
+        NetworkManager.shared.isLoggingEnabled = false
+        #endif
     }
 }
 
