@@ -22,4 +22,12 @@ public struct ProfileEntitiy {
         self.createdAt = createdAt
         self.updatedAt = updatedAt
     }
+    
+    public var isCompleted: Bool {
+        return email?.isEmpty == false &&
+        profileImage != nil &&
+        images.isEmpty == false &&
+        mbti != nil &&
+        qnas.count >= 3
+    }
 }
