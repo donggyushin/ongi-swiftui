@@ -82,4 +82,10 @@ extension Container {
             ContentViewModel(container: self)
         }
     }
+    
+    public var onboardingViewModel: Factory<OnboardingViewModel> {
+        self {
+            OnboardingViewModel()
+        }
+    }
 }
