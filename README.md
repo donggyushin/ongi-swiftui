@@ -16,20 +16,19 @@ A modern SwiftUI iOS application built with **Tuist** for modular architecture a
 ```
 ongi-swiftui (App Layer)
     ↓
-Presentation (UI Layer)
-    ↓
-Domain (Business Logic)
-    ↓
-DataSource (Data & Network)
-    ↓
-ThirdParty (External Libraries)
+Presentation (UI Layer) ────┐
+    ↓                       ↓
+Domain (Business Logic)  DataSource (Data & Network)
+                            ↓
+                      ThirdParty (External Libraries)
 ```
 
 **Key Principles:**
 - **Clean Architecture** with unidirectional dependencies
-- **Composition Root** pattern for dependency injection
+- **Composition Root** pattern for dependency injection  
 - **Protocol-first** design for testability
 - **Use Case** driven business logic
+- **Context-based Mocking** - Automatic mock injection for Previews and Tests
 
 ## Requirements
 
@@ -103,9 +102,9 @@ ContentView(model: Container.shared.contentViewModel())
 ```
 ├── Domain/              # Business logic, entities, use cases
 ├── DataSource/          # Repository implementations, DTOs, networking  
-├── Presentation/        # ViewModels, Views, UI components
+├── Presentation/        # ViewModels, Views, UI components, DI Container
 ├── ThirdParty/          # External libraries (Alamofire, Factory)
-├── ongi-swiftui/        # Main app, DI container, composition root
+├── ongi-swiftui/        # Main app, composition root
 └── Tuist/              # Project configuration
 ```
 

@@ -36,13 +36,11 @@ The project uses a **5-layer modular architecture** with clear dependency bounda
 ```
 ongi-swiftui (App) 
     ↓
-Presentation (UI Layer)
-    ↓  
-Domain (Business Logic)
-    ↓
-DataSource (Data Layer) 
-    ↓
-ThirdParty (External Libraries)
+Presentation (UI Layer) ────┐
+    ↓                       ↓
+Domain (Business Logic)  DataSource (Data Layer)
+                            ↓
+                      ThirdParty (External Libraries)
 ```
 
 **Dependency Rules:**
@@ -50,16 +48,19 @@ ThirdParty (External Libraries)
 - **ThirdParty**: Contains external libraries (Alamofire, Factory) - no dependencies
 - **Domain**: Business entities, use cases, repository protocols - depends on nothing
 - **DataSource**: Repository implementations, DTOs, network layer - depends on Domain + ThirdParty  
-- **Presentation**: ViewModels, Views - depends on Domain + ThirdParty
+- **Presentation**: ViewModels, Views - depends on Domain + DataSource (for DI Container only)
 - **ongi-swiftui**: Main app, composition root - depends on all modules
+
+**Note**: Presentation → DataSource dependency is **solely for DI Container setup**. Presentation layer code should only use Domain protocols, never DataSource types directly.
 
 ### Key Architecture Points
 
 **Dependency Injection System:**
 - Uses **Factory** framework with **Composition Root pattern**
-- DI Container located in `ongi-swiftui/Sources/DI/`
+- DI Container located in `Presentation/Sources/DI/` (moved for cleaner architecture)
 - `Container+Dependencies.swift` - All dependency registrations
 - `Container+Setup.swift` - Configuration, mocking, testing support
+- Context-based injection: `.onPreview` for SwiftUI Previews, `.onTest` for testing
 - Dependencies resolved at app startup in `OngiSwiftuiApp.init()`
 
 **External Libraries Management:**
