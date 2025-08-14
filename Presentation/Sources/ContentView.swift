@@ -12,7 +12,12 @@ public struct ContentView: View {
     public var body: some View {
         VStack {
             if model.isLogin {
-                ProfileListView(model: model.profileListViewModelFactory())
+                ZStack {
+                    ProfileListView(model: model.container.profileListViewModel())
+                    if model.onboarding {
+                        OnboardingView(model: model.container.onboardingViewModel())
+                    }
+                }
             } else {
                 LoginView(model: model.loginViewModel)
             }
