@@ -12,6 +12,7 @@ import Factory
 
 public final class ContentViewModel: ObservableObject {
     
+    let container: Container
     let profileUseCase: ProfileUseCase
     let loginViewModel: LoginViewModel
     let profileListViewModelFactory: Factory<ProfileListViewModel>
@@ -22,13 +23,12 @@ public final class ContentViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     
     public init(
-        profileUseCase: ProfileUseCase,
-        loginViewModel: LoginViewModel,
-        profileListViewModelFactory: Factory<ProfileListViewModel>
+        container: Container
     ) {
-        self.profileUseCase = profileUseCase
-        self.loginViewModel = loginViewModel
-        self.profileListViewModelFactory = profileListViewModelFactory
+        self.container = container
+        self.profileUseCase = container.profileUseCase()
+        self.loginViewModel = container.loginViewModel()
+        self.profileListViewModelFactory = container.profileListViewModel
         
         bind()
     }

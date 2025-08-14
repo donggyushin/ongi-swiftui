@@ -1,13 +1,12 @@
 import Factory
 import Foundation
-import Presentation
 
 // MARK: - Container Setup and Configuration
 extension Container {
     
     /// Setup dependencies for the application
     /// Call this once during app initialization
-    static func setupApp() {
+    public static func setupApp() {
         #if DEBUG
         setupDebugEnvironment()
         #endif

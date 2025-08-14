@@ -1,7 +1,6 @@
 import Factory
 import Domain
 import DataSource
-import Presentation
 
 // MARK: - Dependency Container Extensions
 // Following Factory's Composition Root pattern, this is where all dependencies are wired together
@@ -66,25 +65,21 @@ extension Container {
 extension Container {
     
     // MARK: View Models
-    var loginViewModel: Factory<LoginViewModel> {
+    public var loginViewModel: Factory<LoginViewModel> {
         self {
             LoginViewModel(authUseCase: self.authUseCase())
         }
     }
     
-    var profileListViewModel: Factory<ProfileListViewModel> {
+    public var profileListViewModel: Factory<ProfileListViewModel> {
         self {
             ProfileListViewModel()
         }
     }
     
-    var contentViewModel: Factory<ContentViewModel> {
+    public var contentViewModel: Factory<ContentViewModel> {
         self {
-            ContentViewModel(
-                profileUseCase: self.profileUseCase(),
-                loginViewModel: self.loginViewModel(),
-                profileListViewModelFactory: self.profileListViewModel
-            )
+            ContentViewModel(container: self)
         }
     }
 }

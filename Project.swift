@@ -56,7 +56,7 @@ let project = Project(
             ),
             sources: ["Presentation/Sources/**"],
             resources: ["Presentation/Resources/**"],
-            dependencies: [.target(name: "Domain"), .target(name: "ThirdParty")]
+            dependencies: [.target(name: "Domain"), .target(name: "DataSource")]
         ),
         .target(
             name: "ongi-swiftui",

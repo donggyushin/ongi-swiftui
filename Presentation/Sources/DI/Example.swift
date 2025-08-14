@@ -1,6 +1,5 @@
 import Factory
 import SwiftUI
-import Presentation
 
 // MARK: - DI Usage Examples
 /*
