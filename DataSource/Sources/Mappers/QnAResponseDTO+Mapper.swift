@@ -3,7 +3,6 @@ import Domain
 
 extension QnAResponseDTO {
     func toDomainEntity() -> QnAEntity? {
-        let dateFormatter = ISO8601DateFormatter()
         
         guard let createdAt = dateFormatter.date(from: self.createdAt),
               let updatedAt = dateFormatter.date(from: self.updatedAt) else {

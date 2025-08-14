@@ -25,8 +25,8 @@ final class JWTRemoteDataSource {
     
     public func getAuthTokens(id: String, type: String) async throws -> AuthTokensEntity {
         let body: [String: Any] = [
-            "id": "nickname_test_002",
-            "type": "kakao"
+            "id": id,
+            "type": type
         ]
         
         let response: APIResponse<AuthTokensResponseDTO> = try await networkManager.request(url: "\(ongiExpressUrl)accounts", method: .post, parameters: body)
