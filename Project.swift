@@ -68,12 +68,18 @@ let project = Project(
                     "UILaunchScreen": [
                         "UIColorName": "",
                         "UIImageName": "",
-                    ],
+                    ]
                 ]
             ),
             sources: ["ongi-swiftui/Sources/**"],
             resources: ["ongi-swiftui/Resources/**"],
-            dependencies: [.target(name: "Domain"), .target(name: "ThirdParty"), .target(name: "DataSource"), .target(name: "Presentation")]
+            dependencies: [
+                .target(name: "Domain"),
+                .target(name: "ThirdParty"),
+                .target(name: "DataSource"),
+                .target(name: "Presentation"),
+                .external(name: "Factory")
+            ]
         ),
         .target(
             name: "ongi-swiftuiTests",

@@ -1,11 +1,18 @@
 import SwiftUI
 import Presentation
+import Factory
 
 @main
 struct OngiSwiftuiApp: App {
+    
+    init() {
+        // Setup dependency injection container
+        Container.setupApp()
+    }
+    
     var body: some Scene {
         WindowGroup {
-            ContentView(model: ContentViewModel())
+            ContentView(model: Container.shared.contentViewModel())
         }
     }
 }
