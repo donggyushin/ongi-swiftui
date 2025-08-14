@@ -17,10 +17,10 @@ extension Container {
     #if DEBUG
     /// Setup debug-specific configurations
     private static func setupDebugEnvironment() {
-        // Register debug/mock implementations
-        // Example:
-        // shared.networkManager.onArg("mock") { MockNetworkManager() }
-        // shared.jwtRepository.onPreview { MockJWTRepository() }
+        // Register mock implementations for Previews
+        shared.jwtRepository.onPreview { MockJWTRepository() }
+        shared.profileRepository.onPreview { MockProfileRepository() }
+        shared.authRepository.onPreview { MockAuthRepository() }
     }
     #endif
     
