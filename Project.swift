@@ -101,5 +101,6 @@ let project = Project(
             resources: [],
             dependencies: [.target(name: "ongi-swiftui")]
         ),
-    ]
+    ],
+    resourceSynthesizers: [.assets()]
 )

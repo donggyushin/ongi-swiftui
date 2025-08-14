@@ -13,6 +13,7 @@ struct OngiSwiftuiApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView(model: Container.shared.contentViewModel())
+                .tint(OngiSwiftuiAsset.Assets.accentColor.swiftUIColor)
         }
     }
 }
