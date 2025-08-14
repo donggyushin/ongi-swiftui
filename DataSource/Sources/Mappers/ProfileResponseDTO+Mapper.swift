@@ -1,8 +1,8 @@
 import Foundation
 import Domain
 
-extension UserResponseDTO {
-    func toDomainEntity() -> UserEntitiy? {
+extension ProfileResponseDTO {
+    func toDomainEntity() -> ProfileEntitiy? {
         let dateFormatter = ISO8601DateFormatter()
         
         guard let createdAt = dateFormatter.date(from: self.createdAt),
@@ -39,7 +39,7 @@ extension UserResponseDTO {
             mbtiEntity = nil
         }
         
-        return UserEntitiy(
+        return ProfileEntitiy(
             id: self.id,
             nickname: self.nickname,
             email: self.email,
