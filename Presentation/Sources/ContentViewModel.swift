@@ -9,6 +9,7 @@ import Combine
 import Domain
 import Foundation
 import Factory
+import SwiftUI
 
 public final class ContentViewModel: ObservableObject {
     
@@ -45,12 +46,14 @@ public final class ContentViewModel: ObservableObject {
         $me
             .receive(on: DispatchQueue.main)
             .sink { [weak self] profile in
-                self?.isLogin = profile != nil
-                
-                if let profile {
-                    self?.onboarding = profile.isCompleted == false
-                } else {
-                    self?.onboarding = false
+                withAnimation {
+                    self?.isLogin = profile != nil
+                    
+                    if let profile {
+                        self?.onboarding = profile.isCompleted == false
+                    } else {
+                        self?.onboarding = false
+                    }
                 }
             }
             .store(in: &cancellables)
