@@ -21,6 +21,13 @@ extension Container {
         }
         .singleton
     }
+    
+    var authRepository: Factory<PAuthRepository> {
+        self {
+            MockAuthRepository()
+        }
+        .singleton
+    }
 }
 
 // MARK: - Use Case Layer Dependencies
@@ -31,6 +38,16 @@ extension Container {
             ProfileUseCase(
                 jwtRepository: self.jwtRepository(),
                 profileRepository: self.profileRepository()
+            )
+        }
+        .singleton
+    }
+    
+    var authUseCase: Factory<AuthUseCase> {
+        self {
+            AuthUseCase(
+                authRepository: self.authRepository(),
+                jwtRepository: self.jwtRepository()
             )
         }
         .singleton
@@ -55,7 +72,7 @@ extension Container {
     
     var loginViewModel: Factory<LoginViewModel> {
         self {
-            LoginViewModel()
+            LoginViewModel(authUseCase: self.authUseCase())
         }
     }
 }

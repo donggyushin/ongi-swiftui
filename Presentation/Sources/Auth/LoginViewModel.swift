@@ -12,12 +12,16 @@ import Combine
 
 public final class LoginViewModel: ObservableObject {
     
+    let authUseCase: AuthUseCase
+    
     // MARK: - Private Properties
     private var cancellables = Set<AnyCancellable>()
     
     // MARK: - Initialization
-    public init() {
-        
+    public init(
+        authUseCase: AuthUseCase
+    ) {
+        self.authUseCase = authUseCase
     }
     
     /// Apple Sign In handling
@@ -37,16 +41,10 @@ public final class LoginViewModel: ObservableObject {
     
     private func handleAppleIDCredential(_ credential: ASAuthorizationAppleIDCredential) {
         let userID = credential.user
-        let fullName = credential.fullName
-        let email = credential.email
         
-        // TODO: Implement Apple Sign In with backend
-        print("Apple Sign In Success:")
-        print("User ID: \(userID)")
-        print("Name: \(fullName?.formatted() ?? "N/A")")
-        print("Email: \(email ?? "N/A")")
-        
-        // Mock success
-//        isLoginSuccess = true
+        Task { @MainActor in
+            try await authUseCase.loginOrSignup(id: userID, type: "apple")
+            // ContentViewModel에서 프로필을 한 번 업데이트 해야함
+        }
     }
 }

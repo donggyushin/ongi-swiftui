@@ -13,8 +13,6 @@ import Factory
 public struct LoginView: View {
     
     @StateObject var model: LoginViewModel
-    @State private var email = ""
-    @State private var password = ""
     
     public init(model: LoginViewModel) {
         self._model = .init(wrappedValue: model)
