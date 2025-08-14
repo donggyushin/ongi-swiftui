@@ -56,7 +56,7 @@ let project = Project(
             ),
             sources: ["Presentation/Sources/**"],
             resources: ["Presentation/Resources/**"],
-            dependencies: [.target(name: "Domain"), .target(name: "ThirdParty")]
+            dependencies: [.target(name: "Domain"), .target(name: "DataSource")]
         ),
         .target(
             name: "ongi-swiftui",
@@ -66,6 +66,7 @@ let project = Project(
             deploymentTargets: .iOS("18.0"),
             infoPlist: .extendingDefault(
                 with: [
+                    "CFBundleDisplayName": "온기",
                     "UILaunchScreen": [
                         "UIColorName": "",
                         "UIImageName": "",
@@ -79,7 +80,16 @@ let project = Project(
                 .target(name: "ThirdParty"),
                 .target(name: "DataSource"),
                 .target(name: "Presentation")
-            ]
+            ],
+            settings: .settings(
+                base: [
+                    "DEVELOPMENT_TEAM": "YV58Q28W8Z"
+                ],
+                configurations: [
+                    .debug(name: "Debug", settings: ["CODE_SIGN_ENTITLEMENTS": "ongi-swiftui/ongi-swiftui.entitlements"]),
+                    .release(name: "Release", settings: ["CODE_SIGN_ENTITLEMENTS": "ongi-swiftui/ongi-swiftui.entitlements"])
+                ]
+            )
         ),
         .target(
             name: "ongi-swiftuiTests",

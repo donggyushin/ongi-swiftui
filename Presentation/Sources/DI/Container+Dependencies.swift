@@ -1,5 +1,6 @@
 import Factory
 import Domain
+import DataSource
 
 // MARK: - Dependency Container Extensions
 // Following Factory's Composition Root pattern, this is where all dependencies are wired together
@@ -9,15 +10,22 @@ extension Container {
     
     // MARK: Repositories
     var jwtRepository: Factory<PJWTRepository> {
-        self {
-            MockJWTRepository()
+        self { 
+            JWTRepository.shared
         }
         .singleton
     }
     
     var profileRepository: Factory<PProfileRepository> {
         self {
-            MockProfileRepository()
+            ProfileRepository.shared
+        }
+        .singleton
+    }
+    
+    var authRepository: Factory<PAuthRepository> {
+        self {
+            AuthRepository()
         }
         .singleton
     }
@@ -36,6 +44,16 @@ extension Container {
         .singleton
     }
     
+    var authUseCase: Factory<AuthUseCase> {
+        self {
+            AuthUseCase(
+                authRepository: self.authRepository(),
+                jwtRepository: self.jwtRepository()
+            )
+        }
+        .singleton
+    }
+    
     // Add other use cases here as they are created
     // Example:
     // var authUseCase: Factory<AuthUseCaseProtocol> {
@@ -47,9 +65,27 @@ extension Container {
 extension Container {
     
     // MARK: View Models
-    var contentViewModel: Factory<ContentViewModel> {
+    public var loginViewModel: Factory<LoginViewModel> {
         self {
-            ContentViewModel(profileUseCase: self.profileUseCase())
+            LoginViewModel(authUseCase: self.authUseCase())
+        }
+    }
+    
+    public var profileListViewModel: Factory<ProfileListViewModel> {
+        self {
+            ProfileListViewModel()
+        }
+    }
+    
+    public var contentViewModel: Factory<ContentViewModel> {
+        self {
+            ContentViewModel(container: self)
+        }
+    }
+    
+    public var onboardingViewModel: Factory<OnboardingViewModel> {
+        self {
+            OnboardingViewModel()
         }
     }
 }

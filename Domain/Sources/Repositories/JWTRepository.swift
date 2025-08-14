@@ -11,4 +11,5 @@ public protocol PJWTRepository {
     func getTokens() -> AuthTokensEntity?
     // remote datasource
     func refreshToken() async throws
+    func removeToken()
 }

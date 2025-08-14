@@ -2,7 +2,6 @@ import Foundation
 import Domain
 
 public final class JWTRepository: PJWTRepository {
-    
     public static let shared = JWTRepository()
     
     private let localDataSource = JWTLocalDataSource()
@@ -27,5 +26,9 @@ public final class JWTRepository: PJWTRepository {
         
         let authTokens = try await remoteDataSource.refreshToken(refreshToken: refreshToken)
         saveTokens(authTokens)
+    }
+    
+    public func removeToken() {
+        localDataSource.clearTokens()
     }
 }

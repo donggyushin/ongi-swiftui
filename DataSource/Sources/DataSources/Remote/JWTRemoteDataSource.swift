@@ -22,4 +22,21 @@ final class JWTRemoteDataSource {
             throw AppError.networkError(.invalidResponse)
         }
     }
+    
+    public func getAuthTokens(id: String, type: String) async throws -> AuthTokensEntity {
+        let body: [String: Any] = [
+            "id": id,
+            "type": type
+        ]
+        
+        let response: APIResponse<AuthTokensResponseDTO> = try await networkManager.request(url: "\(ongiExpressUrl)accounts", method: .post, parameters: body)
+        
+        if let authTokens = response.data?.toDomainEntity() {
+            return authTokens
+        } else if let message = response.message {
+            throw AppError.custom(message)
+        } else {
+            throw AppError.networkError(.invalidResponse)
+        }
+    }
 }

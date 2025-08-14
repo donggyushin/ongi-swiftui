@@ -18,9 +18,12 @@ public final class ProfileRepository: PProfileRepository {
     }
     
     public func getMe(accessToken: String) async throws -> ProfileEntitiy {
-        let response: APIResponse<ProfileResponseDTO> = try await networkManager.request(url: "\(ongiExpressUrl)")
+        struct DTO: Decodable {
+            let profile: ProfileResponseDTO
+        }
         
-        if let profile = response.data?.toDomainEntity() {
+        let response: APIResponse<DTO> = try await networkManager.request(url: "\(ongiExpressUrl)accounts/me")
+        if let profile = response.data?.profile.toDomainEntity() {
             return profile
         } else if let message = response.message {
             throw AppError.custom(message)

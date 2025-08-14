@@ -53,4 +53,8 @@ public extension View {
     func pretendardCaption2(_ weight: PretendardFont = .regular) -> some View {
         font(.pretendardCaption2(weight))
     }
+    
+    func pretendardCaption(_ weight: PretendardFont = .regular) -> some View {
+        font(.pretendardCaption1(weight))
+    }
 }

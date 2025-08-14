@@ -1,13 +1,12 @@
 import Factory
 import Foundation
-import Presentation
 
 // MARK: - Container Setup and Configuration
 extension Container {
     
     /// Setup dependencies for the application
     /// Call this once during app initialization
-    static func setupApp() {
+    public static func setupApp() {
         #if DEBUG
         setupDebugEnvironment()
         #endif
@@ -18,10 +17,10 @@ extension Container {
     #if DEBUG
     /// Setup debug-specific configurations
     private static func setupDebugEnvironment() {
-        // Register debug/mock implementations
-        // Example:
-        // shared.networkManager.onArg("mock") { MockNetworkManager() }
-        // shared.jwtRepository.onPreview { MockJWTRepository() }
+        // Register mock implementations for Previews
+        shared.jwtRepository.onPreview { MockJWTRepository() }
+        shared.profileRepository.onPreview { MockProfileRepository() }
+        shared.authRepository.onPreview { MockAuthRepository() }
     }
     #endif
     

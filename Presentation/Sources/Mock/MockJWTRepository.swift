@@ -7,23 +7,25 @@
 
 import Domain
 
-public final class MockJWTRepository: PJWTRepository {
+final class MockJWTRepository: PJWTRepository {
     
-    public init() {
-        print("mock init")
-    }
-    
-    public func saveTokens(_ tokens: Domain.AuthTokensEntity) {
+    init() {
         
     }
     
-    public func getTokens() -> Domain.AuthTokensEntity? {
+    func saveTokens(_ tokens: AuthTokensEntity) {
+        
+    }
+    
+    func getTokens() -> AuthTokensEntity? {
         return nil
     }
     
-    public func refreshToken() async throws {
+    func refreshToken() async throws {
         
     }
     
-    
+    func removeToken() {
+        
+    }
 }

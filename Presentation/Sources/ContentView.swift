@@ -11,25 +11,19 @@ public struct ContentView: View {
 
     public var body: some View {
         VStack {
-            Text("안녕")
-                .pretendardTitle1()
-
-            Text("안녕")
-                .font(.custom("asd", size: 40))
+            if model.isLogin {
+                ZStack {
+                    ProfileListView(model: model.container.profileListViewModel())
+                    if model.onboarding {
+                        OnboardingView(model: model.container.onboardingViewModel())
+                    }
+                }
+            } else {
+                LoginView(model: model.loginViewModel)
+            }
+        }
+        .onAppear {
+            model.getMe()
         }
     }
 }
-
-#if DEBUG
-private struct ContentViewPreview: View {
-    var body: some View {
-        ContentView(model: Container.shared.contentViewModel())
-    }
-}
-
-#Preview {
-    ContentViewPreview()
-}
-#endif
-
-
