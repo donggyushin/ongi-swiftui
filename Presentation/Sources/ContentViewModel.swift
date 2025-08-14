@@ -13,15 +13,22 @@ import Factory
 public final class ContentViewModel: ObservableObject {
     
     let profileUseCase: ProfileUseCase
-    let loginViewModel = Container.shared.loginViewModel()
+    let loginViewModel: LoginViewModel
+    let profileListViewModelFactory: Factory<ProfileListViewModel>
     
     @Published var me: ProfileEntitiy?
     @Published var isLogin = false
     
     private var cancellables = Set<AnyCancellable>()
     
-    public init(profileUseCase: ProfileUseCase) {
+    public init(
+        profileUseCase: ProfileUseCase,
+        loginViewModel: LoginViewModel,
+        profileListViewModelFactory: Factory<ProfileListViewModel>
+    ) {
         self.profileUseCase = profileUseCase
+        self.loginViewModel = loginViewModel
+        self.profileListViewModelFactory = profileListViewModelFactory
         
         bind()
     }

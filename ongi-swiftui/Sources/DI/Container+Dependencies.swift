@@ -66,15 +66,25 @@ extension Container {
 extension Container {
     
     // MARK: View Models
-    var contentViewModel: Factory<ContentViewModel> {
-        self {
-            ContentViewModel(profileUseCase: self.profileUseCase())
-        }
-    }
-    
     var loginViewModel: Factory<LoginViewModel> {
         self {
             LoginViewModel(authUseCase: self.authUseCase())
+        }
+    }
+    
+    var profileListViewModel: Factory<ProfileListViewModel> {
+        self {
+            ProfileListViewModel()
+        }
+    }
+    
+    var contentViewModel: Factory<ContentViewModel> {
+        self {
+            ContentViewModel(
+                profileUseCase: self.profileUseCase(),
+                loginViewModel: self.loginViewModel(),
+                profileListViewModelFactory: self.profileListViewModel
+            )
         }
     }
 }

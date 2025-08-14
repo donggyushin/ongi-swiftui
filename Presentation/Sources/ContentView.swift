@@ -12,8 +12,7 @@ public struct ContentView: View {
     public var body: some View {
         VStack {
             if model.isLogin {
-                Text("로그인 상태입니다.")
-                    .pretendardTitle1()
+                ProfileListView(model: model.profileListViewModelFactory())
             } else {
                 LoginView(model: model.loginViewModel)
             }
