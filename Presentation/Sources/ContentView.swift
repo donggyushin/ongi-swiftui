@@ -11,11 +11,16 @@ public struct ContentView: View {
 
     public var body: some View {
         VStack {
-            Text("안녕")
-                .pretendardTitle1()
-
-            Text("안녕")
-                .font(.custom("asd", size: 40))
+            if model.isLogin {
+                Text("로그인 상태입니다.")
+                    .pretendardTitle1()
+            } else {
+                Text("로그아웃 상태입니다.")
+                    .pretendardTitle1()
+            }
+        }
+        .onAppear {
+            model.getMe()
         }
     }
 }
