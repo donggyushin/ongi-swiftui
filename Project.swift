@@ -20,7 +20,8 @@ let project = Project(
             deploymentTargets: .iOS("18.0"),
             sources: ["ThirdParty/Sources/**"],
             dependencies: [
-                .external(name: "Alamofire")
+                .external(name: "Alamofire"),
+                .external(name: "Factory")
             ]
         ),
         .target(
@@ -68,12 +69,17 @@ let project = Project(
                     "UILaunchScreen": [
                         "UIColorName": "",
                         "UIImageName": "",
-                    ],
+                    ]
                 ]
             ),
             sources: ["ongi-swiftui/Sources/**"],
             resources: ["ongi-swiftui/Resources/**"],
-            dependencies: [.target(name: "Domain"), .target(name: "ThirdParty"), .target(name: "DataSource"), .target(name: "Presentation")]
+            dependencies: [
+                .target(name: "Domain"),
+                .target(name: "ThirdParty"),
+                .target(name: "DataSource"),
+                .target(name: "Presentation")
+            ]
         ),
         .target(
             name: "ongi-swiftuiTests",

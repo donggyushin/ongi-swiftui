@@ -21,11 +21,8 @@ public final class JWTRepository: PJWTRepository {
     }
     
     public func refreshToken() async throws {
-        // TODO: Implement remote refresh token API call
-        // This will need a remote data source for API communication
-        
         guard let refreshToken = getTokens()?.refreshToken else {
-            throw NSError(domain: "JWTRepository", code: 0, userInfo: [NSLocalizedDescriptionKey: "인증에 실패했습니다"])
+            throw AppError.authenticationError(.tokenNotFound)
         }
         
         let authTokens = try await remoteDataSource.refreshToken(refreshToken: refreshToken)

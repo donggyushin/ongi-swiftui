@@ -15,6 +15,7 @@ import PackageDescription
 let package = Package(
     name: "ongi-swiftui",
     dependencies: [
-        .package(url: "https://github.com/Alamofire/Alamofire", from: "5.8.0")
+        .package(url: "https://github.com/Alamofire/Alamofire", from: "5.8.0"),
+        .package(url: "https://github.com/hmlongco/Factory", from: "2.3.0")
     ]
 )
