@@ -4,6 +4,7 @@
       "Bash(git init:*)"
     ],
     "deny": [],
-    "ask": []
+    "ask": [],
+    "defaultMode": "acceptEdits"
   }
 }
