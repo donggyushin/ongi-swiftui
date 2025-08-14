@@ -19,7 +19,9 @@ let project = Project(
             bundleId: "io.tuist.ongi-swiftui.ThirdParty",
             deploymentTargets: .iOS("18.0"),
             sources: ["ThirdParty/Sources/**"],
-            dependencies: []
+            dependencies: [
+                .external(name: "Alamofire")
+            ]
         ),
         .target(
             name: "DataSource",
