@@ -57,6 +57,8 @@ private final class JWTInterceptor: RequestInterceptor {
             urlRequest.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
         }
         
+        urlRequest.setValue("Content-Type", forHTTPHeaderField: "application/json")
+        
         completion(.success(urlRequest))
     }
     

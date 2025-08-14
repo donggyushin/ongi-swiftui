@@ -6,5 +6,5 @@
 //
 
 public protocol PProfileRepository {
-    func getMe(accessToken: String) async throws -> ProfileEntitiy?
+    func getMe(accessToken: String) async throws -> ProfileEntitiy
 }

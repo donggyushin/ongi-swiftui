@@ -7,9 +7,9 @@
 
 import Foundation
 
-struct APIResponse<T: Decodable> {
+struct APIResponse<T: Decodable>: Decodable {
     let success: Bool
     let data: T?
-    let message: Bool?
-    let error: Bool?
+    let message: String?
+    let error: String?
 }

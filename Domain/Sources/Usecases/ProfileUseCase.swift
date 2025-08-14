@@ -17,8 +17,8 @@ public final class ProfileUseCase {
         self.profileRepository = profileRepository
     }
     
-    public func getMe() async throws -> ProfileEntitiy? {
-        guard let authTokens = jwtRepository.getTokens() else { return nil }
+    public func getMe() async throws -> ProfileEntitiy {
+        guard let authTokens = jwtRepository.getTokens() else { throw AppError.authenticationError(.invalidCredentials) }
         return try await profileRepository.getMe(accessToken: authTokens.accessToken)
     }
 }
