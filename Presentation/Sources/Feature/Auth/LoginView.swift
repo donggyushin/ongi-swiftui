@@ -50,21 +50,8 @@ public struct LoginView: View {
             Spacer()
             
             // App Logo/Icon
-            RoundedRectangle(cornerRadius: 24)
-                .fill(
-                    LinearGradient(
-                        colors: [.blue, .purple],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                )
+            AppLogo()
                 .frame(width: 80, height: 80)
-                .overlay(
-                    Text("온")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                        .foregroundColor(.white)
-                )
             
             VStack(spacing: 8) {
                 Text("온기에 오신 것을")

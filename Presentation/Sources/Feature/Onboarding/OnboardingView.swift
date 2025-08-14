@@ -59,21 +59,8 @@ public struct OnboardingView: View {
             Spacer()
             
             // App Icon
-            RoundedRectangle(cornerRadius: 24)
-                .fill(
-                    LinearGradient(
-                        colors: [.blue, .purple],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                )
+            AppLogo()
                 .frame(width: 80, height: 80)
-                .overlay(
-                    Text("온")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                        .foregroundColor(.white)
-                )
             
             VStack(spacing: 12) {
                 Text("환영합니다!")
@@ -200,7 +187,7 @@ public struct OnboardingView: View {
             }
             .frame(maxWidth: .infinity)
             .frame(height: 50)
-            .background(.blue)
+            .background(Color.accentColor)
             .cornerRadius(12)
         }
     }
