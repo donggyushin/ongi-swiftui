@@ -20,7 +20,8 @@ let project = Project(
             deploymentTargets: .iOS("18.0"),
             sources: ["ThirdParty/Sources/**"],
             dependencies: [
-                .external(name: "Alamofire")
+                .external(name: "Alamofire"),
+                .external(name: "Factory")
             ]
         ),
         .target(
@@ -77,8 +78,7 @@ let project = Project(
                 .target(name: "Domain"),
                 .target(name: "ThirdParty"),
                 .target(name: "DataSource"),
-                .target(name: "Presentation"),
-                .external(name: "Factory")
+                .target(name: "Presentation")
             ]
         ),
         .target(

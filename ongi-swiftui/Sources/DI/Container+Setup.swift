@@ -43,6 +43,9 @@ extension Container {
         // Example:
         // shared.jwtRepository.register { MockJWTRepository() }
         // shared.networkManager.register { MockNetworkManager() }
+        
+        shared.jwtRepository.register { MockJWTRepository() }
+        shared.profileRepository.register { MockProfileRepository() }
     }
     
     /// Reset all dependencies - useful for testing
@@ -78,9 +81,15 @@ extension Container: @retroactive AutoRegistering {
         jwtRepository
             .onPreview { MockJWTRepository() }
         
+        profileRepository
+            .onPreview { MockProfileRepository() }
+        
         // Test context  
         jwtRepository
             .onTest { MockJWTRepository() }
+        
+        profileRepository
+            .onTest { MockProfileRepository() }
     }
     #endif
 }

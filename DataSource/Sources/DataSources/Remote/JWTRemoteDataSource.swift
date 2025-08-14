@@ -17,7 +17,7 @@ final class JWTRemoteDataSource {
         if let authTokens = response.data?.toDomainEntity() {
             return authTokens
         } else if let message = response.message {
-            throw AppError.custom(message, code: 500)
+            throw AppError.custom(message)
         } else {
             throw AppError.networkError(.invalidResponse)
         }
