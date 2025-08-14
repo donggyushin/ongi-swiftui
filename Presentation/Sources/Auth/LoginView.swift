@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Domain
+import Factory
 
 public struct LoginView: View {
     
@@ -20,3 +21,15 @@ public struct LoginView: View {
         Text("로그인 화면")
     }
 }
+
+#if DEBUG
+private struct LoginViewPreview: View {
+    var body: some View {
+        LoginView(model: Container.shared.loginViewModel())
+    }
+}
+
+#Preview {
+    LoginViewPreview()
+}
+#endif
