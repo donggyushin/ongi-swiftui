@@ -6,5 +6,9 @@
 //
 
 public protocol PJWTRepository {
+    // local datasource
+    func saveTokens(_ tokens: AuthTokensEntity)
     func getTokens() -> AuthTokensEntity?
+    // remote datasource
+    func refreshToken() async throws
 }
