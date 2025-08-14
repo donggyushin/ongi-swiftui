@@ -10,13 +10,9 @@ import Domain
 
 public final class ContentViewModel: ObservableObject {
     
-    // MARK: - Dependencies
-    // These will be injected when using Factory's composition root
-    private let jwtRepository: PJWTRepository
+    let profileUseCase: ProfileUseCase
     
-    // MARK: - Initialization
-    public init(jwtRepository: PJWTRepository) {
-        // Allow optional injection for Factory pattern
-        self.jwtRepository = jwtRepository
+    public init(profileUseCase: ProfileUseCase) {
+        self.profileUseCase = profileUseCase
     }
 }

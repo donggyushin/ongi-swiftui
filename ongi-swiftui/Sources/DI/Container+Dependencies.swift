@@ -16,12 +16,28 @@ extension Container {
         }
         .singleton
     }
+    
+    var profileRepository: Factory<PProfileRepository> {
+        self {
+            ProfileRepository.shared
+        }
+        .singleton
+    }
 }
 
 // MARK: - Use Case Layer Dependencies
 extension Container {
     
-    // Add use cases here as they are created
+    var profileUseCase: Factory<ProfileUseCase> {
+        self {
+            ProfileUseCase(
+                jwtRepository: self.jwtRepository(),
+                profileRepository: self.profileRepository()
+            )
+        }
+    }
+    
+    // Add other use cases here as they are created
     // Example:
     // var authUseCase: Factory<AuthUseCaseProtocol> {
     //     self { AuthUseCase(repository: jwtRepository()) }
@@ -34,7 +50,7 @@ extension Container {
     // MARK: View Models
     var contentViewModel: Factory<ContentViewModel> {
         self { 
-            ContentViewModel(jwtRepository: self.jwtRepository()) 
+            ContentViewModel(profileUseCase: self.profileUseCase())
         }
     }
 }

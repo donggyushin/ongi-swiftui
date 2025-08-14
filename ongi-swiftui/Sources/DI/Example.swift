@@ -35,21 +35,45 @@ import Presentation
  }
  */
 
-// MARK: - Example 2: Alternative Property Wrapper Pattern
+// MARK: - Example 2: Using ProfileUseCase
 /*
- If you prefer property wrapper injection:
+ How to use ProfileUseCase in your view models:
  
- extension Container {
-     var contentViewModelWithInjection: Factory<ContentViewModelWithInjection> {
-         self { ContentViewModelWithInjection() }
+ class ProfileViewModel: ObservableObject {
+     private let profileUseCase: ProfileUseCase
+     @Published var profile: ProfileEntitiy?
+     
+     init(profileUseCase: ProfileUseCase) {
+         self.profileUseCase = profileUseCase
+     }
+     
+     func loadProfile() async {
+         do {
+             profile = try await profileUseCase.getMe()
+         } catch {
+             // Handle error
+         }
      }
  }
  
+ // Register in Container+Dependencies.swift:
+ var profileViewModel: Factory<ProfileViewModel> {
+     self { 
+         ProfileViewModel(profileUseCase: self.profileUseCase()) 
+     }
+ }
+ */
+
+// MARK: - Example 3: Alternative Property Wrapper Pattern
+/*
+ If you prefer property wrapper injection:
+ 
  class ContentViewModelWithInjection: ObservableObject {
      @Injected(\.jwtRepository) private var jwtRepository
+     @Injected(\.profileUseCase) private var profileUseCase
      
-     func login() {
-         // Use jwtRepository directly
+     func loadUserProfile() async {
+         let profile = try await profileUseCase.getMe()
      }
  }
  */
