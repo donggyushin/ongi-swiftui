@@ -8,8 +8,13 @@
 import Domain
 import Factory
 import Combine
+import SwiftUI
 
 final class OnboardingMultipleImagesViewModel: ObservableObject {
+    
+    @Published var images: [UIImage] = []
+    
+    
     init() {
         
     }
