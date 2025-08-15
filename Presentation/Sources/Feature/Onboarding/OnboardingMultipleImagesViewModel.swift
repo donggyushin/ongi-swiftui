@@ -27,9 +27,10 @@ final class OnboardingMultipleImagesViewModel: ObservableObject {
     func addPhoto(_ image: UIImage) async throws {
         loading = true
         guard let imageData = image.jpegData(compressionQuality: 0.8) else { return }
-        _ = try await profileUseCase.uploadImage(imageData: imageData)
+        let updatedProfile = try await profileUseCase.uploadImage(imageData: imageData)
         images.append(image)
         loading = false
+        Container.shared.contentViewModel().me = updatedProfile
     }
     
     @MainActor
