@@ -30,7 +30,7 @@ struct OnboardingProfileImageView: View {
             
             VStack(spacing: 24) {
                 Button(action: {
-                    model.showImagePicker = true
+                    model.selectImage()
                 }) {
                     ZStack {
                         Circle()
@@ -66,22 +66,22 @@ struct OnboardingProfileImageView: View {
             
             Spacer()
             
-            Button(action: {
-                print("move to next step")
-            }) {
-                Text("다음")
-                    .pretendardBody()
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 52)
-                    .background(model.profileImage != nil ? Color.accentColor : Color.gray.opacity(0.3))
-                    .cornerRadius(12)
+            Button {
+                Task {
+                    try await model.uploadPhoto()
+                    print("move to next step")
+                }
+            } label: {
+                AppButton(text: "다음", disabled: model.profileImage == nil)
             }
-            .disabled(model.profileImage == nil)
+            
         }
         .padding(.horizontal, 24)
         .padding(.bottom, 34)
         .modifier(BackgroundModifier())
+        .sheet(isPresented: $model.showImagePicker) {
+            ImagePicker(selectedImage: $model.profileImage)
+        }
     }
 }
 

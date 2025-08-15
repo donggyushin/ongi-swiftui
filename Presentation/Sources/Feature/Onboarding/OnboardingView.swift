@@ -181,15 +181,7 @@ public struct OnboardingView: View {
         Button {
             model.nextStep()
         } label: {
-            HStack {
-                Text("시작하기")
-                    .pretendardCallout(.semiBold)
-                    .foregroundColor(.white)
-            }
-            .frame(maxWidth: .infinity)
-            .frame(height: 50)
-            .background(Color.accentColor)
-            .cornerRadius(12)
+            AppButton(text: "시작하기", disabled: false)
         }
     }
 }

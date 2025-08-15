@@ -18,4 +18,12 @@ public final class OnboardingProfileImageViewModel: ObservableObject {
     public init() {
         
     }
+    
+    func selectImage() {
+        showImagePicker = true
+    }
+    
+    func uploadPhoto() async throws {
+        
+    }
 }
