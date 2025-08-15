@@ -35,39 +35,41 @@ struct OnboardingProfileImageView: View {
                     .multilineTextAlignment(.center)
             }
             
-            VStack(spacing: 24) {
-                Button(action: {
-                    model.selectImage()
-                }) {
-                    ZStack {
-                        Circle()
-                            .fill(Color.gray.opacity(0.1))
-                            .frame(width: 120, height: 120)
-                        
-                        if let profileImage = model.profileImage {
-                            Image(uiImage: profileImage)
-                                .resizable()
-                                .scaledToFill()
-                                .clipShape(Circle())
+            if model.loadingInitialImage == false {
+                VStack(spacing: 24) {
+                    Button {
+                        model.selectImage()
+                    } label: {
+                        ZStack {
+                            Circle()
+                                .fill(Color.gray.opacity(0.1))
                                 .frame(width: 120, height: 120)
-                        } else {
-                            VStack(spacing: 8) {
-                                Image(systemName: "camera.fill")
-                                    .font(.title2)
-                                    .foregroundColor(.secondary)
-                                
-                                Text("사진 추가")
-                                    .pretendardCaption()
-                                    .foregroundColor(.secondary)
+                            
+                            if let profileImage = model.profileImage {
+                                Image(uiImage: profileImage)
+                                    .resizable()
+                                    .scaledToFill()
+                                    .clipShape(Circle())
+                                    .frame(width: 120, height: 120)
+                            } else {
+                                VStack(spacing: 8) {
+                                    Image(systemName: "camera.fill")
+                                        .font(.title2)
+                                        .foregroundColor(.secondary)
+                                    
+                                    Text("사진 추가")
+                                        .pretendardCaption()
+                                        .foregroundColor(.secondary)
+                                }
                             }
                         }
                     }
-                }
-                
-                if model.profileImage == nil {
-                    Text("탭하여 프로필 이미지를 추가해주세요")
-                        .pretendardCaption()
-                        .foregroundColor(.secondary)
+                    
+                    if model.profileImage == nil {
+                        Text("탭하여 프로필 이미지를 추가해주세요")
+                            .pretendardCaption()
+                            .foregroundColor(.secondary)
+                    }
                 }
             }
             

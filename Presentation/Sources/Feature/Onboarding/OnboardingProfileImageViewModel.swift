@@ -14,6 +14,8 @@ import Factory
 @preconcurrency
 public final class OnboardingProfileImageViewModel: ObservableObject {
     
+    @Published var loadingInitialImage = true
+    
     @Published var profileImage: UIImage?
     @Published var showImagePicker = false
     @Published var showActionSheet = false
@@ -41,6 +43,14 @@ public final class OnboardingProfileImageViewModel: ObservableObject {
                 }
             } catch {
                 print("Failed to load profile image: \(error)")
+            }
+            
+            try await Task.sleep(for: .seconds(0.5))
+            
+            await MainActor.run {
+                withAnimation {
+                    loadingInitialImage = false
+                }
             }
         }
     }
