@@ -62,8 +62,10 @@ final class MockProfileRepository: PProfileRepository {
     }
     
     func profileImageUpload(imageData: Data) async throws -> ProfileEntitiy {
-        var profile = profile2
-        profile.profileImage = profile1.profileImage
-        return profile
+        profile1
+    }
+    
+    func uploadImage(imageData: Data) async throws -> ProfileEntitiy {
+        profile1
     }
 }

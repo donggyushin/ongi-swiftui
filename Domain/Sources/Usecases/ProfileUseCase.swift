@@ -27,4 +27,8 @@ public final class ProfileUseCase {
     public func profileImageUpload(imageData: Data) async throws -> ProfileEntitiy {
         try await profileRepository.profileImageUpload(imageData: imageData)
     }
+    
+    public func uploadImage(imageData: Data) async throws -> ProfileEntitiy {
+        try await profileRepository.uploadImage(imageData: imageData)
+    }
 }

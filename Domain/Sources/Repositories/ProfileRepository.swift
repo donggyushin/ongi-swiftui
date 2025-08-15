@@ -10,4 +10,5 @@ import Foundation
 public protocol PProfileRepository {
     func getMe(accessToken: String) async throws -> ProfileEntitiy
     func profileImageUpload(imageData: Data) async throws -> ProfileEntitiy
+    func uploadImage(imageData: Data) async throws -> ProfileEntitiy
 }

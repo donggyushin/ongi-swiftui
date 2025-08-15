@@ -22,7 +22,11 @@ public final class ProfileRepository: PProfileRepository {
         try await profileRemoteDataSource.getMe(accessToken: accessToken)
     }
     
-    public func profileImageUpload(imageData: Data) async throws -> Domain.ProfileEntitiy {
+    public func profileImageUpload(imageData: Data) async throws -> ProfileEntitiy {
         try await profileRemoteDataSource.profileImageUpload(imageData: imageData)
+    }
+    
+    public func uploadImage(imageData: Data) async throws -> ProfileEntitiy {
+        try await profileRemoteDataSource.uploadImage(imageData: imageData)
     }
 }

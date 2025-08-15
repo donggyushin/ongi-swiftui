@@ -27,9 +27,25 @@ final class ProfileRemoteDataSource {
     }
     
     func profileImageUpload(imageData: Data) async throws -> ProfileEntitiy {
-        let response: APIResponse<ProfileResponseDTO> = try await networkManager.upload(url: "\(ongiExpressUrl)profiles/me/upload-image") { form in
-            form.append(imageData, withName: "profileImage", fileName: "profile.jpg", mimeType: "image/jpeg")
+        let response: APIResponse<ProfileResponseDTO> = try await networkManager
+            .upload(url: "\(ongiExpressUrl)profiles/me/upload-image") { form in
+                form.append(imageData, withName: "profileImage", fileName: "profile.jpg", mimeType: "image/jpeg")
+            }
+        
+        if let profile = response.data?.toDomainEntity() {
+            return profile
+        } else if let message = response.message {
+            throw AppError.custom(message)
+        } else {
+            throw AppError.networkError(.invalidResponse)
         }
+    }
+    
+    func uploadImage(imageData: Data) async throws -> ProfileEntitiy {
+        let response: APIResponse<ProfileResponseDTO> = try await networkManager
+            .upload(url: "\(ongiExpressUrl)profiles/me/add-image") { form in
+                form.append(imageData, withName: "image", fileName: "image.jpg", mimeType: "image/jpeg")
+            }
         
         if let profile = response.data?.toDomainEntity() {
             return profile
