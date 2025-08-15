@@ -75,7 +75,7 @@ public struct LoginView: View {
 #if DEBUG
 private struct LoginViewPreview: View {
     var body: some View {
-        LoginView(model: Container.shared.loginViewModel())
+        LoginView(model: .init())
     }
 }
 

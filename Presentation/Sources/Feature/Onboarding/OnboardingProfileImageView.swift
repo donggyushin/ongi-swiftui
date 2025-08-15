@@ -89,7 +89,7 @@ struct OnboardingProfileImageView: View {
 #if DEBUG
 private struct OnboardingProfileImageViewPreview: View {
     var body: some View {
-        OnboardingProfileImageView(model: Container.shared.onboardingProfileImageViewModel())
+        OnboardingProfileImageView(model: .init())
     }
 }
 

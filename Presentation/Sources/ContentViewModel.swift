@@ -28,7 +28,7 @@ public final class ContentViewModel: ObservableObject {
     public init() {
         self.container = Container.shared
         self.profileUseCase = container.profileUseCase()
-        self.loginViewModel = container.loginViewModel()
+        self.loginViewModel = .init()
         
         bind()
     }

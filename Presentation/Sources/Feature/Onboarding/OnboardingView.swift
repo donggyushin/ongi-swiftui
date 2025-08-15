@@ -167,7 +167,7 @@ public struct OnboardingView: View {
     }
     
     private var actionButton: some View {
-        NavigationLink(destination: OnboardingProfileImageView(model: Container.shared.onboardingProfileImageViewModel())) {
+        NavigationLink(destination: OnboardingProfileImageView(model: .init())) {
             HStack {
                 Text("시작하기")
                     .pretendardCallout(.semiBold)
@@ -184,7 +184,7 @@ public struct OnboardingView: View {
 #if DEBUG
 private struct OnboardingViewPreview: View {
     var body: some View {
-        OnboardingView(model: Container.shared.onboardingViewModel())
+        OnboardingView(model: .init())
     }
 }
 

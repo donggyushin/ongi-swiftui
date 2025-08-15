@@ -53,45 +53,13 @@ extension Container {
         }
         .singleton
     }
-    
-    // Add other use cases here as they are created
-    // Example:
-    // var authUseCase: Factory<AuthUseCaseProtocol> {
-    //     self { AuthUseCase(repository: jwtRepository()) }
-    // }
 }
 
-// MARK: - Presentation Layer Dependencies
 extension Container {
-    
-    // MARK: View Models
-    public var loginViewModel: Factory<LoginViewModel> {
-        self {
-            LoginViewModel(authUseCase: self.authUseCase())
-        }
-    }
-    
-    public var profileListViewModel: Factory<ProfileListViewModel> {
-        self {
-            ProfileListViewModel()
-        }
-    }
-    
     public var contentViewModel: Factory<ContentViewModel> {
         self {
-            ContentViewModel()
+            .init()
         }
-    }
-    
-    public var onboardingViewModel: Factory<OnboardingViewModel> {
-        self {
-            OnboardingViewModel()
-        }
-    }
-    
-    public var onboardingProfileImageViewModel: Factory<OnboardingProfileImageViewModel> {
-        self {
-            OnboardingProfileImageViewModel()
-        }
+        .singleton
     }
 }
