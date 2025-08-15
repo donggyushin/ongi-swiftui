@@ -68,4 +68,12 @@ final class MockProfileRepository: PProfileRepository {
     func uploadImage(imageData: Data) async throws -> ProfileEntitiy {
         profile1
     }
+    
+    func updateGender(gender: GenderEntity) async throws -> ProfileEntitiy {
+        profile1
+    }
+    
+    func updatePhysicalInfo(height: CGFloat, weight: CGFloat) async throws -> ProfileEntitiy {
+        profile1
+    }
 }

@@ -31,4 +31,12 @@ public final class ProfileUseCase {
     public func uploadImage(imageData: Data) async throws -> ProfileEntitiy {
         try await profileRepository.uploadImage(imageData: imageData)
     }
+    
+    public func updateGender(gender: GenderEntity) async throws -> ProfileEntitiy {
+        try await profileRepository.updateGender(gender: gender)
+    }
+    
+    public func updatePhysicalInfo(height: CGFloat, weight: CGFloat) async throws -> ProfileEntitiy {
+        try await profileRepository.updatePhysicalInfo(height: height, weight: weight)
+    }
 }

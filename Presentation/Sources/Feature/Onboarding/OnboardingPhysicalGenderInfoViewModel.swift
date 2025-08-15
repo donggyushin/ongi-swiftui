@@ -58,7 +58,8 @@ final class OnboardingPhysicalGenderInfoViewModel: ObservableObject {
             throw AppError.custom("필수 정보를 입력해주세요", code: 400)
         }
         
-        // TODO: Implement save logic
-        try await Task.sleep(nanoseconds: 1_000_000_000)
+        _ = try await profileUseCase.updateGender(gender: gender)
+        let updatedProfile = try await profileUseCase.updatePhysicalInfo(height: heightValue, weight: weightValue)
+        Container.shared.contentViewModel().me = updatedProfile
     }
 }

@@ -55,4 +55,40 @@ final class ProfileRemoteDataSource {
             throw AppError.networkError(.invalidResponse)
         }
     }
+    
+    func updateGender(gender: GenderEntity) async throws -> ProfileEntitiy {
+        
+        let body: [String: Any] = [
+            "gender" : gender == .male ? "MALE" : "FEMALE"
+        ]
+        
+        let response: APIResponse<ProfileResponseDTO> = try await networkManager
+            .request(url: "\(ongiExpressUrl)profiles/me/gender", method: .post, parameters: body)
+        
+        if let profile = response.data?.toDomainEntity() {
+            return profile
+        } else if let message = response.message {
+            throw AppError.custom(message)
+        } else {
+            throw AppError.networkError(.invalidResponse)
+        }
+    }
+    
+    func updatePhysicalInfo(height: CGFloat, weight: CGFloat) async throws -> ProfileEntitiy {
+        let body: [String: Any] = [
+            "height": height,
+            "weight": weight
+        ]
+        
+        let response: APIResponse<ProfileResponseDTO> = try await networkManager
+            .request(url: "\(ongiExpressUrl)profiles/me/physical-info", method: .post, parameters: body)
+        
+        if let profile = response.data?.toDomainEntity() {
+            return profile
+        } else if let message = response.message {
+            throw AppError.custom(message)
+        } else {
+            throw AppError.networkError(.invalidResponse)
+        }
+    }
 }

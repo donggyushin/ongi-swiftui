@@ -29,4 +29,12 @@ public final class ProfileRepository: PProfileRepository {
     public func uploadImage(imageData: Data) async throws -> ProfileEntitiy {
         try await profileRemoteDataSource.uploadImage(imageData: imageData)
     }
+    
+    public func updateGender(gender: GenderEntity) async throws -> ProfileEntitiy {
+        try await profileRemoteDataSource.updateGender(gender: gender)
+    }
+    
+    public func updatePhysicalInfo(height: CGFloat, weight: CGFloat) async throws -> ProfileEntitiy {
+        try await profileRemoteDataSource.updatePhysicalInfo(height: height, weight: weight)
+    }
 }

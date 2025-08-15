@@ -11,4 +11,6 @@ public protocol PProfileRepository {
     func getMe(accessToken: String) async throws -> ProfileEntitiy
     func profileImageUpload(imageData: Data) async throws -> ProfileEntitiy
     func uploadImage(imageData: Data) async throws -> ProfileEntitiy
+    func updateGender(gender: GenderEntity) async throws -> ProfileEntitiy
+    func updatePhysicalInfo(height: CGFloat, weight: CGFloat) async throws -> ProfileEntitiy
 }
