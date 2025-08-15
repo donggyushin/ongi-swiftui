@@ -12,6 +12,14 @@ import Factory
 struct OnboardingMultipleImagesView: View {
     
     @StateObject var model: OnboardingMultipleImagesViewModel
+    @State var showImagePicker = false
+    
+    var nextAction: (() -> ())?
+    func onNextAction(_ action: (() -> ())?) -> Self {
+        var copy = self
+        copy.nextAction = action
+        return copy
+    }
     
     var body: some View {
         VStack(spacing: 12) {
@@ -38,7 +46,7 @@ struct OnboardingMultipleImagesView: View {
                                 isEnabled: index == model.images.count,
                                 onTap: {
                                     if index == model.images.count {
-                                        print("here")
+                                        showImagePicker = true
                                     }
                                 }
                             )
@@ -74,7 +82,7 @@ struct OnboardingMultipleImagesView: View {
             VStack(spacing: 16) {
                 
                 Button {
-                    
+                    nextAction?()
                 } label: {
                     HStack {
                         Text("계속하기")
@@ -101,6 +109,7 @@ struct OnboardingMultipleImagesView: View {
                 }
             }
             .padding(.bottom, 32)
+            .animation(.default, value: model.images.count)
         }
         .modifier(BackgroundModifier())
         .onAppear {
@@ -108,7 +117,16 @@ struct OnboardingMultipleImagesView: View {
                 try await model.fetchInitialImages()
             }
         }
+        .sheet(isPresented: $showImagePicker) {
+            ImagePicker()
+                .onComplete { uiImage in
+                    Task {
+                        try await model.addPhoto(uiImage)
+                    }
+                }
+        }
         .loading(model.loading)
+        
     }
 }
 
@@ -131,30 +149,36 @@ struct PhotoUploadCell: View {
                     .opacity(!isEnabled ? 1.0 : 0.3)
                 
                 if let image = image {
-                    Image(uiImage: image)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(height: 120)
-                        .clipped()
-                        .cornerRadius(12)
-                        .overlay(
-                            VStack {
-                                if isMainPhoto {
-                                    HStack {
-                                        Text("대표")
-                                            .pretendardCaption()
-                                            .foregroundColor(.white)
-                                            .padding(.horizontal, 8)
-                                            .padding(.vertical, 4)
-                                            .background(Color.blue)
-                                            .cornerRadius(6)
+                    
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(.clear)
+                        .background {
+                            Image(uiImage: image)
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(height: 120)
+                                .clipped()
+                                .cornerRadius(12)
+                                .overlay(
+                                    VStack {
+                                        if isMainPhoto {
+                                            HStack {
+                                                Text("대표")
+                                                    .pretendardCaption()
+                                                    .foregroundColor(.white)
+                                                    .padding(.horizontal, 8)
+                                                    .padding(.vertical, 4)
+                                                    .background(Color.blue)
+                                                    .cornerRadius(6)
+                                                Spacer()
+                                            }
+                                            .padding(8)
+                                        }
                                         Spacer()
                                     }
-                                    .padding(8)
-                                }
-                                Spacer()
-                            }
-                        )
+                                )
+                        }
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
                 } else {
                     VStack(spacing: 8) {
                         Image(systemName: isEnabled ? "plus.circle.fill" : "plus.circle")
