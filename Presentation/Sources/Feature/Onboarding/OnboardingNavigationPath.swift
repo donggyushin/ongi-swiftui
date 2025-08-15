@@ -8,4 +8,5 @@
 enum OnboardingNavigationPath: Hashable {
     case profileImage
     case images
+    case physicalAndGender
 }

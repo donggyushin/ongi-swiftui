@@ -33,6 +33,8 @@ public final class OnboardingViewModel: ObservableObject {
             path.append(.profileImage)
         } else if myProfile.images.isEmpty {
             path.append(.images)
+        } else if myProfile.gender == nil {
+            path.append(.physicalAndGender)
         }
     }
 }

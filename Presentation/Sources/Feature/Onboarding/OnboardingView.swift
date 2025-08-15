@@ -54,6 +54,9 @@ public struct OnboardingView: View {
                 case .images:
                     OnboardingMultipleImagesView(model: .init())
                         .navigationBarBackButtonHidden()
+                case .physicalAndGender:
+                    OnboardingPhysicalGenderInfoView(model: .init())
+                        .navigationBarBackButtonHidden()
                 }
             }
         }
