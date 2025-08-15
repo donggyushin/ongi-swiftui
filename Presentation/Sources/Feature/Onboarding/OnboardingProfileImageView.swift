@@ -82,6 +82,9 @@ struct OnboardingProfileImageView: View {
         .sheet(isPresented: $model.showImagePicker) {
             ImagePicker(selectedImage: $model.profileImage)
         }
+        .onAppear {
+            model.updateProfileImage()
+        }
     }
 }
 
