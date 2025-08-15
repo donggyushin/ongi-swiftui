@@ -9,8 +9,9 @@ import Domain
 import Combine
 import SwiftUI
 import Factory
-import ThirdParty
+@preconcurrency import Kingfisher
 
+@preconcurrency
 public final class OnboardingProfileImageViewModel: ObservableObject {
     
     @Published var profileImage: UIImage?

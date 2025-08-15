@@ -42,6 +42,7 @@ struct OnboardingProfileImageView: View {
                                 .resizable()
                                 .scaledToFill()
                                 .clipShape(Circle())
+                                .frame(width: 120, height: 120)
                         } else {
                             VStack(spacing: 8) {
                                 Image(systemName: "camera.fill")
