@@ -17,6 +17,8 @@ final class OnboardingPhysicalGenderInfoViewModel: ObservableObject {
     @Published var weight: String = ""
     @Published var loading: Bool = false
     
+    let profileUseCase = Container.shared.profileUseCase()
+    
     var isFormValid: Bool {
         return selectedGender != nil && 
                !height.isEmpty && 
@@ -33,6 +35,16 @@ final class OnboardingPhysicalGenderInfoViewModel: ObservableObject {
     var weightValue: CGFloat? {
         guard let value = Double(weight), value > 0 else { return nil }
         return CGFloat(value)
+    }
+    
+    @MainActor
+    func fetchInitialInfo() async throws {
+        loading = true
+        defer { loading = false }
+        let me = try await profileUseCase.getMe()
+        selectedGender = me.gender
+        height = me.height == nil ? "" : "\(me.height!)"
+        weight = me.weight == nil ? "" : "\(me.weight!)"
     }
     
     @MainActor

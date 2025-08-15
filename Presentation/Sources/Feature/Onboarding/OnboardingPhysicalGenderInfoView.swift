@@ -21,7 +21,7 @@ struct OnboardingPhysicalGenderInfoView: View {
     }
     
     var body: some View {
-        VStack(spacing: 20) {
+        VStack(spacing: 12) {
             Spacer()
             
             VStack(spacing: 16) {
@@ -106,6 +106,11 @@ struct OnboardingPhysicalGenderInfoView: View {
         .padding(.bottom, 34)
         .modifier(BackgroundModifier())
         .loading(model.loading)
+        .onAppear {
+            Task {
+                try await model.fetchInitialInfo()
+            }
+        }
     }
 }
 
