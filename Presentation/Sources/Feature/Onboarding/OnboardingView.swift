@@ -23,14 +23,16 @@ public struct OnboardingView: View {
         
         NavigationStack(path: $model.path) {
             VStack(spacing: 0) {
+                
+                Spacer()
                 // Header Section
                 headerSection
-                    .padding(.top, 20)
+                
+                Spacer()
                 
                 // Content Section
                 contentSection
                     .padding(.horizontal, 24)
-                    .padding(.top, 30)
                 
                 Spacer()
                 
@@ -38,7 +40,7 @@ public struct OnboardingView: View {
                     // Action Button
                     actionButton
                         .padding(.horizontal, 24)
-                        .padding(.bottom, 40)
+                        .padding(.bottom, 30)
                 }
             }
             .navigationDestination(for: OnboardingNavigationPath.self) { path in

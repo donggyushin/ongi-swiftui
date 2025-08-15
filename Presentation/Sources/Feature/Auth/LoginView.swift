@@ -20,12 +20,10 @@ public struct LoginView: View {
     
     public var body: some View {
         VStack(spacing: 0) {
+            Spacer()
             // Header Section
             headerSection
-                .padding(.top, 40)
-            
             Spacer()
-            
             appleSignInButton
                 .padding(.horizontal, 24)
                 .padding(.top, 40)
