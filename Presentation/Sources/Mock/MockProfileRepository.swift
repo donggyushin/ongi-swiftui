@@ -66,7 +66,7 @@ final class MockProfileRepository: PProfileRepository {
     }
     
     func uploadImage(imageData: Data) async throws -> ProfileEntitiy {
-        profile1
+        throw AppError.custom("이미지의 용량이 너무 큽니다.", code: nil)
     }
     
     func updateGender(gender: GenderEntity) async throws -> ProfileEntitiy {
@@ -74,7 +74,6 @@ final class MockProfileRepository: PProfileRepository {
     }
     
     func updatePhysicalInfo(height: CGFloat, weight: CGFloat) async throws -> ProfileEntitiy {
-//        profile1
         throw AppError.custom("잘못된 체중 입력", code: nil)
     }
 }

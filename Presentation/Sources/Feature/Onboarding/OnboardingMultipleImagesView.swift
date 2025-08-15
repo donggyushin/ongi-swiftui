@@ -13,6 +13,7 @@ struct OnboardingMultipleImagesView: View {
     
     @StateObject var model: OnboardingMultipleImagesViewModel
     @State var showImagePicker = false
+    @State var errorMessage: String?
     
     var nextAction: (() -> ())?
     func onNextAction(_ action: (() -> ())?) -> Self {
@@ -45,6 +46,9 @@ struct OnboardingMultipleImagesView: View {
                                 isMainPhoto: index == 0,
                                 isEnabled: index == model.images.count,
                                 onTap: {
+                                    withAnimation {
+                                        errorMessage = nil
+                                    }
                                     if index == model.images.count {
                                         showImagePicker = true
                                     }
@@ -101,6 +105,12 @@ struct OnboardingMultipleImagesView: View {
                 }
                 .padding(.horizontal, 24)
                 
+                if let errorMessage {
+                    Text(errorMessage)
+                        .pretendardCaption()
+                        .foregroundColor(.red)
+                }
+                
                 if model.images.count < 3 {
                     Text("최소 3장의 사진을 업로드하는 것을 추천해요")
                         .pretendardCaption()
@@ -121,7 +131,16 @@ struct OnboardingMultipleImagesView: View {
             ImagePicker()
                 .onComplete { uiImage in
                     Task {
-                        try await model.addPhoto(uiImage)
+                        do {
+                            withAnimation {
+                                errorMessage = nil
+                            }
+                            try await model.addPhoto(uiImage)
+                        } catch AppError.custom(let message, code: _) {
+                            withAnimation {
+                                errorMessage = message
+                            }
+                        }
                     }
                 }
         }

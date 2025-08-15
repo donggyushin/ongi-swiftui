@@ -92,14 +92,16 @@ struct OnboardingPhysicalGenderInfoView: View {
             
             if let errorMessage {
                 Text(errorMessage)
-                    .pretendardBody()
-                    .foregroundStyle(.orange)
+                    .pretendardCaption()
+                    .foregroundStyle(.red)
             }
             
             Button {
                 Task {
                     do {
-                        errorMessage = nil 
+                        withAnimation {
+                            errorMessage = nil
+                        }
                         try await model.savePhysicalInfo()
                         complete?()
                     } catch AppError.custom(let message, _) {
