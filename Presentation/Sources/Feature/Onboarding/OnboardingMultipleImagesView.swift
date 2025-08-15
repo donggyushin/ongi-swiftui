@@ -35,7 +35,7 @@ struct OnboardingMultipleImagesView: View {
                             PhotoUploadCell(
                                 image: model.images.count > index ? model.images[index] : nil,
                                 isMainPhoto: index == 0,
-                                isEnabled: index <= model.images.count,
+                                isEnabled: index == model.images.count,
                                 onTap: {
                                     if index == model.images.count {
     //                                    model.addPhoto()
@@ -83,7 +83,7 @@ struct OnboardingMultipleImagesView: View {
                         
                         if model.images.count > 1 {
                             Image(systemName: "checkmark.circle.fill")
-                                .foregroundColor(.orange)
+                                .foregroundColor(.green)
                         }
                     }
                     .frame(maxWidth: .infinity)
