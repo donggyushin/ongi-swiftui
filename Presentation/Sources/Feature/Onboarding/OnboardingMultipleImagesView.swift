@@ -33,8 +33,11 @@ struct OnboardingMultipleImagesView: View {
                         PhotoUploadCell(
                             image: model.images.count > index ? model.images[index] : nil,
                             isMainPhoto: index == 0,
+                            isEnabled: index <= model.images.count,
                             onTap: {
-//                                    model.addPhoto(at: index)
+                                if index == model.images.count {
+//                                    model.addPhoto()
+                                }
                             }
                         )
                     }
@@ -103,10 +106,11 @@ struct OnboardingMultipleImagesView: View {
 struct PhotoUploadCell: View {
     let image: UIImage?
     let isMainPhoto: Bool
+    let isEnabled: Bool
     let onTap: () -> Void
     
     var body: some View {
-        Button(action: onTap) {
+        Button(action: isEnabled ? onTap : {}) {
             ZStack {
                 RoundedRectangle(cornerRadius: 12)
                     .fill(.gray)
@@ -115,6 +119,7 @@ struct PhotoUploadCell: View {
                         RoundedRectangle(cornerRadius: 12)
                             .stroke(Color.white.opacity(0.3), lineWidth: 1)
                     )
+                    .opacity(!isEnabled ? 1.0 : 0.3)
                 
                 if let image = image {
                     Image(uiImage: image)
@@ -143,23 +148,24 @@ struct PhotoUploadCell: View {
                         )
                 } else {
                     VStack(spacing: 8) {
-                        Image(systemName: "plus.circle.fill")
+                        Image(systemName: isEnabled ? "plus.circle.fill" : "plus.circle")
                             .font(.title2)
-                            .foregroundColor(.white.opacity(0.7))
+                            .foregroundColor(isEnabled ? .primary : .secondary)
                         
                         if isMainPhoto {
                             Text("대표 사진")
                                 .pretendardCaption()
-                                .foregroundColor(.white.opacity(0.7))
+                                .foregroundColor(isEnabled ? .primary : .secondary)
                         } else {
-                            Text("사진 추가")
+                            Text(isEnabled ? "사진 추가" : "순서대로 추가")
                                 .pretendardCaption()
-                                .foregroundColor(.white.opacity(0.7))
+                                .foregroundColor(isEnabled ? .primary : .secondary)
                         }
                     }
                 }
             }
         }
+        .disabled(!isEnabled)
     }
 }
 
