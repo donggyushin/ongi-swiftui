@@ -9,4 +9,4 @@ import Foundation
 
 @_exported import Alamofire
 @_exported import Factory
-@_exported import SDWebImage
+@_exported import Kingfisher

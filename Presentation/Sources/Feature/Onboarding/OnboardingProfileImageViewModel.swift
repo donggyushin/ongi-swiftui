@@ -9,7 +9,7 @@ import Domain
 import Combine
 import SwiftUI
 import Factory
-import SDWebImage
+import ThirdParty
 
 public final class OnboardingProfileImageViewModel: ObservableObject {
     
@@ -27,10 +27,17 @@ public final class OnboardingProfileImageViewModel: ObservableObject {
         Task {
             do {
                 let me = try await profileUseCase.getMe()
-                SDWebImageManager.shared.loadImage(with: me.profileImage?.url, progress: nil) { image, _, error, _, _, _ in
-                    print("here")
+                guard let url = me.profileImage?.url else { return }
+                KingfisherManager.shared.retrieveImage(with: url) { [weak self] result in
+                    switch result {
+                    case .success(let result):
+                        DispatchQueue.main.async {
+                            self?.profileImage = result.image
+                        }
+                    case .failure(_):
+                        break
+                    }
                 }
-                
             } catch {
                 print("Failed to load profile image: \(error)")
             }

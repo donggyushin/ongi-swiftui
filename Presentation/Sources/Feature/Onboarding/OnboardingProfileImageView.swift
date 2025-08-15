@@ -40,8 +40,7 @@ struct OnboardingProfileImageView: View {
                         if let profileImage = model.profileImage {
                             Image(uiImage: profileImage)
                                 .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(width: 120, height: 120)
+                                .scaledToFill()
                                 .clipShape(Circle())
                         } else {
                             VStack(spacing: 8) {

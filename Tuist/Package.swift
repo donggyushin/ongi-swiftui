@@ -17,6 +17,6 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/Alamofire/Alamofire", from: "5.8.0"),
         .package(url: "https://github.com/hmlongco/Factory", from: "2.3.0"),
-        .package(url: "https://github.com/SDWebImage/SDWebImage", from: "5.21.1")
+        .package(url: "https://github.com/onevcat/Kingfisher", from: "7.10.0")
     ]
 )
