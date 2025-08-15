@@ -18,7 +18,7 @@ final class MockJWTRepository: PJWTRepository {
     }
     
     func getTokens() -> AuthTokensEntity? {
-        return nil
+        return .init(accessToken: "", refreshToken: "")
     }
     
     func refreshToken() async throws {

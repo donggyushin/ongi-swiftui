@@ -28,21 +28,24 @@ struct OnboardingMultipleImagesView: View {
             .padding(.top, 20)
             
             VStack(spacing: 24) {
-                LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 12), count: 3), spacing: 12) {
-                    ForEach(0..<6, id: \.self) { index in
-                        PhotoUploadCell(
-                            image: model.images.count > index ? model.images[index] : nil,
-                            isMainPhoto: index == 0,
-                            isEnabled: index <= model.images.count,
-                            onTap: {
-                                if index == model.images.count {
-//                                    model.addPhoto()
+                
+                if model.fetchingInitialData == false {
+                    LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 12), count: 3), spacing: 12) {
+                        ForEach(0..<6, id: \.self) { index in
+                            PhotoUploadCell(
+                                image: model.images.count > index ? model.images[index] : nil,
+                                isMainPhoto: index == 0,
+                                isEnabled: index <= model.images.count,
+                                onTap: {
+                                    if index == model.images.count {
+    //                                    model.addPhoto()
+                                    }
                                 }
-                            }
-                        )
+                            )
+                        }
                     }
+                    .padding(.horizontal, 24)
                 }
-                .padding(.horizontal, 24)
                 
                 VStack(spacing: 12) {
                     BenefitRow(
@@ -100,6 +103,11 @@ struct OnboardingMultipleImagesView: View {
             .padding(.bottom, 32)
         }
         .modifier(BackgroundModifier())
+        .onAppear {
+            Task {
+                try await model.fetchInitialImages()
+            }
+        }
     }
 }
 
