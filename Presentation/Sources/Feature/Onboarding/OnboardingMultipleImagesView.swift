@@ -38,7 +38,7 @@ struct OnboardingMultipleImagesView: View {
                                 isEnabled: index == model.images.count,
                                 onTap: {
                                     if index == model.images.count {
-    //                                    model.addPhoto()
+                                        print("here")
                                     }
                                 }
                             )
@@ -108,6 +108,7 @@ struct OnboardingMultipleImagesView: View {
                 try await model.fetchInitialImages()
             }
         }
+        .loading(model.loading)
     }
 }
 

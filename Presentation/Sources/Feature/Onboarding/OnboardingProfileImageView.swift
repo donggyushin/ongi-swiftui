@@ -89,7 +89,10 @@ struct OnboardingProfileImageView: View {
         .padding(.bottom, 34)
         .modifier(BackgroundModifier())
         .sheet(isPresented: $model.showImagePicker) {
-            ImagePicker(selectedImage: $model.profileImage)
+            ImagePicker()
+                .onComplete { uiImage in
+                    model.profileImage = uiImage
+                }
         }
         .onAppear {
             model.updateProfileImage()

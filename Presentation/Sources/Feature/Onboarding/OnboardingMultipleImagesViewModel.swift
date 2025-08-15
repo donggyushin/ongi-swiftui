@@ -15,11 +15,19 @@ final class OnboardingMultipleImagesViewModel: ObservableObject {
     
     @Published var images: [UIImage] = []
     @Published var fetchingInitialData = true
+    @Published var loading = false 
     
     let profileUseCase: ProfileUseCase
     
     init() {
         profileUseCase = Container.shared.profileUseCase()
+    }
+    
+    @MainActor
+    func addPhoto() async throws {
+//        loading = true
+//        try await profileUseCase.uploadImage(imageData: <#T##Data#>)
+//        loading = false
     }
     
     @MainActor
