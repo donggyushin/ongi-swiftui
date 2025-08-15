@@ -28,7 +28,7 @@ final class MockProfileRepository: PProfileRepository {
             height: 151,
             weight: 53,
             bodyType: .chubby,
-            selfIntroduce: "I love reading books and learning new technologies. It helps me grow both personally and professionally.",
+            introduce: "I love reading books and learning new technologies. It helps me grow both personally and professionally.",
             createdAt: .init(),
             updatedAt: .init()
         )
@@ -47,7 +47,7 @@ final class MockProfileRepository: PProfileRepository {
             height: nil,
             weight: nil,
             bodyType: nil,
-            selfIntroduce: nil,
+            introduce: nil,
             createdAt: .init(),
             updatedAt: .init()
         )
