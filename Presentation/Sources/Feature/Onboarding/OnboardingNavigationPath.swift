@@ -7,4 +7,5 @@
 
 enum OnboardingNavigationPath: Hashable {
     case profileImage
+    case images
 }

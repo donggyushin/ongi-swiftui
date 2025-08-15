@@ -29,10 +29,10 @@ public final class OnboardingViewModel: ObservableObject {
     func nextStep() {
         guard let myProfile else { return }
         
-//        if myProfile.profileImage == nil {
-//            path.append(.profileImage)
-//        }
-        
-        path.append(.profileImage)
+        if myProfile.profileImage == nil {
+            path.append(.profileImage)
+        } else if myProfile.images.isEmpty {
+            path.append(.images)
+        }
     }
 }
