@@ -140,6 +140,10 @@ private final class JWTInterceptor: RequestInterceptor {
         return .init()
     }
     
+    private var jwtRemoteDataSource: JWTRemoteDataSource {
+        return .init()
+    }
+    
     func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, Error>) -> Void) {
         var urlRequest = urlRequest
         
@@ -161,6 +165,14 @@ private final class JWTInterceptor: RequestInterceptor {
             return
         }
         
-        completion(.doNotRetry)
+        Task {
+            do {
+                let tokens = try await jwtRemoteDataSource.refreshToken(refreshToken: jwtLocalDataSource.getTokens()?.refreshToken ?? "")
+                jwtLocalDataSource.saveTokens(tokens)
+                completion(.retryWithDelay(1))
+            } catch {
+                completion(.doNotRetry)
+            }
+        }
     }
 }
