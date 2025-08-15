@@ -47,6 +47,9 @@ public struct OnboardingView: View {
                 switch path {
                 case .profileImage:
                     OnboardingProfileImageView(model: .init())
+                        .onComplete {
+                            print("다음 화면으로. 여러장 이미지 등록하는 화면으로 가면 될 듯?")
+                        }
                         .navigationBarBackButtonHidden()
                 }
             }

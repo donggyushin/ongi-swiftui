@@ -13,6 +13,13 @@ struct OnboardingProfileImageView: View {
     
     @StateObject var model: OnboardingProfileImageViewModel
     
+    var complete: (() -> ())?
+    func onComplete(_ action: (() -> ())?) -> Self {
+        var copy = self
+        copy.complete = action
+        return copy
+    }
+    
     var body: some View {
         VStack(spacing: 40) {
             Spacer()
