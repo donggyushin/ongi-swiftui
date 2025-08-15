@@ -53,9 +53,16 @@ public struct OnboardingView: View {
                         .navigationBarBackButtonHidden()
                 case .images:
                     OnboardingMultipleImagesView(model: .init())
+                        .onNextAction {
+                            model.skipMultipleImages = true
+                            model.nextStep()
+                        }
                         .navigationBarBackButtonHidden()
                 case .physicalAndGender:
                     OnboardingPhysicalGenderInfoView(model: .init())
+                        .onComplete {
+                            print("dg: 프로필 입력 전부 완료했다고 축하하는 UI 띄우기")
+                        }
                         .navigationBarBackButtonHidden()
                 }
             }

@@ -13,6 +13,8 @@ struct OnboardingPhysicalGenderInfoView: View {
     
     @StateObject var model: OnboardingPhysicalGenderInfoViewModel
     
+    @State var errorMessage: String?
+    
     var complete: (() -> ())?
     func onComplete(_ action: (() -> ())?) -> Self {
         var copy = self
@@ -88,13 +90,22 @@ struct OnboardingPhysicalGenderInfoView: View {
             
             Spacer()
             
+            if let errorMessage {
+                Text(errorMessage)
+                    .pretendardBody()
+                    .foregroundStyle(.orange)
+            }
+            
             Button {
                 Task {
                     do {
+                        errorMessage = nil 
                         try await model.savePhysicalInfo()
                         complete?()
-                    } catch {
-                        print("Error saving physical info: \(error)")
+                    } catch AppError.custom(let message, _) {
+                        withAnimation {
+                            errorMessage = message
+                        }
                     }
                 }
             } label: {
