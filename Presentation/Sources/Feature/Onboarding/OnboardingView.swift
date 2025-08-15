@@ -20,7 +20,8 @@ public struct OnboardingView: View {
     }
     
     public var body: some View {
-        NavigationStack {
+        
+        NavigationStack(path: $model.path) {
             VStack(spacing: 0) {
                 // Header Section
                 headerSection
@@ -40,13 +41,21 @@ public struct OnboardingView: View {
                         .padding(.bottom, 40)
                 }
             }
-            .modifier(BackgroundModifier())
-            .onAppear {
-                Task {
-                    try await Task.sleep(for: .seconds(1))
-                    withAnimation {
-                        animation1 = true
-                    }
+            .navigationDestination(for: OnboardingNavigationPath.self) { path in
+                switch path {
+                case .profileImage:
+                    OnboardingProfileImageView(model: .init())
+                        .navigationBarBackButtonHidden()
+                }
+            }
+        }
+        .modifier(BackgroundModifier())
+        .onAppear {
+            Task {
+                try await model.updateProfile()
+                try await Task.sleep(for: .seconds(1))
+                withAnimation {
+                    animation1 = true
                 }
             }
         }
@@ -167,7 +176,9 @@ public struct OnboardingView: View {
     }
     
     private var actionButton: some View {
-        NavigationLink(destination: OnboardingProfileImageView(model: .init())) {
+        Button {
+            model.nextStep()
+        } label: {
             HStack {
                 Text("시작하기")
                     .pretendardCallout(.semiBold)

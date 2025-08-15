@@ -7,7 +7,30 @@
 
 import Domain
 import Combine
+import Factory
 
 public final class OnboardingViewModel: ObservableObject {
-    public init() { }
+    
+    @Published var path: [OnboardingNavigationPath] = []
+    @Published var myProfile: ProfileEntitiy?
+    
+    let profileUseCase: ProfileUseCase
+    
+    public init() {
+        profileUseCase = Container.shared.profileUseCase()
+    }
+    
+    @MainActor
+    func updateProfile() async throws {
+        myProfile = try await profileUseCase.getMe()
+    }
+    
+    @MainActor
+    func nextStep() {
+        guard let myProfile else { return }
+        
+        if myProfile.profileImage == nil {
+            path.append(.profileImage)
+        }
+    }
 }

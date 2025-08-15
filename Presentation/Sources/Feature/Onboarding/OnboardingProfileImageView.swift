@@ -81,7 +81,6 @@ struct OnboardingProfileImageView: View {
         }
         .padding(.horizontal, 24)
         .padding(.bottom, 34)
-        .navigationBarBackButtonHidden()
         .modifier(BackgroundModifier())
     }
 }
