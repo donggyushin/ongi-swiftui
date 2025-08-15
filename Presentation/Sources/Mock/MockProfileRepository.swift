@@ -6,12 +6,63 @@
 //
 
 import Domain
+import Foundation
 
 final class MockProfileRepository: PProfileRepository {
+    
+    var profile1: ProfileEntitiy {
+        .init(
+            id: "id",
+            nickname: "달콤한레이지",
+            email: "donggyu9410@gmail.com",
+            profileImage: .init(url: .init(string: "https://res.cloudinary.com/blog-naver-com-donggyu-00/image/upload/v1755242953/profile-images/profile_nickname_test_0023_1755242951793.jpg")!, publicId: "profile-images/profile_nickname_test_0023_1755242951793"),
+            images: [
+                .init(url: .init(string: "https://res.cloudinary.com/blog-naver-com-donggyu-00/image/upload/v1755242953/profile-images/profile_nickname_test_0023_1755242951793.jpg")!, publicId: "profile-images/profile_nickname_test_0023_1755242951793")
+            ],
+            mbti: .infj,
+            qnas: [
+                .init(id: "", question: "What is your favorite hobby?", answer: "I love reading books and learning new technologies. It helps me grow both personally and professionally.", createdAt: .init(), updatedAt: .init())
+            ],
+            gender: .female,
+            height: 151,
+            weight: 53,
+            bodyType: .chubby,
+            selfIntroduce: "I love reading books and learning new technologies. It helps me grow both personally and professionally.",
+            createdAt: .init(),
+            updatedAt: .init()
+        )
+    }
+    
+    var profile2: ProfileEntitiy {
+        .init(
+            id: "id",
+            nickname: "달콤한레이지",
+            email: nil,
+            profileImage: nil,
+            images: [],
+            mbti: nil,
+            qnas: [],
+            gender: nil,
+            height: nil,
+            weight: nil,
+            bodyType: nil,
+            selfIntroduce: nil,
+            createdAt: .init(),
+            updatedAt: .init()
+        )
+    }
+    
+    
     
     init() { }
     
     func getMe(accessToken: String) async throws -> ProfileEntitiy {
-        throw AppError.custom("로그인 안되어져있음")
+        profile2
+    }
+    
+    func profileImageUpload(imageData: Data) async throws -> ProfileEntitiy {
+        var profile = profile2
+        profile.profileImage = profile1.profileImage
+        return profile
     }
 }

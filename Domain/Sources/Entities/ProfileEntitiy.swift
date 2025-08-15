@@ -2,17 +2,17 @@ import Foundation
 
 public struct ProfileEntitiy {
     public let id: String
-    public let nickname: String
-    public let email: String?
-    public let profileImage: ImageEntity?
-    public let images: [ImageEntity]
-    public let mbti: MBTIEntity?
-    public let qnas: [QnAEntity]
-    public let gender: GenderEntity?
-    public let height: CGFloat?
-    public let weight: CGFloat?
-    public let bodyType: BodyType?
-    public let selfIntroduce: String?
+    public var nickname: String
+    public var email: String?
+    public var profileImage: ImageEntity?
+    public var images: [ImageEntity]
+    public var mbti: MBTIEntity?
+    public var qnas: [QnAEntity]
+    public var gender: GenderEntity?
+    public var height: CGFloat?
+    public var weight: CGFloat?
+    public var bodyType: BodyType?
+    public var selfIntroduce: String?
     public let createdAt: Date
     public let updatedAt: Date
     
