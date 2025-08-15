@@ -50,6 +50,30 @@ public final class NetworkManager {
             }
         }
     }
+    
+    public func upload<T: Decodable>(
+        url: URLConvertible,
+        multipartFormData: @escaping (MultipartFormData) -> Void,
+        headers: HTTPHeaders? = nil
+    ) async throws -> T {
+        
+        return try await withCheckedThrowingContinuation { continuation in
+            session.upload(
+                multipartFormData: multipartFormData,
+                to: url,
+                headers: headers
+            )
+            .validate()
+            .responseDecodable(of: T.self) { response in
+                switch response.result {
+                case .success(let data):
+                    continuation.resume(returning: data)
+                case .failure(let error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
 }
 
 private final class NetworkLogger: EventMonitor {
@@ -123,7 +147,9 @@ private final class JWTInterceptor: RequestInterceptor {
             urlRequest.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
         }
         
-        urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        if urlRequest.value(forHTTPHeaderField: "Content-Type") == nil {
+            urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        }
         
         completion(.success(urlRequest))
     }

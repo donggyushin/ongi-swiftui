@@ -21,7 +21,8 @@ let project = Project(
             sources: ["ThirdParty/Sources/**"],
             dependencies: [
                 .external(name: "Alamofire"),
-                .external(name: "Factory")
+                .external(name: "Factory"),
+                .external(name: "Kingfisher")
             ]
         ),
         .target(
@@ -70,7 +71,8 @@ let project = Project(
                     "UILaunchScreen": [
                         "UIColorName": "",
                         "UIImageName": "",
-                    ]
+                    ],
+                    "NSPhotoLibraryUsageDescription": "프로필 사진을 선택하기 위해 사진 라이브러리에 접근합니다."
                 ]
             ),
             sources: ["ongi-swiftui/Sources/**"],

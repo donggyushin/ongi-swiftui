@@ -20,12 +20,10 @@ public struct LoginView: View {
     
     public var body: some View {
         VStack(spacing: 0) {
+            Spacer()
             // Header Section
             headerSection
-                .padding(.top, 40)
-            
             Spacer()
-            
             appleSignInButton
                 .padding(.horizontal, 24)
                 .padding(.top, 40)
@@ -75,7 +73,7 @@ public struct LoginView: View {
 #if DEBUG
 private struct LoginViewPreview: View {
     var body: some View {
-        LoginView(model: Container.shared.loginViewModel())
+        LoginView(model: .init())
     }
 }
 

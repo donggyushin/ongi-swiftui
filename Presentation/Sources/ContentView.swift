@@ -14,9 +14,9 @@ public struct ContentView: View {
         Group {
             if model.isLogin {
                 ZStack {
-                    ProfileListView(model: model.container.profileListViewModel())
+                    ProfileListView(model: .init())
                     if model.onboarding {
-                        OnboardingView(model: model.container.onboardingViewModel())
+                        OnboardingView(model: .init())
                     }
                 }
             } else {
@@ -42,7 +42,7 @@ public struct ContentView: View {
 #if DEBUG
 private struct ContentViewPreview: View {
     var body: some View {
-        ContentView(model: Container.shared.contentViewModel())
+        ContentView(model: .init())
     }
 }
 

@@ -20,16 +20,19 @@ public struct OnboardingView: View {
     }
     
     public var body: some View {
-        NavigationStack {
+        
+        NavigationStack(path: $model.path) {
             VStack(spacing: 0) {
+                
+                Spacer()
                 // Header Section
                 headerSection
-                    .padding(.top, 20)
+                
+                Spacer()
                 
                 // Content Section
                 contentSection
                     .padding(.horizontal, 24)
-                    .padding(.top, 30)
                 
                 Spacer()
                 
@@ -37,16 +40,27 @@ public struct OnboardingView: View {
                     // Action Button
                     actionButton
                         .padding(.horizontal, 24)
-                        .padding(.bottom, 40)
+                        .padding(.bottom, 30)
                 }
             }
-            .modifier(BackgroundModifier())
-            .onAppear {
-                Task {
-                    try await Task.sleep(for: .seconds(1))
-                    withAnimation {
-                        animation1 = true
-                    }
+            .navigationDestination(for: OnboardingNavigationPath.self) { path in
+                switch path {
+                case .profileImage:
+                    OnboardingProfileImageView(model: .init())
+                        .onComplete {
+                            print("다음 화면으로. 여러장 이미지 등록하는 화면으로 가면 될 듯?")
+                        }
+                        .navigationBarBackButtonHidden()
+                }
+            }
+        }
+        .modifier(BackgroundModifier())
+        .onAppear {
+            Task {
+                try await model.updateProfile()
+                try await Task.sleep(for: .seconds(1))
+                withAnimation {
+                    animation1 = true
                 }
             }
         }
@@ -103,13 +117,13 @@ public struct OnboardingView: View {
             
             // Steps Preview
             VStack(spacing: 16) {
-                Text("크게 3단계로 완성해요")
+                Text("3단계로 완성해요")
                     .pretendardHeadline()
                     .foregroundColor(.primary)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
                 HStack(spacing: 20) {
-                    stepItem(number: "1", title: "프로필 사진", subtitle: "나를 표현하기")
+                    stepItem(number: "1", title: "프로필", subtitle: "나를 표현하기")
                     stepItem(number: "2", title: "자기 소개", subtitle: "매력 어필하기")
                     stepItem(number: "3", title: "이메일 인증", subtitle: "안전한 계정")
                 }
@@ -167,16 +181,10 @@ public struct OnboardingView: View {
     }
     
     private var actionButton: some View {
-        NavigationLink(destination: OnboardingProfileImageView(model: Container.shared.onboardingProfileImageViewModel())) {
-            HStack {
-                Text("시작하기")
-                    .pretendardCallout(.semiBold)
-                    .foregroundColor(.white)
-            }
-            .frame(maxWidth: .infinity)
-            .frame(height: 50)
-            .background(Color.accentColor)
-            .cornerRadius(12)
+        Button {
+            model.nextStep()
+        } label: {
+            AppButton(text: "시작하기", disabled: false)
         }
     }
 }
@@ -184,7 +192,7 @@ public struct OnboardingView: View {
 #if DEBUG
 private struct OnboardingViewPreview: View {
     var body: some View {
-        OnboardingView(model: Container.shared.onboardingViewModel())
+        OnboardingView(model: .init())
     }
 }
 

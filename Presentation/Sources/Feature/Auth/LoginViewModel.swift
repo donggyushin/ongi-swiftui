@@ -9,6 +9,7 @@ import SwiftUI
 import AuthenticationServices
 import Domain
 import Combine
+import Factory
 
 public final class LoginViewModel: ObservableObject {
     
@@ -20,10 +21,8 @@ public final class LoginViewModel: ObservableObject {
     var loginSuccessSubject = PassthroughSubject<Void, Never>()
     
     // MARK: - Initialization
-    public init(
-        authUseCase: AuthUseCase
-    ) {
-        self.authUseCase = authUseCase
+    public init() {
+        self.authUseCase = Container.shared.authUseCase()
     }
     
     /// Apple Sign In handling

@@ -8,6 +8,11 @@ struct ProfileResponseDTO: Codable {
     let images: [ImageResponseDTO]
     let mbti: String?
     let qnas: [QnAResponseDTO]
+    let gender: String?
+    let height: Double?
+    let weight: Double?
+    let bodyType: String?
+    let selfIntroduce: String?
     let createdAt: String
     let updatedAt: String
 }

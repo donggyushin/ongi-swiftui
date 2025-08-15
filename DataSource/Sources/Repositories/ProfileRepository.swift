@@ -6,6 +6,7 @@
 //
 
 import Domain
+import Foundation
 
 public final class ProfileRepository: PProfileRepository {
     
@@ -19,5 +20,9 @@ public final class ProfileRepository: PProfileRepository {
     
     public func getMe(accessToken: String) async throws -> ProfileEntitiy {
         try await profileRemoteDataSource.getMe(accessToken: accessToken)
+    }
+    
+    public func profileImageUpload(imageData: Data) async throws -> Domain.ProfileEntitiy {
+        try await profileRemoteDataSource.profileImageUpload(imageData: imageData)
     }
 }

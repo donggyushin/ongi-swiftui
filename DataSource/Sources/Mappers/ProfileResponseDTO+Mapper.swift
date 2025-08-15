@@ -38,6 +38,30 @@ extension ProfileResponseDTO {
             mbtiEntity = nil
         }
         
+        let genderEntity: GenderEntity?
+        if let genderString = self.gender {
+            switch genderString.lowercased() {
+            case "male": genderEntity = .male
+            case "female": genderEntity = .female
+            default: genderEntity = nil
+            }
+        } else {
+            genderEntity = nil
+        }
+        
+        let bodyTypeEntity: BodyType?
+        if let bodyTypeString = self.bodyType {
+            switch bodyTypeString.lowercased() {
+            case "slim": bodyTypeEntity = .slim
+            case "normal": bodyTypeEntity = .normal
+            case "chubby": bodyTypeEntity = .chubby
+            case "large": bodyTypeEntity = .large
+            default: bodyTypeEntity = nil
+            }
+        } else {
+            bodyTypeEntity = nil
+        }
+        
         return ProfileEntitiy(
             id: self.id,
             nickname: self.nickname,
@@ -46,6 +70,11 @@ extension ProfileResponseDTO {
             images: imageEntities,
             mbti: mbtiEntity,
             qnas: qnaEntities,
+            gender: genderEntity,
+            height: self.height.map { CGFloat($0) },
+            weight: self.weight.map { CGFloat($0) },
+            bodyType: bodyTypeEntity,
+            selfIntroduce: selfIntroduce,
             createdAt: createdAt,
             updatedAt: updatedAt
         )

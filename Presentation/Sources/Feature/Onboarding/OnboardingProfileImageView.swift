@@ -13,6 +13,13 @@ struct OnboardingProfileImageView: View {
     
     @StateObject var model: OnboardingProfileImageViewModel
     
+    var complete: (() -> ())?
+    func onComplete(_ action: (() -> ())?) -> Self {
+        var copy = self
+        copy.complete = action
+        return copy
+    }
+    
     var body: some View {
         VStack(spacing: 40) {
             Spacer()
@@ -30,7 +37,7 @@ struct OnboardingProfileImageView: View {
             
             VStack(spacing: 24) {
                 Button(action: {
-                    model.showImagePicker = true
+                    model.selectImage()
                 }) {
                     ZStack {
                         Circle()
@@ -40,9 +47,9 @@ struct OnboardingProfileImageView: View {
                         if let profileImage = model.profileImage {
                             Image(uiImage: profileImage)
                                 .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(width: 120, height: 120)
+                                .scaledToFill()
                                 .clipShape(Circle())
+                                .frame(width: 120, height: 120)
                         } else {
                             VStack(spacing: 8) {
                                 Image(systemName: "camera.fill")
@@ -66,30 +73,32 @@ struct OnboardingProfileImageView: View {
             
             Spacer()
             
-            Button(action: {
-                print("move to next step")
-            }) {
-                Text("다음")
-                    .pretendardBody()
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 52)
-                    .background(model.profileImage != nil ? Color.accentColor : Color.gray.opacity(0.3))
-                    .cornerRadius(12)
+            Button {
+                Task {
+                    try await model.uploadPhoto()
+                    print("move to next step")
+                }
+            } label: {
+                AppButton(text: "다음", disabled: model.profileImage == nil)
             }
-            .disabled(model.profileImage == nil)
+            
         }
         .padding(.horizontal, 24)
         .padding(.bottom, 34)
-        .navigationBarBackButtonHidden()
         .modifier(BackgroundModifier())
+        .sheet(isPresented: $model.showImagePicker) {
+            ImagePicker(selectedImage: $model.profileImage)
+        }
+        .onAppear {
+            model.updateProfileImage()
+        }
     }
 }
 
 #if DEBUG
 private struct OnboardingProfileImageViewPreview: View {
     var body: some View {
-        OnboardingProfileImageView(model: Container.shared.onboardingProfileImageViewModel())
+        OnboardingProfileImageView(model: .init())
     }
 }
 

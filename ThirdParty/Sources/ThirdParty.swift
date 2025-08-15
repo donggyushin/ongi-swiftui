@@ -6,3 +6,7 @@
 //
 
 import Foundation
+
+@_exported import Alamofire
+@_exported import Factory
+@_exported import Kingfisher
