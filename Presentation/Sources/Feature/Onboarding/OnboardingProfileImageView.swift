@@ -78,11 +78,12 @@ struct OnboardingProfileImageView: View {
             Button {
                 Task {
                     try await model.uploadPhoto()
-                    print("move to next step")
+                    complete?()
                 }
             } label: {
                 AppButton(text: "다음", disabled: model.profileImage == nil)
             }
+            .disabled(model.profileImage == nil)
             
         }
         .padding(.horizontal, 24)
