@@ -30,19 +30,25 @@ struct SplashView: View {
             )
             .ignoresSafeArea()
             .overlay {
-                VStack(spacing: 20) {
-                    if animation1 {
-                        Text("온기")
-                            .foregroundStyle(.white)
-                            .pretendardTitle1()
-                    }
+                VStack(spacing: 0) {
+                    Rectangle().fill(.clear)
+                        .overlay {
+                            VStack(spacing: 20) {
+                                if animation1 {
+                                    Text("온기")
+                                        .foregroundStyle(.white)
+                                        .pretendardTitle1()
+                                }
+                                
+                                if animation2 {
+                                    Text("따뜻하고 아늑한 데이팅 서비스")
+                                        .foregroundStyle(.white)
+                                }
+                            }
+                        }
                     
-                    if animation2 {
-                        Text("따뜻하고 아늑한 데이팅 서비스")
-                            .foregroundStyle(.white)
-                    }
+                    Rectangle().fill(.clear)
                 }
-                .offset(y: -170)
             }
             .onAppear {
                 Task {
