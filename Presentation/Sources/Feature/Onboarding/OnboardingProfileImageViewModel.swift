@@ -7,8 +7,14 @@
 
 import Domain
 import Combine
+import SwiftUI
 
 public final class OnboardingProfileImageViewModel: ObservableObject {
+    
+    @Published var profileImage: UIImage?
+    @Published var showImagePicker = false
+    @Published var showActionSheet = false 
+    
     public init() {
         
     }
