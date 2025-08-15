@@ -20,6 +20,8 @@ public final class OnboardingProfileImageViewModel: ObservableObject {
     @Published var showImagePicker = false
     @Published var showActionSheet = false
     
+    @Published var loading = false
+    
     let profileUseCase: ProfileUseCase
     
     public init() {
@@ -60,12 +62,18 @@ public final class OnboardingProfileImageViewModel: ObservableObject {
     }
     
     func uploadPhoto() async throws {
+        
+        await MainActor.run {
+            loading = true
+        }
+        
         guard let profileImage else { throw AppError.unknown(nil) }
         guard let data = profileImage.jpegData(compressionQuality: 0.8) else { throw AppError.unknown(nil) }
         let updatedProfile = try await profileUseCase.profileImageUpload(imageData: data)
         
         await MainActor.run {
             Container.shared.contentViewModel().me = updatedProfile
+            loading = false
         }
     }
 }

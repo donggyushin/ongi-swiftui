@@ -94,6 +94,7 @@ struct OnboardingProfileImageView: View {
         .onAppear {
             model.updateProfileImage()
         }
+        .loading(model.loading)
     }
 }
 
