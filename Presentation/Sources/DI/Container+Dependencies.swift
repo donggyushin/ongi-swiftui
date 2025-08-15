@@ -79,13 +79,19 @@ extension Container {
     
     public var contentViewModel: Factory<ContentViewModel> {
         self {
-            ContentViewModel(container: self)
+            ContentViewModel()
         }
     }
     
     public var onboardingViewModel: Factory<OnboardingViewModel> {
         self {
             OnboardingViewModel()
+        }
+    }
+    
+    public var onboardingProfileImageViewModel: Factory<OnboardingProfileImageViewModel> {
+        self {
+            OnboardingProfileImageViewModel()
         }
     }
 }

@@ -13,6 +13,8 @@ public struct OnboardingView: View {
     
     @StateObject var model: OnboardingViewModel
     
+    @State var animation1 = false
+    
     public init(model: OnboardingViewModel) {
         self._model = .init(wrappedValue: model)
     }
@@ -31,12 +33,22 @@ public struct OnboardingView: View {
                 
                 Spacer()
                 
-                // Action Button
-                actionButton
-                    .padding(.horizontal, 24)
-                    .padding(.bottom, 40)
+                if animation1 {
+                    // Action Button
+                    actionButton
+                        .padding(.horizontal, 24)
+                        .padding(.bottom, 40)
+                }
             }
             .modifier(BackgroundModifier())
+            .onAppear {
+                Task {
+                    try await Task.sleep(for: .seconds(1))
+                    withAnimation {
+                        animation1 = true
+                    }
+                }
+            }
         }
     }
     
@@ -91,15 +103,15 @@ public struct OnboardingView: View {
             
             // Steps Preview
             VStack(spacing: 16) {
-                Text("간단한 3단계로 완성해요")
+                Text("크게 3단계로 완성해요")
                     .pretendardHeadline()
                     .foregroundColor(.primary)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
                 HStack(spacing: 20) {
-                    stepItem(number: "1", title: "이메일 인증", subtitle: "안전한 계정")
-                    stepItem(number: "2", title: "프로필 사진", subtitle: "나를 표현하기")
-                    stepItem(number: "3", title: "자기 소개", subtitle: "매력 어필하기")
+                    stepItem(number: "1", title: "프로필 사진", subtitle: "나를 표현하기")
+                    stepItem(number: "2", title: "자기 소개", subtitle: "매력 어필하기")
+                    stepItem(number: "3", title: "이메일 인증", subtitle: "안전한 계정")
                 }
             }
         }
@@ -155,9 +167,7 @@ public struct OnboardingView: View {
     }
     
     private var actionButton: some View {
-        Button(action: {
-            // TODO: Start onboarding flow
-        }) {
+        NavigationLink(destination: OnboardingProfileImageView(model: Container.shared.onboardingProfileImageViewModel())) {
             HStack {
                 Text("시작하기")
                     .pretendardCallout(.semiBold)
