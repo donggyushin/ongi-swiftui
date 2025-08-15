@@ -21,7 +21,8 @@ let project = Project(
             sources: ["ThirdParty/Sources/**"],
             dependencies: [
                 .external(name: "Alamofire"),
-                .external(name: "Factory")
+                .external(name: "Factory"),
+                .external(name: "SDWebImage")
             ]
         ),
         .target(

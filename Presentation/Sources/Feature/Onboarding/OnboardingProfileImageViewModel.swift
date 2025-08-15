@@ -9,6 +9,7 @@ import Domain
 import Combine
 import SwiftUI
 import Factory
+import SDWebImage
 
 public final class OnboardingProfileImageViewModel: ObservableObject {
     
@@ -23,7 +24,17 @@ public final class OnboardingProfileImageViewModel: ObservableObject {
     }
     
     func updateProfileImage() {
-        
+        Task {
+            do {
+                let me = try await profileUseCase.getMe()
+                SDWebImageManager.shared.loadImage(with: me.profileImage?.url, progress: nil) { image, _, error, _, _, _ in
+                    print("here")
+                }
+                
+            } catch {
+                print("Failed to load profile image: \(error)")
+            }
+        }
     }
     
     func selectImage() {
@@ -34,6 +45,9 @@ public final class OnboardingProfileImageViewModel: ObservableObject {
         guard let profileImage else { throw AppError.unknown(nil) }
         guard let data = profileImage.jpegData(compressionQuality: 0.8) else { throw AppError.unknown(nil) }
         let updatedProfile = try await profileUseCase.profileImageUpload(imageData: data)
-        Container.shared.contentViewModel().me = updatedProfile
+        
+        await MainActor.run {
+            Container.shared.contentViewModel().me = updatedProfile
+        }
     }
 }

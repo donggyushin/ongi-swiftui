@@ -7,7 +7,7 @@ import PackageDescription
     let packageSettings = PackageSettings(
         // Customize the product types for specific package product
         // Default is .staticFramework
-        // productTypes: ["Alamofire": .framework,] 
+        // productTypes: ["Alamofire": .framework,]
         productTypes: [:]
     )
 #endif
@@ -16,6 +16,7 @@ let package = Package(
     name: "ongi-swiftui",
     dependencies: [
         .package(url: "https://github.com/Alamofire/Alamofire", from: "5.8.0"),
-        .package(url: "https://github.com/hmlongco/Factory", from: "2.3.0")
+        .package(url: "https://github.com/hmlongco/Factory", from: "2.3.0"),
+        .package(url: "https://github.com/SDWebImage/SDWebImage", from: "5.21.1")
     ]
 )
