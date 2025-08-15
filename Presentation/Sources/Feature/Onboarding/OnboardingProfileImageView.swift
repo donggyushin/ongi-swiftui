@@ -13,6 +13,8 @@ struct OnboardingProfileImageView: View {
     
     @StateObject var model: OnboardingProfileImageViewModel
     
+    @State var errorMessage: String?
+    
     var complete: (() -> ())?
     func onComplete(_ action: (() -> ())?) -> Self {
         var copy = self
@@ -21,7 +23,7 @@ struct OnboardingProfileImageView: View {
     }
     
     var body: some View {
-        VStack(spacing: 40) {
+        VStack(spacing: 20) {
             Spacer()
             
             VStack(spacing: 16) {
@@ -75,10 +77,26 @@ struct OnboardingProfileImageView: View {
             
             Spacer()
             
+            if let errorMessage {
+                Text(errorMessage)
+                    .pretendardCaption()
+                    .foregroundStyle(.red)
+            }
+            
             Button {
                 Task {
-                    try await model.uploadPhoto()
-                    complete?()
+                    do {
+                        withAnimation {
+                            errorMessage = nil
+                        }
+                        try await model.uploadPhoto()
+                        complete?()
+                    } catch AppError.custom(let message, code: _) {
+                        withAnimation {
+                            errorMessage = message
+                        }
+                    }
+                    
                 }
             } label: {
                 AppButton(text: "다음", disabled: model.profileImage == nil)

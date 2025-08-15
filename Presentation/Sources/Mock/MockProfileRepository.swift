@@ -62,7 +62,7 @@ final class MockProfileRepository: PProfileRepository {
     }
     
     func profileImageUpload(imageData: Data) async throws -> ProfileEntitiy {
-        profile1
+        throw AppError.custom("이미지의 용량이 너무 큽니다.", code: nil)
     }
     
     func uploadImage(imageData: Data) async throws -> ProfileEntitiy {

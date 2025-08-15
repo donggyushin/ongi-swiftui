@@ -61,19 +61,15 @@ public final class OnboardingProfileImageViewModel: ObservableObject {
         showImagePicker = true
     }
     
+    @MainActor
     func uploadPhoto() async throws {
         
-        await MainActor.run {
-            loading = true
-        }
+        loading = true
+        defer { loading = false }
         
         guard let profileImage else { throw AppError.unknown(nil) }
         guard let data = profileImage.jpegData(compressionQuality: 0.8) else { throw AppError.unknown(nil) }
         let updatedProfile = try await profileUseCase.profileImageUpload(imageData: data)
-        
-        await MainActor.run {
-            Container.shared.contentViewModel().me = updatedProfile
-            loading = false
-        }
+        Container.shared.contentViewModel().me = updatedProfile
     }
 }
