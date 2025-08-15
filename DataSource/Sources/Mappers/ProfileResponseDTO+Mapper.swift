@@ -74,7 +74,7 @@ extension ProfileResponseDTO {
             height: self.height.map { CGFloat($0) },
             weight: self.weight.map { CGFloat($0) },
             bodyType: bodyTypeEntity,
-            selfIntroduce: selfIntroduce,
+            introduce: introduce,
             createdAt: createdAt,
             updatedAt: updatedAt
         )
