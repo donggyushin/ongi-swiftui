@@ -63,7 +63,10 @@ extension Container {
     
     var qnaUseCase: Factory<QNAUseCase> {
         self {
-            QNAUseCase(profileRepository: self.profileRepository())
+            QNAUseCase(
+                profileRepository: self.profileRepository(),
+                qnaRepository: self.qnaRepository()
+            )
         }
         .singleton
     }

@@ -7,9 +7,14 @@
 
 public final class QNAUseCase {
     let profileRepository: PProfileRepository
+    let qnaRepository: PQnARepository
     
-    public init(profileRepository: PProfileRepository) {
+    public init(
+        profileRepository: PProfileRepository,
+        qnaRepository: PQnARepository
+    ) {
         self.profileRepository = profileRepository
+        self.qnaRepository = qnaRepository
     }
     
     public func add(_ entitiy: QnAEntity) async throws -> ProfileEntitiy {
@@ -22,5 +27,9 @@ public final class QNAUseCase {
     
     public func delete(qnaId: String) async throws -> ProfileEntitiy {
         try await profileRepository.deleteQNA(qnaId: qnaId)
+    }
+    
+    public func examples() async throws -> [QnAEntity] {
+        try await qnaRepository.getExamples()
     }
 }
