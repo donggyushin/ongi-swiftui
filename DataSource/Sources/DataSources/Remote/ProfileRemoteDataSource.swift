@@ -134,4 +134,46 @@ final class ProfileRemoteDataSource {
             throw AppError.networkError(.invalidResponse)
         }
     }
+    
+    private func mbtiToString(_ mbti: MBTIEntity) -> String {
+        switch mbti {
+        case .intj: return "INTJ"
+        case .intp: return "INTP"
+        case .entj: return "ENTJ"
+        case .entp: return "ENTP"
+        case .infj: return "INFJ"
+        case .infp: return "INFP"
+        case .enfj: return "ENFJ"
+        case .enfp: return "ENFP"
+        case .istj: return "ISTJ"
+        case .isfj: return "ISFJ"
+        case .estj: return "ESTJ"
+        case .esfj: return "ESFJ"
+        case .istp: return "ISTP"
+        case .isfp: return "ISFP"
+        case .estp: return "ESTP"
+        case .esfp: return "ESFP"
+        }
+    }
+    
+    func updateMBTI(mbti: MBTIEntity) async throws -> ProfileEntitiy {
+        let parameters: [String: Any] = [
+            "mbti": mbtiToString(mbti)
+        ]
+        
+        let response: APIResponse<ProfileResponseDTO> = try await networkManager
+            .request(
+                url: "\(ongiExpressUrl)profiles/me/mbti",
+                method: .post,
+                parameters: parameters
+            )
+        
+        if let profile = response.data?.toDomainEntity() {
+            return profile
+        } else if let message = response.message {
+            throw AppError.custom(message)
+        } else {
+            throw AppError.networkError(.invalidResponse)
+        }
+    }
 }

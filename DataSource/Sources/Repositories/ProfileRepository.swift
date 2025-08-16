@@ -45,4 +45,8 @@ public final class ProfileRepository: PProfileRepository {
     public func updateNickname(nickname: String) async throws -> ProfileEntitiy {
         try await profileRemoteDataSource.updateNickname(nickname: nickname)
     }
+    
+    public func updateMBTI(mbti: MBTIEntity) async throws -> ProfileEntitiy {
+        try await profileRemoteDataSource.updateMBTI(mbti: mbti)
+    }
 }

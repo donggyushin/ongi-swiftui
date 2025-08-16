@@ -91,4 +91,9 @@ final class MockProfileRepository: PProfileRepository {
         try await Task.sleep(for: .seconds(1))
         return profile1
     }
+    
+    func updateMBTI(mbti: MBTIEntity) async throws -> ProfileEntitiy {
+        try await Task.sleep(for: .seconds(1))
+        return profile1
+    }
 }
