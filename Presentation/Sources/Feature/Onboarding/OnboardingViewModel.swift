@@ -29,6 +29,12 @@ public final class OnboardingViewModel: ObservableObject {
     
     @MainActor
     func nextStep() {
+        
+        if path.isEmpty {
+            path.append(.nickname)
+            return 
+        }
+        
         guard let myProfile else { return }
         
         if myProfile.profileImage == nil {

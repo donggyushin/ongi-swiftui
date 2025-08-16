@@ -8,12 +8,15 @@
 import Factory
 import Domain
 import Combine
+import SwiftUI
 
 final class OnboardingNicknameViewModel: ObservableObject {
     
     @Published var nickname = ""
     @Published var loading = false
     @Published var errorMessage: String?
+    
+    @Published var fetchingInitialData = true
     
     let profileUseCase: ProfileUseCase
     
@@ -46,6 +49,9 @@ final class OnboardingNicknameViewModel: ObservableObject {
     @MainActor
     func fetchCurrentNickname() async throws {
         let myProfile = try await profileUseCase.getMe()
-        nickname = myProfile.nickname ?? ""
+        nickname = myProfile.nickname
+        withAnimation {
+            fetchingInitialData = false
+        }
     }
 }

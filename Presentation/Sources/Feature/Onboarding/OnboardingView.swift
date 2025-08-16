@@ -64,6 +64,12 @@ public struct OnboardingView: View {
                             print("dg: 프로필 입력 전부 완료했다고 축하하는 UI 띄우기")
                         }
                         .navigationBarBackButtonHidden()
+                case .nickname:
+                    OnboardingNicknameView(model: .init())
+                        .onNextAction {
+                            model.nextStep()
+                        }
+                        .navigationBarBackButtonHidden()
                 }
             }
         }

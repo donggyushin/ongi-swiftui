@@ -28,7 +28,7 @@ struct OnboardingNicknameView: View {
                     .pretendardTitle1()
                     .multilineTextAlignment(.center)
                 
-                Text("다른 사용자들에게 보여질 이름이에요")
+                Text("나를 나타내는 특별한 이름을 만들어보세요")
                     .pretendardBody()
                     .foregroundColor(.secondary)
                     .multilineTextAlignment(.center)
@@ -41,14 +41,16 @@ struct OnboardingNicknameView: View {
                         .pretendardBody(.medium)
                         .foregroundColor(.primary)
                     
-                    AppTextField(
-                        text: $model.nickname,
-                        placeholder: "2-10자 이내로 입력",
-                        isTextFieldFocused: isTextFieldFocused
-                    )
-                    .focused($isTextFieldFocused)
-                    .onChange(of: model.nickname) { _, _ in
-                        model.errorMessage = nil
+                    if model.fetchingInitialData == false {
+                        AppTextField(
+                            text: $model.nickname,
+                            placeholder: "2-10자 이내로 입력",
+                            isTextFieldFocused: isTextFieldFocused
+                        )
+                        .focused($isTextFieldFocused)
+                        .onChange(of: model.nickname) { _, _ in
+                            model.errorMessage = nil
+                        }
                     }
                     
                     HStack {

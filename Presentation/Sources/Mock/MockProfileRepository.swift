@@ -58,30 +58,37 @@ final class MockProfileRepository: PProfileRepository {
     init() { }
     
     func getMe(accessToken: String) async throws -> ProfileEntitiy {
-        profile1
+        try await Task.sleep(for: .seconds(1))
+        return profile1
     }
     
     func profileImageUpload(imageData: Data) async throws -> ProfileEntitiy {
+        try await Task.sleep(for: .seconds(1))
         throw AppError.custom("이미지의 용량이 너무 큽니다.", code: nil)
     }
     
     func uploadImage(imageData: Data) async throws -> ProfileEntitiy {
+        try await Task.sleep(for: .seconds(1))
         throw AppError.custom("이미지의 용량이 너무 큽니다.", code: nil)
     }
     
     func updateGender(gender: GenderEntity) async throws -> ProfileEntitiy {
-        profile1
+        try await Task.sleep(for: .seconds(1))
+        return profile1
     }
     
     func updatePhysicalInfo(height: CGFloat, weight: CGFloat) async throws -> ProfileEntitiy {
+        try await Task.sleep(for: .seconds(1))
         throw AppError.custom("잘못된 체중 입력", code: nil)
     }
     
     func deleteImage(publicId: String) async throws -> ProfileEntitiy {
-        profile2
+        try await Task.sleep(for: .seconds(1))
+        return profile2
     }
     
     func updateNickname(nickname: String) async throws -> ProfileEntitiy {
-        profile1
+        try await Task.sleep(for: .seconds(1))
+        return profile1
     }
 }
