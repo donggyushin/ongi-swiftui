@@ -103,15 +103,7 @@ struct OnboardingNicknameView: View {
                         }
                     }
                 } label: {
-                    Text("계속하기")
-                        .pretendardBody(.bold)
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 56)
-                        .background(
-                            model.isNicknameValid ? Color.accentColor : Color.gray
-                        )
-                        .cornerRadius(12)
+                    AppButton(text: "계속하기", disabled: !model.isNicknameValid)
                 }
                 .disabled(!model.isNicknameValid || model.loading)
                 .padding(.horizontal, 24)
