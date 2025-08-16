@@ -1,5 +1,5 @@
 //
-//  AuthRepository.swift
+//  PAuthRepository.swift
 //  Domain
 //
 //  Created by 신동규 on 8/14/25.

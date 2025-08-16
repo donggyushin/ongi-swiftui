@@ -29,6 +29,13 @@ extension Container {
         }
         .singleton
     }
+    
+    var qnaRepository: Factory<PQnARepository> {
+        self {
+            QnARepository()
+        }
+        .singleton
+    }
 }
 
 // MARK: - Use Case Layer Dependencies

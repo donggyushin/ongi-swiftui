@@ -22,6 +22,7 @@ extension Container {
         shared.jwtRepository.onPreview { MockJWTRepository() }
         shared.profileRepository.onPreview { MockProfileRepository() }
         shared.authRepository.onPreview { MockAuthRepository() }
+        shared.qnaRepository.onPreview { MockQnARepository() }
     }
     #endif
     
