@@ -81,6 +81,12 @@ public struct OnboardingView: View {
                             model.nextStep()
                         }
                         .navigationBarBackButtonHidden()
+                case .introduce:
+                    OnboardingIntroduceView(model: .init())
+                        .onComplete {
+                            model.nextStep()
+                        }
+                        .navigationBarBackButtonHidden()
                 }
             }
         }

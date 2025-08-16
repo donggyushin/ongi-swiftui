@@ -11,5 +11,6 @@ enum OnboardingNavigationPath: Hashable {
     case images
     case physicalAndGender
     case profileSectionCompletion
-    case mbti 
+    case mbti
+    case introduce
 }

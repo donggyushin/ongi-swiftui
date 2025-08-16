@@ -50,6 +50,8 @@ public final class OnboardingViewModel: ObservableObject {
             skipProfileCompletion = true
         } else if myProfile.mbti == nil {
             path.append(.mbti)
+        } else if myProfile.introduce == nil {
+            path.append(.introduce)
         }
     }
 }
