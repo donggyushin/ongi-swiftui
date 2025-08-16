@@ -12,6 +12,7 @@ public struct QnAFormView: View {
     
     @StateObject var model: QnAFormViewModel
     @State var errorMessage: String?
+    @Environment(\.dismiss) private var dismiss
     
     var complete: ((QnAEntity) -> ())?
     public func onComplete(_ action: ((QnAEntity) -> ())?) -> Self {
@@ -53,6 +54,7 @@ public struct QnAFormView: View {
                         do {
                             let qna = try await model.registerQnA()
                             complete?(qna)
+                            dismiss()
                         } catch AppError.custom(let message, code: _) {
                             withAnimation {
                                 errorMessage = message
