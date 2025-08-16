@@ -22,13 +22,6 @@ struct OnboardingQNAsView: View {
         return copy
     }
     
-    var editQnA: ((QnAEntity) -> ())?
-    func onEditQnA(_ action: ((QnAEntity) -> ())?) -> Self {
-        var copy = self
-        copy.editQnA = action
-        return copy
-    }
-    
     var complete: (() -> ())?
     func onComplete(_ action: (() -> ())?) -> Self {
         var copy = self
@@ -65,9 +58,6 @@ struct OnboardingQNAsView: View {
                                     showDeleteDialog = true
                                 }
                             )
-                            .onTapGesture {
-                                editQnA?(qna)
-                            }
                         }
                         
                         if model.isEnoughQNAs == false {
