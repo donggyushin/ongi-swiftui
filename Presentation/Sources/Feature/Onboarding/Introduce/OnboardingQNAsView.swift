@@ -64,28 +64,39 @@ struct OnboardingQNAsView: View {
                             Button {
                                 addNewQnA?()
                             } label: {
-                                HStack(spacing: 8) {
-                                    Image(systemName: "plus.circle.fill")
-                                        .font(.title3)
-                                        .foregroundColor(.blue)
-                                    
-                                    Text("새로운 Q&A 추가")
-                                        .pretendardTitle3()
-                                        .foregroundColor(.blue)
+                                VStack(alignment: .leading, spacing: 12) {
+                                    VStack(alignment: .leading, spacing: 8) {
+                                        HStack(spacing: 8) {
+                                            Text("새로운 Q&A 추가")
+                                                .pretendardTitle3()
+                                                .foregroundColor(.primary)
+                                            
+                                            Spacer()
+                                        }
+                                        
+                                        Text("질문과 답변을 작성해보세요")
+                                            .pretendardBody()
+                                            .foregroundColor(.secondary)
+                                    }
                                 }
-                                .frame(height: 56)
-                                .frame(maxWidth: .infinity)
+                                .padding(16)
                                 .background(
                                     RoundedRectangle(cornerRadius: 12)
-                                        .fill(Color.blue.opacity(0.1))
+                                        .fill(Color.gray.opacity(0.1))
                                         .overlay(
                                             RoundedRectangle(cornerRadius: 12)
-                                                .stroke(Color.blue, lineWidth: 1)
+                                                .stroke(Color.gray.opacity(0.3), lineWidth: 1)
                                         )
                                 )
+                                .overlay(alignment: .topTrailing) {
+                                    Image(systemName: "plus.circle.fill")
+                                        .font(.title3)
+                                        .bold()
+                                        .foregroundColor(.accentColor)
+                                        .padding(16)
+                                }
                             }
                             .buttonStyle(PlainButtonStyle())
-                            .padding(.top, 8)
                         }
                     }
                     .padding(.horizontal, 20)

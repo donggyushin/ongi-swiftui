@@ -15,6 +15,7 @@ struct AppButton: View {
     var body: some View {
         Text(text)
             .pretendardBody()
+            .bold()
             .foregroundColor(.white)
             .frame(maxWidth: .infinity)
             .frame(height: 52)
