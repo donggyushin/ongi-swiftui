@@ -23,6 +23,13 @@ final class OnboardingQNAsViewModel: ObservableObject {
     let qnaUseCase = Container.shared.qnaUseCase()
     
     @MainActor
+    func addNewQnA(_ qna: QnAEntity) {
+        withAnimation {
+            qnas.append(qna)
+        }
+    }
+    
+    @MainActor
     func deleteQNA(at: Int) async throws {
         loading = true
         defer { loading = false }
@@ -36,6 +43,8 @@ final class OnboardingQNAsViewModel: ObservableObject {
     
     @MainActor
     func fetchInitialData() async throws {
+        
+        guard qnas.isEmpty else { return }
         
         defer {
             withAnimation {

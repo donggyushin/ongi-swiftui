@@ -15,13 +15,6 @@ struct OnboardingQNAsView: View {
     @State var deleteItemIndex: Int?
     @State var showDeleteDialog = false
     
-    var addNewQnA: (() -> ())?
-    func onAddNewQnA(_ action: (() -> ())?) -> Self {
-        var copy = self
-        copy.addNewQnA = action
-        return copy
-    }
-    
     var complete: (() -> ())?
     func onComplete(_ action: (() -> ())?) -> Self {
         var copy = self
@@ -61,9 +54,9 @@ struct OnboardingQNAsView: View {
                         }
                         
                         if model.isEnoughQNAs == false {
-                            Button {
-                                addNewQnA?()
-                            } label: {
+                            NavigationLink(destination: QnAFormView(model: .init()).onComplete({ qna in
+                                model.addNewQnA(qna)
+                            })) {
                                 VStack(alignment: .leading, spacing: 12) {
                                     VStack(alignment: .leading, spacing: 8) {
                                         HStack(spacing: 8) {
@@ -88,15 +81,14 @@ struct OnboardingQNAsView: View {
                                                 .stroke(Color.gray.opacity(0.3), lineWidth: 1)
                                         )
                                 )
-                                .overlay(alignment: .topTrailing) {
-                                    Image(systemName: "plus.circle.fill")
+                                .overlay(alignment: .trailing) {
+                                    Image(systemName: "arrow.right")
                                         .font(.title3)
                                         .bold()
-                                        .foregroundColor(.accentColor)
                                         .padding(16)
+                                        .foregroundStyle(Color.secondary)
                                 }
                             }
-                            .buttonStyle(PlainButtonStyle())
                         }
                     }
                     .padding(.horizontal, 20)
@@ -178,5 +170,8 @@ struct QnAItemView: View {
 }
 
 #Preview {
-    OnboardingQNAsView(model: .init())
+    NavigationStack {
+        OnboardingQNAsView(model: .init())
+    }
+    .preferredColorScheme(.dark)
 }
