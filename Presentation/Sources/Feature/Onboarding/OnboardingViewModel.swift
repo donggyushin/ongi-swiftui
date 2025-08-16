@@ -49,7 +49,7 @@ public final class OnboardingViewModel: ObservableObject {
             path.append(.profileSectionCompletion)
             skipProfileCompletion = true
         } else if myProfile.mbti == nil {
-            print("mbti 입력 화면으로 이동")
+            path.append(.mbti)
         }
     }
 }

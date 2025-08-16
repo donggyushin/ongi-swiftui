@@ -72,8 +72,13 @@ public struct OnboardingView: View {
                 case .profileSectionCompletion:
                     OnboardingProfileSectionCompletionView()
                         .onNextAction {
-                            // TODO: 자기소개 스텝으로 이동
-                            print("자기소개 스텝으로 이동")
+                            model.nextStep()
+                        }
+                        .navigationBarBackButtonHidden()
+                case .mbti:
+                    OnboardingMBTIView(model: .init())
+                        .onComplete {
+                            model.nextStep()
                         }
                         .navigationBarBackButtonHidden()
                 }

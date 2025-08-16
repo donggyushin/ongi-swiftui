@@ -13,6 +13,13 @@ struct OnboardingMBTIView: View {
     
     @StateObject var model: OnboardingMBTIViewModel
     
+    var complete: (() -> ())?
+    func onComplete(_ action: (() -> ())?) -> Self {
+        var copy = self
+        copy.complete = action 
+        return copy
+    }
+    
     var body: some View {
         VStack(spacing: 24) {
             VStack(spacing: 12) {
@@ -63,8 +70,8 @@ struct OnboardingMBTIView: View {
             .padding(.horizontal, 20)
             .padding(.bottom, 34)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color(.systemBackground))
+        .modifier(BackgroundModifier())
+        
     }
 }
 
