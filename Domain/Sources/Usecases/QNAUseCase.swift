@@ -17,8 +17,8 @@ public final class QNAUseCase {
         self.qnaRepository = qnaRepository
     }
     
-    public func add(_ entitiy: QnAEntity) async throws -> ProfileEntitiy {
-        try await profileRepository.addQNA(question: entitiy.question, answer: entitiy.answer)
+    public func add(question: String, answer: String) async throws -> ProfileEntitiy {
+        try await profileRepository.addQNA(question: question, answer: answer)
     }
     
     public func update(_ entitiy: QnAEntity) async throws -> ProfileEntitiy {

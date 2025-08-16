@@ -10,7 +10,7 @@ import Factory
 import SwiftUI
 import Combine
 
-final class QnAFormViewModel: ObservableObject {
+public final class QnAFormViewModel: ObservableObject {
     
     @Published var examples: [QnAEntity] = []
     
@@ -23,6 +23,21 @@ final class QnAFormViewModel: ObservableObject {
     @Published var loading = false 
     
     let qnaUseCase = Container.shared.qnaUseCase()
+    
+    var isValidForm: Bool {
+        question.count >= 8 && answer.count >= 60
+    }
+    
+    public init() { }
+    
+    @MainActor
+    func registerQnA() async throws -> QnAEntity {
+        loading = true
+        defer { loading = false }
+        let updatedProfile = try await qnaUseCase.add(question: question, answer: answer)
+        Container.shared.contentViewModel().me = updatedProfile
+        return updatedProfile.qnas.last!
+    }
     
     @MainActor
     func fetchExamples() async throws {

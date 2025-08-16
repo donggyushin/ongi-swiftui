@@ -12,6 +12,8 @@ final class MockQnARepository: PQnARepository {
     func getExamples() async throws -> [QnAEntity] {
         let currentDate = Date()
         
+        try await Task.sleep(for: .seconds(0.5))
+        
         return [
             QnAEntity(
                 id: "1",

@@ -6,14 +6,34 @@
 //
 
 import SwiftUI
+import Domain
 
-struct QnAFormView: View {
+public struct QnAFormView: View {
     
     @StateObject var model: QnAFormViewModel
+    @State var errorMessage: String?
     
-    var body: some View {
+    var complete: ((QnAEntity) -> ())?
+    public func onComplete(_ action: ((QnAEntity) -> ())?) -> Self {
+        var copy = self
+        copy.complete = action
+        return copy
+    }
+    
+    public init(model: QnAFormViewModel) {
+        _model = .init(wrappedValue: model)
+    }
+    
+    public var body: some View {
         ScrollView {
             VStack(spacing: 24) {
+                
+                if let errorMessage {
+                    Text(errorMessage)
+                        .pretendardCaption()
+                        .foregroundStyle(.red)
+                }
+                
                 if model.isVisibleExamples {
                     exampleQuestionsSection
                 }
@@ -29,9 +49,18 @@ struct QnAFormView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button("저장") {
-                    // TODO: 저장 액션 구현
+                    Task {
+                        do {
+                            let qna = try await model.registerQnA()
+                            complete?(qna)
+                        } catch AppError.custom(let message, code: _) {
+                            withAnimation {
+                                errorMessage = message
+                            }
+                        }
+                    }
                 }
-                .disabled(model.question.isEmpty || model.answer.isEmpty)
+                .disabled(!model.isValidForm)
             }
         }
         .task {
@@ -83,9 +112,17 @@ struct QnAFormView: View {
     
     private var questionInputSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("질문")
-                .pretendardHeadline(.semiBold)
-                .foregroundColor(.primary)
+            HStack {
+                Text("질문")
+                    .pretendardHeadline(.semiBold)
+                    .foregroundColor(.primary)
+                
+                Spacer()
+                
+                Text("\(model.question.count)/8자 이상")
+                    .pretendardCaption(.regular)
+                    .foregroundColor(model.question.count >= 8 ? .green : .gray)
+            }
             
             TextField("질문을 입력해주세요", text: $model.question, axis: .vertical)
                 .pretendardBody(.regular)
@@ -93,6 +130,10 @@ struct QnAFormView: View {
                 .background(
                     RoundedRectangle(cornerRadius: 12)
                         .fill(Color(.systemGray6))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(model.question.count < 8 && !model.question.isEmpty ? Color.red : Color.clear, lineWidth: 1)
+                        )
                 )
                 .lineLimit(3...6)
         }
@@ -100,9 +141,17 @@ struct QnAFormView: View {
     
     private var answerInputSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("답변")
-                .pretendardHeadline(.semiBold)
-                .foregroundColor(.primary)
+            HStack {
+                Text("답변")
+                    .pretendardHeadline(.semiBold)
+                    .foregroundColor(.primary)
+                
+                Spacer()
+                
+                Text("\(model.answer.count)/60자 이상")
+                    .pretendardCaption(.regular)
+                    .foregroundColor(model.answer.count >= 60 ? .green : .gray)
+            }
             
             TextField(model.placeholder.isEmpty ? "답변을 입력해주세요" : model.placeholder, 
                      text: $model.answer, axis: .vertical)
@@ -111,6 +160,10 @@ struct QnAFormView: View {
                 .background(
                     RoundedRectangle(cornerRadius: 12)
                         .fill(Color(.systemGray6))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(model.answer.count < 60 && !model.answer.isEmpty ? Color.red : Color.clear, lineWidth: 1)
+                        )
                 )
                 .lineLimit(5...10)
         }
