@@ -35,7 +35,19 @@ final class OnboardingIntroduceViewModel: ObservableObject {
     
     @MainActor
     func fetchInitialData() async throws {
-        defer { fetchingInitialData = false }
+        defer {
+            withAnimation {
+                fetchingInitialData = false
+            }
+        }
         introduceText = try await profileUseCase.getMe().introduce ?? ""
+    }
+    
+    @MainActor
+    func updateIntroduce() async throws {
+        isLoading = true
+        defer { isLoading = false }
+        let updatedProfile = try await profileUseCase.updateIntroduce(introduce: introduceText)
+        Container.shared.contentViewModel().me = updatedProfile
     }
 }
