@@ -53,6 +53,13 @@ extension Container {
         }
         .singleton
     }
+    
+    var qnaUseCase: Factory<QNAUseCase> {
+        self {
+            QNAUseCase(profileRepository: self.profileRepository())
+        }
+        .singleton
+    }
 }
 
 extension Container {

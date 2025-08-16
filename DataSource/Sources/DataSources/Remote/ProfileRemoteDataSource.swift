@@ -197,4 +197,69 @@ final class ProfileRemoteDataSource {
             throw AppError.networkError(.invalidResponse)
         }
     }
+    
+    func addQNA(question: String, answer: String) async throws -> ProfileEntitiy {
+        let parameters: [String: Any] = [
+            "question": question,
+            "answer": answer
+        ]
+        
+        let response: APIResponse<ProfileResponseDTO> = try await networkManager
+            .request(
+                url: "\(ongiExpressUrl)profiles/me/qna",
+                method: .post,
+                parameters: parameters
+            )
+        
+        if let profile = response.data?.toDomainEntity() {
+            return profile
+        } else if let message = response.message {
+            throw AppError.custom(message)
+        } else {
+            throw AppError.networkError(.invalidResponse)
+        }
+    }
+    
+    func deleteQNA(qnaId: String) async throws -> ProfileEntitiy {
+        let parameters: [String: Any] = [
+            "qnaId": qnaId
+        ]
+        
+        let response: APIResponse<ProfileResponseDTO> = try await networkManager
+            .request(
+                url: "\(ongiExpressUrl)profiles/me/qna",
+                method: .delete,
+                parameters: parameters
+            )
+        
+        if let profile = response.data?.toDomainEntity() {
+            return profile
+        } else if let message = response.message {
+            throw AppError.custom(message)
+        } else {
+            throw AppError.networkError(.invalidResponse)
+        }
+    }
+    
+    func updateQNA(qnaId: String, answer: String) async throws -> ProfileEntitiy {
+        let parameters: [String: Any] = [
+            "qnaId": qnaId,
+            "answer": answer
+        ]
+        
+        let response: APIResponse<ProfileResponseDTO> = try await networkManager
+            .request(
+                url: "\(ongiExpressUrl)profiles/me/qna",
+                method: .patch,
+                parameters: parameters
+            )
+        
+        if let profile = response.data?.toDomainEntity() {
+            return profile
+        } else if let message = response.message {
+            throw AppError.custom(message)
+        } else {
+            throw AppError.networkError(.invalidResponse)
+        }
+    }
 }

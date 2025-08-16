@@ -53,4 +53,16 @@ public final class ProfileRepository: PProfileRepository {
     public func updateIntroduce(introduce: String) async throws -> ProfileEntitiy {
         try await profileRemoteDataSource.updateIntroduce(introduce: introduce)
     }
+    
+    public func addQNA(question: String, answer: String) async throws -> ProfileEntitiy {
+        try await profileRemoteDataSource.addQNA(question: question, answer: answer)
+    }
+    
+    public func deleteQNA(qnaId: String) async throws -> ProfileEntitiy {
+        try await profileRemoteDataSource.deleteQNA(qnaId: qnaId)
+    }
+    
+    public func updateQNA(qnaId: String, answer: String) async throws -> ProfileEntitiy {
+        try await profileRemoteDataSource.updateQNA(qnaId: qnaId, answer: answer)
+    }
 }

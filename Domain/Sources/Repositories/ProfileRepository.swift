@@ -17,4 +17,7 @@ public protocol PProfileRepository {
     func updateNickname(nickname: String) async throws -> ProfileEntitiy
     func updateMBTI(mbti: MBTIEntity) async throws -> ProfileEntitiy
     func updateIntroduce(introduce: String) async throws -> ProfileEntitiy
+    func addQNA(question: String, answer: String) async throws -> ProfileEntitiy
+    func deleteQNA(qnaId: String) async throws -> ProfileEntitiy
+    func updateQNA(qnaId: String, answer: String) async throws -> ProfileEntitiy
 }
