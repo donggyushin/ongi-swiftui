@@ -76,4 +76,8 @@ final class MockProfileRepository: PProfileRepository {
     func updatePhysicalInfo(height: CGFloat, weight: CGFloat) async throws -> ProfileEntitiy {
         throw AppError.custom("잘못된 체중 입력", code: nil)
     }
+    
+    func deleteImage(publicId: String) async throws -> ProfileEntitiy {
+        profile2
+    }
 }

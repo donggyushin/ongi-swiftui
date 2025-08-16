@@ -34,6 +34,23 @@ final class OnboardingMultipleImagesViewModel: ObservableObject {
     }
     
     @MainActor
+    func deletePhoto(at index: Int) async throws {
+        guard index < images.count else { return }
+        
+        loading = true
+        defer { loading = false }
+        
+        let currentProfile = try await profileUseCase.getMe()
+        guard index < currentProfile.images.count else { return }
+        
+        let imageToDelete = currentProfile.images[index]
+        let updatedProfile = try await profileUseCase.deleteImage(publicId: imageToDelete.publicId)
+        
+        images.remove(at: index)
+        Container.shared.contentViewModel().me = updatedProfile
+    }
+    
+    @MainActor
     func fetchInitialImages() async throws {
         let myProfile = try await profileUseCase.getMe()
         

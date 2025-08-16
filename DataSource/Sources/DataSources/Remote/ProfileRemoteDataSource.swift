@@ -91,4 +91,26 @@ final class ProfileRemoteDataSource {
             throw AppError.networkError(.invalidResponse)
         }
     }
+    
+    func deleteImage(publicId: String) async throws -> ProfileEntitiy {
+        
+        let parameters: [String: Any] = [
+            "publicId": publicId
+        ]
+        
+        let response: APIResponse<ProfileResponseDTO> = try await networkManager
+            .request(
+                url: "\(ongiExpressUrl)profiles/me/images",
+                method: .delete,
+                parameters: parameters
+            )
+        
+        if let profile = response.data?.toDomainEntity() {
+            return profile
+        } else if let message = response.message {
+            throw AppError.custom(message)
+        } else {
+            throw AppError.networkError(.invalidResponse)
+        }
+    }
 }

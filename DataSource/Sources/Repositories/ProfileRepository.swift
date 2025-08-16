@@ -37,4 +37,8 @@ public final class ProfileRepository: PProfileRepository {
     public func updatePhysicalInfo(height: CGFloat, weight: CGFloat) async throws -> ProfileEntitiy {
         try await profileRemoteDataSource.updatePhysicalInfo(height: height, weight: weight)
     }
+    
+    public func deleteImage(publicId: String) async throws -> ProfileEntitiy {
+        try await profileRemoteDataSource.deleteImage(publicId: publicId)
+    }
 }

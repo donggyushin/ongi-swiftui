@@ -15,6 +15,9 @@ struct OnboardingMultipleImagesView: View {
     @State var showImagePicker = false
     @State var errorMessage: String?
     
+    @State var showDeleteImageDialog = false
+    @State var deleteImageIndex: Int?
+    
     var nextAction: (() -> ())?
     func onNextAction(_ action: (() -> ())?) -> Self {
         var copy = self
@@ -52,7 +55,11 @@ struct OnboardingMultipleImagesView: View {
                                     if index == model.images.count {
                                         showImagePicker = true
                                     }
-                                }
+                                },
+                                onDelete: model.images.count > index ? {
+                                    deleteImageIndex = index
+                                    showDeleteImageDialog = true
+                                } : nil
                             )
                         }
                     }
@@ -145,7 +152,22 @@ struct OnboardingMultipleImagesView: View {
                 }
         }
         .loading(model.loading)
-        
+        .dialog(
+            message: "이미지를 삭제하시겠습니까?",
+            primaryButtonText: "삭제",
+            secondaryButtonText: "아니요",
+            primaryAction: {
+                Task {
+                    do {
+                        try await model.deletePhoto(at: deleteImageIndex ?? 0)
+                    } catch AppError.custom(let message, code: _) {
+                        withAnimation {
+                            errorMessage = message
+                        }
+                    }
+                }
+            },
+            isPresented: $showDeleteImageDialog)
     }
 }
 
@@ -154,6 +176,7 @@ struct PhotoUploadCell: View {
     let isMainPhoto: Bool
     let isEnabled: Bool
     let onTap: () -> Void
+    let onDelete: (() -> Void)?
     
     var body: some View {
         Button(action: isEnabled ? onTap : {}) {
@@ -180,8 +203,8 @@ struct PhotoUploadCell: View {
                                 .cornerRadius(12)
                                 .overlay(
                                     VStack {
-                                        if isMainPhoto {
-                                            HStack {
+                                        HStack {
+                                            if isMainPhoto {
                                                 Text("대표")
                                                     .pretendardCaption()
                                                     .foregroundColor(.white)
@@ -189,10 +212,11 @@ struct PhotoUploadCell: View {
                                                     .padding(.vertical, 4)
                                                     .background(Color.blue)
                                                     .cornerRadius(6)
-                                                Spacer()
                                             }
-                                            .padding(8)
+                                            
+                                            Spacer()
                                         }
+                                        .padding(8)
                                         Spacer()
                                     }
                                 )
@@ -218,6 +242,18 @@ struct PhotoUploadCell: View {
             }
         }
         .disabled(!isEnabled)
+        .overlay(alignment: .topTrailing) {
+            if let onDelete = onDelete {
+                Button(action: onDelete) {
+                    Image(systemName: "xmark.circle.fill")
+                        .font(.title3)
+                        .foregroundColor(.white)
+                        .background(Color.black.opacity(0.6))
+                        .clipShape(Circle())
+                }
+                .padding(4)
+            }
+        }
     }
 }
 

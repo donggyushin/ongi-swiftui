@@ -39,4 +39,8 @@ public final class ProfileUseCase {
     public func updatePhysicalInfo(height: CGFloat, weight: CGFloat) async throws -> ProfileEntitiy {
         try await profileRepository.updatePhysicalInfo(height: height, weight: weight)
     }
+    
+    public func deleteImage(publicId: String) async throws -> ProfileEntitiy {
+        try await profileRepository.deleteImage(publicId: publicId)
+    }
 }
