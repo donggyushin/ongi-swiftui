@@ -5,7 +5,7 @@
 //  Created by 신동규 on 8/14/25.
 //
 
-public enum MBTIEntity {
+public enum MBTIEntity: CaseIterable {
     case intj
     case intp
     case entj

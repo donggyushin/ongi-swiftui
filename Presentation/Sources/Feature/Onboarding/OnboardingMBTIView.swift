@@ -12,11 +12,12 @@ import SwiftUI
 struct OnboardingMBTIView: View {
     
     @StateObject var model: OnboardingMBTIViewModel
+    @State var errorMessage: String?
     
     var complete: (() -> ())?
     func onComplete(_ action: (() -> ())?) -> Self {
         var copy = self
-        copy.complete = action 
+        copy.complete = action
         return copy
     }
     
@@ -34,34 +35,53 @@ struct OnboardingMBTIView: View {
             }
             .padding(.top, 40)
             
-            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 12), count: 4), spacing: 12) {
-                ForEach(model.mbtiOptions, id: \.self) { mbti in
-                    Button {
-                        model.selectMBTI(mbti)
-                    } label: {
-                        Text(model.mbtiDisplayText(mbti))
-                            .pretendardTitle3()
-                            .foregroundColor(model.selectedMBTI == mbti ? .white : .primary)
-                            .frame(height: 56)
-                            .frame(maxWidth: .infinity)
-                            .background(
-                                RoundedRectangle(cornerRadius: 12)
-                                    .fill(model.selectedMBTI == mbti ? Color.blue : Color.gray.opacity(0.1))
-                            )
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 12)
-                                    .stroke(model.selectedMBTI == mbti ? Color.blue : Color.gray.opacity(0.3), lineWidth: 1)
-                            )
+            if model.fetchingInitialData == false {
+                LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 12), count: 4), spacing: 12) {
+                    ForEach(model.mbtiOptions, id: \.self) { mbti in
+                        Button {
+                            model.selectMBTI(mbti)
+                        } label: {
+                            Text(model.mbtiDisplayText(mbti))
+                                .pretendardTitle3()
+                                .foregroundColor(model.selectedMBTI == mbti ? .white : .primary)
+                                .frame(height: 56)
+                                .frame(maxWidth: .infinity)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .fill(model.selectedMBTI == mbti ? Color.blue : Color.gray.opacity(0.1))
+                                )
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .stroke(model.selectedMBTI == mbti ? Color.blue : Color.gray.opacity(0.3), lineWidth: 1)
+                                )
+                        }
+                        .buttonStyle(PlainButtonStyle())
                     }
-                    .buttonStyle(PlainButtonStyle())
                 }
+                .padding(.horizontal, 20)
             }
-            .padding(.horizontal, 20)
             
             Spacer()
             
+            if let errorMessage {
+                Text(errorMessage)
+                    .pretendardCaption()
+                    .foregroundStyle(.red)
+            }
+            
             Button {
-                // TODO: Handle completion
+                Task {
+                    do {
+                        try await model.updateMBTI()
+                        complete?()
+                    } catch AppError.custom(let message, code: _) {
+                        withAnimation {
+                            errorMessage = message
+                        }
+                    }
+                }
+                
+                
             } label: {
                 AppButton(text: "다음", disabled: model.selectedMBTI == nil)
             }
@@ -71,7 +91,12 @@ struct OnboardingMBTIView: View {
             .padding(.bottom, 34)
         }
         .modifier(BackgroundModifier())
-        
+        .loading(model.isLoading)
+        .onAppear {
+            Task {
+                try await model.fetchInitialData()
+            }
+        }
     }
 }
 

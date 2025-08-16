@@ -89,11 +89,11 @@ final class MockProfileRepository: PProfileRepository {
     
     func updateNickname(nickname: String) async throws -> ProfileEntitiy {
         try await Task.sleep(for: .seconds(1))
-        return profile1
+        throw AppError.custom("Test Error Occured", code: nil)
     }
     
     func updateMBTI(mbti: MBTIEntity) async throws -> ProfileEntitiy {
         try await Task.sleep(for: .seconds(1))
-        return profile1
+        throw AppError.custom("Test Error Occured", code: nil)
     }
 }

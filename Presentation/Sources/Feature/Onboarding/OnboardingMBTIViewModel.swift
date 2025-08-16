@@ -13,13 +13,30 @@ import Combine
 final class OnboardingMBTIViewModel: ObservableObject {
     @Published var selectedMBTI: MBTIEntity?
     @Published var isLoading = false
+    @Published var fetchingInitialData = true
     
-    let mbtiOptions: [MBTIEntity] = [
-        .intj, .intp, .entj, .entp,
-        .infj, .infp, .enfj, .enfp,
-        .istj, .isfj, .estj, .esfj,
-        .istp, .isfp, .estp, .esfp
-    ]
+    let profileUseCase = Container.shared.profileUseCase()
+    
+    let mbtiOptions = MBTIEntity.allCases
+    
+    @MainActor
+    func updateMBTI() async throws {
+        isLoading = true
+        defer { isLoading = false }
+        guard let selectedMBTI else { return }
+        let updatedProfile = try await profileUseCase.updateMBTI(mbti: selectedMBTI)
+        Container.shared.contentViewModel().me = updatedProfile
+    }
+    
+    @MainActor
+    func fetchInitialData() async throws {
+        defer {
+            withAnimation {
+                fetchingInitialData = false
+            }
+        }
+        selectedMBTI = try await profileUseCase.getMe().mbti
+    }
     
     func selectMBTI(_ mbti: MBTIEntity) {
         selectedMBTI = mbti
