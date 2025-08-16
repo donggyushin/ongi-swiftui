@@ -94,15 +94,7 @@ struct OnboardingQNAsView: View {
                 Button {
                     complete?()
                 } label: {
-                    Text("완료")
-                        .pretendardTitle3()
-                        .foregroundColor(.white)
-                        .frame(height: 56)
-                        .frame(maxWidth: .infinity)
-                        .background(
-                            RoundedRectangle(cornerRadius: 12)
-                                .fill(Color.blue)
-                        )
+                    AppButton(text: "다음", disabled: model.qnas.isEmpty)
                 }
                 .buttonStyle(PlainButtonStyle())
                 .padding(.horizontal, 20)
