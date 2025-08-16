@@ -52,6 +52,8 @@ public final class OnboardingViewModel: ObservableObject {
             path.append(.mbti)
         } else if myProfile.introduce == nil {
             path.append(.introduce)
+        } else if myProfile.qnas.isEmpty {
+            path.append(.qnas)
         }
     }
 }

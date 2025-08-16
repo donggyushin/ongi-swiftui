@@ -87,6 +87,12 @@ public struct OnboardingView: View {
                             model.nextStep()
                         }
                         .navigationBarBackButtonHidden()
+                case .qnas:
+                    OnboardingQNAsView(model: .init())
+                        .onComplete {
+                            model.nextStep()
+                        }
+                        .navigationBarBackButtonHidden()
                 }
             }
         }

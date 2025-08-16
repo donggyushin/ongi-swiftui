@@ -22,6 +22,8 @@ final class OnboardingQNAsViewModel: ObservableObject {
     let profileUseCase = Container.shared.profileUseCase()
     let qnaUseCase = Container.shared.qnaUseCase()
     
+    init() { }
+    
     @MainActor
     func addNewQnA(_ qna: QnAEntity) {
         withAnimation {
