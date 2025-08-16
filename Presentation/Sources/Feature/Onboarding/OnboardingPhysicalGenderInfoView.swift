@@ -67,11 +67,13 @@ struct OnboardingPhysicalGenderInfoView: View {
                         .pretendardBody()
                         .foregroundColor(.primary)
                     
-                    PhysicalInfoTextField(
-                        placeholder: "예) 170",
+                    AppTextField(
                         text: $model.height,
-                        suffix: "cm"
+                        placeholder: "예) 170",
+                        isTextFieldFocused: false
                     )
+                    .setSuffix("cm")
+                    
                 }
                 
                 // Weight Input
@@ -79,12 +81,13 @@ struct OnboardingPhysicalGenderInfoView: View {
                     Text("체중 (kg)")
                         .pretendardBody()
                         .foregroundColor(.primary)
-                    
-                    PhysicalInfoTextField(
-                        placeholder: "예) 65",
+
+                    AppTextField(
                         text: $model.weight,
-                        suffix: "kg"
+                        placeholder: "예) 65",
+                        isTextFieldFocused: false
                     )
+                    .setSuffix("kg")
                 }
             }
             
@@ -142,29 +145,6 @@ private struct GenderButton: View {
                 .background(isSelected ? Color.accentColor : Color.gray.opacity(0.1))
                 .cornerRadius(12)
         }
-    }
-}
-
-private struct PhysicalInfoTextField: View {
-    let placeholder: String
-    @Binding var text: String
-    let suffix: String
-    
-    var body: some View {
-        HStack {
-            TextField(placeholder, text: $text)
-                .pretendardBody()
-                .keyboardType(.decimalPad)
-                .frame(maxWidth: .infinity)
-            
-            Text(suffix)
-                .pretendardBody()
-                .foregroundColor(.secondary)
-        }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 16)
-        .background(Color.gray.opacity(0.1))
-        .cornerRadius(12)
     }
 }
 

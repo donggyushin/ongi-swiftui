@@ -41,25 +41,15 @@ struct OnboardingNicknameView: View {
                         .pretendardBody(.medium)
                         .foregroundColor(.primary)
                     
-                    TextField("2-10자 이내로 입력", text: $model.nickname)
-                        .pretendardBody()
-                        .textFieldStyle(.plain)
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 16)
-                        .background(
-                            RoundedRectangle(cornerRadius: 12)
-                                .fill(Color(.systemGray6))
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 12)
-                                        .stroke(isTextFieldFocused ? Color.accentColor : Color.clear, lineWidth: 2)
-                                )
-                        )
-                        .focused($isTextFieldFocused)
-                        .autocorrectionDisabled()
-                        .textInputAutocapitalization(.never)
-                        .onChange(of: model.nickname) { _ in
-                            model.errorMessage = nil
-                        }
+                    AppTextField(
+                        text: $model.nickname,
+                        placeholder: "2-10자 이내로 입력",
+                        isTextFieldFocused: isTextFieldFocused
+                    )
+                    .focused($isTextFieldFocused)
+                    .onChange(of: model.nickname) { _, _ in
+                        model.errorMessage = nil
+                    }
                     
                     HStack {
                         Text("\(model.nickname.count)/10")
