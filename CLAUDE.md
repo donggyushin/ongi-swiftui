@@ -64,7 +64,7 @@ Domain (Business Logic)  DataSource (Data Layer)
 - Dependencies resolved at app startup in `OngiSwiftuiApp.init()`
 
 **External Libraries Management:**
-- **Factory** and **Alamofire** are registered in **ThirdParty module only**
+- **Factory**, **Alamofire**, and **Kingfisher** are registered in **ThirdParty module only**
 - Main app accesses these through ThirdParty dependency, not directly
 - Never add external dependencies directly to main app module
 
@@ -118,6 +118,10 @@ Domain (Business Logic)  DataSource (Data Layer)
 2. Register in appropriate module's `Project.swift` dependencies
 3. Run `tuist install && tuist generate`
 4. **External libraries go in ThirdParty module only**
+
+### Privacy and Permissions
+- **Photo Library Access**: NSPhotoLibraryUsageDescription configured for profile image selection
+- Additional permissions should be added to main app's Info.plist configuration
 
 ### Adding New Features
 1. Create **Entity** in Domain if needed
