@@ -96,4 +96,9 @@ final class MockProfileRepository: PProfileRepository {
         try await Task.sleep(for: .seconds(1))
         throw AppError.custom("Test Error Occured", code: nil)
     }
+    
+    func updateIntroduce(introduce: String) async throws -> ProfileEntitiy {
+        try await Task.sleep(for: .seconds(1))
+        throw AppError.custom("Test Error Occured", code: nil)
+    }
 }

@@ -51,4 +51,8 @@ public final class ProfileUseCase {
     public func updateMBTI(mbti: MBTIEntity) async throws -> ProfileEntitiy {
         try await profileRepository.updateMBTI(mbti: mbti)
     }
+    
+    public func updateIntroduce(introduce: String) async throws -> ProfileEntitiy {
+        try await profileRepository.updateIntroduce(introduce: introduce)
+    }
 }

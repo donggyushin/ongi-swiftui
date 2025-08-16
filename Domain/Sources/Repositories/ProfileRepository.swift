@@ -16,4 +16,5 @@ public protocol PProfileRepository {
     func deleteImage(publicId: String) async throws -> ProfileEntitiy
     func updateNickname(nickname: String) async throws -> ProfileEntitiy
     func updateMBTI(mbti: MBTIEntity) async throws -> ProfileEntitiy
+    func updateIntroduce(introduce: String) async throws -> ProfileEntitiy
 }

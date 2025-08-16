@@ -176,4 +176,25 @@ final class ProfileRemoteDataSource {
             throw AppError.networkError(.invalidResponse)
         }
     }
+    
+    func updateIntroduce(introduce: String) async throws -> ProfileEntitiy {
+        let parameters = [
+            "introduction": introduce
+        ]
+        
+        let response: APIResponse<ProfileResponseDTO> = try await networkManager
+            .request(
+                url: "\(ongiExpressUrl)profiles/me/introduction",
+                method: .post,
+                parameters: parameters
+            )
+        
+        if let profile = response.data?.toDomainEntity() {
+            return profile
+        } else if let message = response.message {
+            throw AppError.custom(message)
+        } else {
+            throw AppError.networkError(.invalidResponse)
+        }
+    }
 }
