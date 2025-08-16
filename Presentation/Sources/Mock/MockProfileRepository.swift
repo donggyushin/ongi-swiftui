@@ -80,4 +80,8 @@ final class MockProfileRepository: PProfileRepository {
     func deleteImage(publicId: String) async throws -> ProfileEntitiy {
         profile2
     }
+    
+    func updateNickname(nickname: String) async throws -> ProfileEntitiy {
+        profile1
+    }
 }

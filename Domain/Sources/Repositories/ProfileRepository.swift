@@ -14,4 +14,5 @@ public protocol PProfileRepository {
     func updateGender(gender: GenderEntity) async throws -> ProfileEntitiy
     func updatePhysicalInfo(height: CGFloat, weight: CGFloat) async throws -> ProfileEntitiy
     func deleteImage(publicId: String) async throws -> ProfileEntitiy
+    func updateNickname(nickname: String) async throws -> ProfileEntitiy
 }

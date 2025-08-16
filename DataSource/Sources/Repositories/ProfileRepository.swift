@@ -41,4 +41,8 @@ public final class ProfileRepository: PProfileRepository {
     public func deleteImage(publicId: String) async throws -> ProfileEntitiy {
         try await profileRemoteDataSource.deleteImage(publicId: publicId)
     }
+    
+    public func updateNickname(nickname: String) async throws -> ProfileEntitiy {
+        try await profileRemoteDataSource.updateNickname(nickname: nickname)
+    }
 }

@@ -43,4 +43,8 @@ public final class ProfileUseCase {
     public func deleteImage(publicId: String) async throws -> ProfileEntitiy {
         try await profileRepository.deleteImage(publicId: publicId)
     }
+    
+    public func updateNickname(nickname: String) async throws -> ProfileEntitiy {
+        try await profileRepository.updateNickname(nickname: nickname)
+    }
 }
