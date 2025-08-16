@@ -15,6 +15,7 @@ public final class OnboardingViewModel: ObservableObject {
     @Published var myProfile: ProfileEntitiy?
     
     var skipMultipleImages = false
+    var skipProfileCompletion = false
     
     let profileUseCase: ProfileUseCase
     
@@ -32,7 +33,7 @@ public final class OnboardingViewModel: ObservableObject {
         
         if path.isEmpty {
             path.append(.nickname)
-            return 
+            return
         }
         
         guard let myProfile else { return }
@@ -41,8 +42,14 @@ public final class OnboardingViewModel: ObservableObject {
             path.append(.profileImage)
         } else if myProfile.images.isEmpty && skipMultipleImages == false {
             path.append(.images)
+            skipMultipleImages = true 
         } else if myProfile.gender == nil {
             path.append(.physicalAndGender)
+        } else if skipProfileCompletion == false && myProfile.mbti == nil {
+            path.append(.profileSectionCompletion)
+            skipProfileCompletion = true
+        } else if myProfile.mbti == nil {
+            print("mbti 입력 화면으로 이동")
         }
     }
 }

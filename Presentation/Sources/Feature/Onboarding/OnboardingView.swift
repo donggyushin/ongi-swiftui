@@ -45,6 +45,12 @@ public struct OnboardingView: View {
             }
             .navigationDestination(for: OnboardingNavigationPath.self) { path in
                 switch path {
+                case .nickname:
+                    OnboardingNicknameView(model: .init())
+                        .onNextAction {
+                            model.nextStep()
+                        }
+                        .navigationBarBackButtonHidden()
                 case .profileImage:
                     OnboardingProfileImageView(model: .init())
                         .onComplete {
@@ -54,20 +60,20 @@ public struct OnboardingView: View {
                 case .images:
                     OnboardingMultipleImagesView(model: .init())
                         .onNextAction {
-                            model.skipMultipleImages = true
                             model.nextStep()
                         }
                         .navigationBarBackButtonHidden()
                 case .physicalAndGender:
                     OnboardingPhysicalGenderInfoView(model: .init())
                         .onComplete {
-                            print("dg: 프로필 입력 전부 완료했다고 축하하는 UI 띄우기")
+                            model.nextStep()
                         }
                         .navigationBarBackButtonHidden()
-                case .nickname:
-                    OnboardingNicknameView(model: .init())
+                case .profileSectionCompletion:
+                    OnboardingProfileSectionCompletionView()
                         .onNextAction {
-                            model.nextStep()
+                            // TODO: 자기소개 스텝으로 이동
+                            print("자기소개 스텝으로 이동")
                         }
                         .navigationBarBackButtonHidden()
                 }
