@@ -20,19 +20,30 @@ final class OnboardingQNAsViewModel: ObservableObject {
     }
     
     let profileUseCase = Container.shared.profileUseCase()
+    let qnaUseCase = Container.shared.qnaUseCase()
     
     @MainActor
     func addQnA(_ qna: QnAEntity) async throws {
-        qnas.append(qna)
+        loading = true
+        defer { loading = false }
+        let updatedProfile = try await qnaUseCase.add(qna)
+        Container.shared.contentViewModel().me = updatedProfile
         
-        // TODO: - update me in contentviewmodel
+        withAnimation {
+            qnas.append(qna)
+        }
     }
     
     @MainActor
     func deleteQNA(at: Int) async throws {
-        qnas.remove(at: at)
-        
-        // TODO: - update me in contentviewmodel
+        loading = true
+        defer { loading = false }
+        let qna = qnas[at]
+        let updatedProfile = try await qnaUseCase.delete(qnaId: qna.id)
+        Container.shared.contentViewModel().me = updatedProfile
+        _ = withAnimation {
+            qnas.remove(at: at)
+        }
     }
     
     @MainActor
