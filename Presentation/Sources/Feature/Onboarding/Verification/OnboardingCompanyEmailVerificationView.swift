@@ -211,6 +211,9 @@ struct OnboardingCompanyEmailVerificationView: View {
                             Task {
                                 model.reset()
                                 verificationCodeFocus = false
+                                withAnimation {
+                                    errorMessage = nil
+                                }
                             }
                         } label: {
                             Text("인증 코드 재전송")

@@ -18,14 +18,12 @@ final class OnboardingCompanyEmailVerificationViewModel: ObservableObject {
     
     @Published var showCodeInput = false
     
-    @Published var expiredDate: Date?
+    var expiredDate: Date?
     
-    var verificationLeftTime: Int {
-        guard let expiredDate else { return 300 }
-        return Int(expiredDate.timeIntervalSince1970 - Date().timeIntervalSince1970)
-    }
+    @Published var verificationLeftTime: Int = 300
     
     let authUseCase = Container.shared.authUseCase()
+    private var timer: AnyCancellable?
     
     init() { }
     
@@ -39,6 +37,8 @@ final class OnboardingCompanyEmailVerificationViewModel: ObservableObject {
             showCodeInput = true
         }
         expiredDate = Date() + 300
+        verificationLeftTime = 300
+        startTimer()
     }
     
     @MainActor
@@ -47,15 +47,44 @@ final class OnboardingCompanyEmailVerificationViewModel: ObservableObject {
         defer { loading = false }
         
         try await authUseCase.verifyEmailVerificationCode(code: verificationCode)
+        stopTimer()
     }
     
     @MainActor
     func reset() {
+        stopTimer()
         withAnimation {
             companyEmail = ""
             verificationCode = ""
             showCodeInput = false
             expiredDate = nil
+            verificationLeftTime = 300
         }
+    }
+    
+    private func startTimer() {
+        stopTimer()
+        timer = Timer.publish(every: 0.5, on: .main, in: .common)
+            .autoconnect()
+            .sink { [weak self] _ in
+                guard let self = self else { return }
+                DispatchQueue.main.async {
+                    if let expiredDate = self.expiredDate {
+                        self.verificationLeftTime = Int(expiredDate.timeIntervalSince1970 - Date().timeIntervalSince1970)
+                    } else {
+                        self.verificationLeftTime = 300
+                        self.stopTimer()
+                    }
+                }
+            }
+    }
+    
+    private func stopTimer() {
+        timer?.cancel()
+        timer = nil
+    }
+    
+    deinit {
+        stopTimer()
     }
 }
