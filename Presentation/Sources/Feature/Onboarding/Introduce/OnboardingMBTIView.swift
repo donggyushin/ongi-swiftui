@@ -41,7 +41,7 @@ struct OnboardingMBTIView: View {
                         Button {
                             model.selectMBTI(mbti)
                         } label: {
-                            Text(model.mbtiDisplayText(mbti))
+                            Text(mbti.text)
                                 .pretendardTitle3()
                                 .foregroundColor(model.selectedMBTI == mbti ? .white : .primary)
                                 .frame(height: 56)

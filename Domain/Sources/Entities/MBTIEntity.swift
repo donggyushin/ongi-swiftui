@@ -22,4 +22,25 @@ public enum MBTIEntity: CaseIterable {
     case isfp
     case estp
     case esfp
+    
+    public var text: String {
+        switch self {
+        case .intj: return "INTJ"
+        case .intp: return "INTP"
+        case .entj: return "ENTJ"
+        case .entp: return "ENTP"
+        case .infj: return "INFJ"
+        case .infp: return "INFP"
+        case .enfj: return "ENFJ"
+        case .enfp: return "ENFP"
+        case .istj: return "ISTJ"
+        case .isfj: return "ISFJ"
+        case .estj: return "ESTJ"
+        case .esfj: return "ESFJ"
+        case .istp: return "ISTP"
+        case .isfp: return "ISFP"
+        case .estp: return "ESTP"
+        case .esfp: return "ESFP"
+        }
+    }
 }
