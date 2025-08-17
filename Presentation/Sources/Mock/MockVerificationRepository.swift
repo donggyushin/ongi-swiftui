@@ -16,6 +16,6 @@ final class MockVerificationRepository: PVerificationRepository {
     
     func sendCompany(email: String) async throws {
         try await Task.sleep(for: .seconds(1))
-        throw AppError.custom("Verification code sent to your company email")
+//        throw AppError.custom("Verification code sent to your company email")
     }
 }

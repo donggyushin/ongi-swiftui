@@ -6,14 +6,12 @@
 //
 
 import SwiftUI
+import Domain
 
 struct OnboardingCompanyEmailVerificationView: View {
     
     @StateObject var model: OnboardingCompanyEmailVerificationViewModel
-    @State private var showAlert = false
-    @State private var alertMessage = ""
-    @State private var showCodeInput = false
-    @State private var timer: Timer?
+    @State var errorMessage: String?
     
     var onNext: (() -> ())?
     func onNext(_ action: (() -> ())?) -> Self {
@@ -118,24 +116,41 @@ struct OnboardingCompanyEmailVerificationView: View {
                     }
                     
                     // Important Notice
-                    HStack(spacing: 8) {
-                        Image(systemName: "info.circle.fill")
-                            .foregroundColor(.orange)
-                            .font(.caption)
-                        
-                        Text("개인 이메일(Gmail, Naver 등)은 인증이 불가해요")
-                            .pretendardCaption1()
-                            .foregroundColor(.secondary)
-                        
-                        Spacer()
+                    if let errorMessage {
+                        HStack(spacing: 8) {
+                            Image(systemName: "info.circle.fill")
+                                .foregroundColor(.red)
+                                .font(.caption)
+                            
+                            Text(errorMessage)
+                                .pretendardCaption1()
+                                .foregroundColor(.secondary)
+                            
+                            Spacer()
+                        }
+                        .padding(12)
+                        .background(Color.red.opacity(0.1))
+                        .cornerRadius(8)
+                    } else {
+                        HStack(spacing: 8) {
+                            Image(systemName: "info.circle.fill")
+                                .foregroundColor(.orange)
+                                .font(.caption)
+                            
+                            Text("개인 이메일(Gmail, Naver 등)은 인증이 불가해요")
+                                .pretendardCaption1()
+                                .foregroundColor(.secondary)
+                            
+                            Spacer()
+                        }
+                        .padding(12)
+                        .background(Color.orange.opacity(0.1))
+                        .cornerRadius(8)
                     }
-                    .padding(12)
-                    .background(Color.orange.opacity(0.1))
-                    .cornerRadius(8)
                 }
                 
                 // Verification Code Input (shown after email sent)
-                if showCodeInput {
+                if model.showCodeInput {
                     VStack(spacing: 16) {
                         VStack(alignment: .leading, spacing: 8) {
                             HStack {
@@ -167,7 +182,8 @@ struct OnboardingCompanyEmailVerificationView: View {
                         // Verify Button
                         Button {
                             Task {
-                                await verifyCode()
+                                // TODO: handle error
+                                try await model.verifyEmail()
                             }
                         } label: {
                             HStack {
@@ -191,7 +207,8 @@ struct OnboardingCompanyEmailVerificationView: View {
                         // Resend Button
                         Button {
                             Task {
-                                await sendVerificationEmail()
+                                // TODO: - handle error
+                                try await model.sendVerificationCodeToEmail()
                             }
                         } label: {
                             Text("인증 코드 재전송")
@@ -205,7 +222,17 @@ struct OnboardingCompanyEmailVerificationView: View {
                     // Send Button
                     Button {
                         Task {
-                            await sendVerificationEmail()
+                            // TODO: - handle error
+                            do {
+                                withAnimation {
+                                    errorMessage = nil
+                                }
+                                try await model.sendVerificationCodeToEmail()
+                            } catch AppError.custom(let message, code: _) {
+                                withAnimation {
+                                    errorMessage = message
+                                }
+                            }
                         }
                     } label: {
                         HStack {
@@ -241,14 +268,6 @@ struct OnboardingCompanyEmailVerificationView: View {
             .padding(.bottom, 32)
         }
         .modifier(BackgroundModifier())
-        .alert("알림", isPresented: $showAlert) {
-            Button("확인") { }
-        } message: {
-            Text(alertMessage)
-        }
-        .onDisappear {
-            timer?.invalidate()
-        }
     }
     
     private func benefitRow(icon: String, title: String, description: String) -> some View {
@@ -293,68 +312,6 @@ struct OnboardingCompanyEmailVerificationView: View {
         let minutes = model.verificationLeftTime / 60
         let seconds = model.verificationLeftTime % 60
         return String(format: "%02d:%02d", minutes, seconds)
-    }
-    
-    private func sendVerificationEmail() async {
-        guard isValidEmail else {
-            alertMessage = "올바른 회사 이메일 주소를 입력해주세요."
-            showAlert = true
-            return
-        }
-        
-        do {
-            try await model.sendVerificationCodeToEmail()
-            
-            await MainActor.run {
-                alertMessage = "인증 이메일이 발송되었습니다.\n이메일을 확인해주세요."
-                showAlert = true
-                showCodeInput = true
-                startTimer()
-            }
-        } catch {
-            await MainActor.run {
-                alertMessage = error.localizedDescription
-                showAlert = true
-            }
-        }
-    }
-    
-    private func verifyCode() async {
-        guard isValidCode else {
-            alertMessage = "6자리 인증 코드를 입력해주세요."
-            showAlert = true
-            return
-        }
-        
-        do {
-            try await model.verifyEmail()
-            
-            await MainActor.run {
-                timer?.invalidate()
-                alertMessage = "이메일 인증이 완료되었습니다!"
-                showAlert = true
-                // Navigate to next step after alert
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                    onNext?()
-                }
-            }
-        } catch {
-            await MainActor.run {
-                alertMessage = error.localizedDescription
-                showAlert = true
-            }
-        }
-    }
-    
-    private func startTimer() {
-        timer?.invalidate()
-        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
-            if model.verificationLeftTime > 0 {
-                model.verificationLeftTime -= 1
-            } else {
-                timer?.invalidate()
-            }
-        }
     }
 }
 

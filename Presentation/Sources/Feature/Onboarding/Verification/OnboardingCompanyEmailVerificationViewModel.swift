@@ -16,6 +16,8 @@ final class OnboardingCompanyEmailVerificationViewModel: ObservableObject {
     @Published var companyEmail = ""
     @Published var verificationCode = "" // 6 digits
     
+    @Published var showCodeInput = false 
+    
     @Published var verificationLeftTime = 300
     
     let authUseCase = Container.shared.authUseCase()
@@ -28,6 +30,9 @@ final class OnboardingCompanyEmailVerificationViewModel: ObservableObject {
         defer { loading = false }
         
         try await authUseCase.sendVerificationCode(companyEmail: companyEmail)
+        withAnimation {
+            showCodeInput = true
+        }
         // start count verificationLeftTime
     }
     
