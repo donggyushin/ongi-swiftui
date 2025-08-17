@@ -43,4 +43,14 @@ final class OnboardingCompanyEmailVerificationViewModel: ObservableObject {
         
         try await authUseCase.verifyEmailVerificationCode(code: verificationCode)
     }
+    
+    @MainActor
+    func reset() {
+        withAnimation {
+            companyEmail = ""
+            verificationCode = ""
+            showCodeInput = false
+            verificationLeftTime = 300
+        }
+    }
 }

@@ -12,6 +12,7 @@ struct OnboardingCompanyEmailVerificationView: View {
     
     @StateObject var model: OnboardingCompanyEmailVerificationViewModel
     @State var errorMessage: String?
+    @FocusState var verificationCodeFocus
     
     var onNext: (() -> ())?
     func onNext(_ action: (() -> ())?) -> Self {
@@ -23,30 +24,15 @@ struct OnboardingCompanyEmailVerificationView: View {
     var body: some View {
         VStack(spacing: 0) {
             // Header Section
-            VStack(spacing: 24) {
-                VStack(spacing: 16) {
-                    // Icon
-                    ZStack {
-                        Circle()
-                            .fill(.blue.opacity(0.1))
-                            .frame(width: 80, height: 80)
-                        
-                        Image(systemName: "envelope.badge.shield.half.filled")
-                            .font(.system(size: 40))
-                            .foregroundColor(.blue)
-                    }
+            VStack(spacing: 12) {
+                ZStack {
+                    Circle()
+                        .fill(.blue.opacity(0.1))
+                        .frame(width: 80, height: 80)
                     
-                    VStack(spacing: 12) {
-                        Text("회사 이메일 인증")
-                            .pretendardTitle1()
-                            .foregroundColor(.primary)
-                        
-                        Text("신뢰할 수 있는 회사 이메일로\n계정을 인증해주세요")
-                            .pretendardBody()
-                            .foregroundColor(.secondary)
-                            .multilineTextAlignment(.center)
-                            .lineSpacing(2)
-                    }
+                    Image(systemName: "envelope.badge.shield.half.filled")
+                        .font(.system(size: 40))
+                        .foregroundColor(.blue)
                 }
                 
                 // Benefits Section
@@ -65,11 +51,11 @@ struct OnboardingCompanyEmailVerificationView: View {
                             description: "인증된 회사 이메일로 다른 유저들에게 신뢰감을 줄 수 있어요"
                         )
                         
-                        benefitRow(
-                            icon: "building.2.fill",
-                            title: "직장 정보 확인",
-                            description: "회사 이메일을 통해 직장 정보를 안전하게 확인해요"
-                        )
+//                        benefitRow(
+//                            icon: "building.2.fill",
+//                            title: "직장 정보 확인",
+//                            description: "회사 이메일을 통해 직장 정보를 안전하게 확인해요"
+//                        )
                         
                         benefitRow(
                             icon: "person.2.fill",
@@ -177,13 +163,29 @@ struct OnboardingCompanyEmailVerificationView: View {
                                     RoundedRectangle(cornerRadius: 12)
                                         .stroke(model.verificationCode.isEmpty ? Color.clear : .blue, lineWidth: 1)
                                 )
+                                .onAppear {
+                                    Task {
+                                        try await Task.sleep(for: .seconds(0.7))
+                                        verificationCodeFocus = true
+                                    }
+                                }
+                                .focused($verificationCodeFocus)
                         }
                         
                         // Verify Button
                         Button {
                             Task {
-                                // TODO: handle error
-                                try await model.verifyEmail()
+                                do {
+                                    withAnimation {
+                                        errorMessage = nil
+                                    }
+                                    try await model.verifyEmail()
+                                    onNext?()
+                                } catch AppError.custom(let message, code: _) {
+                                    withAnimation {
+                                        errorMessage = message
+                                    }
+                                }
                             }
                         } label: {
                             HStack {
@@ -207,8 +209,8 @@ struct OnboardingCompanyEmailVerificationView: View {
                         // Resend Button
                         Button {
                             Task {
-                                // TODO: - handle error
-                                try await model.sendVerificationCodeToEmail()
+                                model.reset()
+                                verificationCodeFocus = false
                             }
                         } label: {
                             Text("인증 코드 재전송")
@@ -216,13 +218,11 @@ struct OnboardingCompanyEmailVerificationView: View {
                                 .foregroundColor(.blue)
                                 .underline()
                         }
-                        .disabled(model.loading || model.verificationLeftTime > 240) // Allow resend after 1 minute
                     }
                 } else {
                     // Send Button
                     Button {
                         Task {
-                            // TODO: - handle error
                             do {
                                 withAnimation {
                                     errorMessage = nil
