@@ -88,7 +88,7 @@ extension Container {
     
     var connectionUseCase: Factory<ConnectionUseCase> {
         self {
-            ConnectionUseCase(connectionRepository: connectionRepository())
+            ConnectionUseCase(connectionRepository: self.connectionRepository())
         }
         .singleton
     }
