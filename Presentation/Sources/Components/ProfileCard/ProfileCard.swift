@@ -16,20 +16,10 @@ struct ProfileCard: View {
     var body: some View {
         ZStack(alignment: .topLeading) {
             // Background Image
-            if let backgroundImage = presentation.backgroundImage {
-                Rectangle()
-                    .fill(.clear)
-                    .background {
-                        KFImage(backgroundImage.url)
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .blur(radius: presentation.blur ? 20 : 0)
-                            .clipped()
-                    }
-            } else {
-                Rectangle()
-                    .fill(Color.gray.opacity(0.3))
-            }
+            UserBackgroundImage(
+                url: presentation.backgroundImage?.url,
+                blur: presentation.blur
+            )
             
             // Gradient overlay for better text readability
             LinearGradient(
@@ -46,17 +36,7 @@ struct ProfileCard: View {
                 // Top section with profile image and basic info
                 HStack(alignment: .top, spacing: 12) {
                     // Profile Image
-                    if let profileImage = presentation.profileImage {
-                        KFImage(profileImage.url)
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: 60, height: 60)
-                            .clipShape(Circle())
-                    } else {
-                        Circle()
-                            .fill(Color.gray.opacity(0.5))
-                            .frame(width: 60, height: 60)
-                    }
+                    CircleProfileImage(url: presentation.profileImage?.url)
                     
                     VStack(alignment: .leading, spacing: 4) {
                         // Nickname with verification badge
@@ -140,7 +120,7 @@ struct ProfileCard: View {
 private struct ProfileCardPreview: View {
     
     var presentation: ProfileCardPresentation {
-        return .init(MockProfileRepository().profile1, blur: Bool.random())
+        return .init(MockProfileRepository().profile1, blur: false)
     }
     
     var body: some View {
