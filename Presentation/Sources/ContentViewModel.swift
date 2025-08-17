@@ -37,6 +37,7 @@ public final class ContentViewModel: ObservableObject {
         Task { @MainActor in
             me = try await profileUseCase.getMe()
             loading = false
+            onboarding = me?.isCompleted != true
         }
     }
     
@@ -46,12 +47,6 @@ public final class ContentViewModel: ObservableObject {
             .sink { [weak self] profile in
                 withAnimation {
                     self?.isLogin = profile != nil
-                    
-                    if let profile {
-                        self?.onboarding = profile.isCompleted == false
-                    } else {
-                        self?.onboarding = false
-                    }
                 }
             }
             .store(in: &cancellables)

@@ -61,6 +61,8 @@ public final class OnboardingViewModel: ObservableObject {
             path.append(.qnas)
         } else if myProfile.email == nil {
             path.append(.email)
+        } else {
+            path.append(.complete)
         }
     }
 }

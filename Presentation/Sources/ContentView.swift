@@ -16,13 +16,17 @@ public struct ContentView: View {
                 ZStack {
                     ProfileListView(model: .init())
                     if model.onboarding {
-                        OnboardingView(model: .init())
+                        OnboardingView(
+                            model: .init(),
+                            isPresent: $model.onboarding
+                        )
                     }
                 }
             } else {
                 LoginView(model: model.loginViewModel)
             }
         }
+        .modifier(BackgroundModifier())
         .onAppear {
             model.getMe()
         }

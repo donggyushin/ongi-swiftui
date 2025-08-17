@@ -15,8 +15,14 @@ public struct OnboardingView: View {
     
     @State var animation1 = false
     
-    public init(model: OnboardingViewModel) {
+    @Binding var isPresent: Bool
+    
+    public init(
+        model: OnboardingViewModel,
+        isPresent: Binding<Bool>
+    ) {
         self._model = .init(wrappedValue: model)
+        _isPresent = isPresent
     }
     
     public var body: some View {
@@ -97,6 +103,14 @@ public struct OnboardingView: View {
                     OnboardingCompanyEmailVerificationView(model: .init())
                         .onNext {
                             model.nextStep()
+                        }
+                        .navigationBarBackButtonHidden()
+                case .complete:
+                    OnboardingCompletionView(isEmailVerified: model.myProfile?.email != nil)
+                        .onStart {
+                            withAnimation {
+                                isPresent = false
+                            }
                         }
                         .navigationBarBackButtonHidden()
                 }
@@ -239,7 +253,7 @@ public struct OnboardingView: View {
 #if DEBUG
 private struct OnboardingViewPreview: View {
     var body: some View {
-        OnboardingView(model: .init())
+        OnboardingView(model: .init(), isPresent: .constant(true))
     }
 }
 

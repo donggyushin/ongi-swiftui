@@ -50,6 +50,7 @@ final class OnboardingCompanyEmailVerificationViewModel: ObservableObject {
         try await authUseCase.verifyEmailVerificationCode(code: verificationCode)
         stopTimer()
         Container.shared.contentViewModel().me = try await profileUseCase.getMe()
+        try await Task.sleep(for: .seconds(0.3))
     }
     
     @MainActor

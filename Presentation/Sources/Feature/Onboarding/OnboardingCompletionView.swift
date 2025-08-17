@@ -16,6 +16,8 @@ struct OnboardingCompletionView: View {
     @State private var showButton = false
     @State private var showFireworks = false
     
+    let isEmailVerified: Bool
+    
     var onStart: (() -> ())?
     func onStart(_ action: (() -> ())?) -> Self {
         var copy = self
@@ -64,12 +66,14 @@ struct OnboardingCompletionView: View {
                         .animation(.easeOut(duration: 1.2), value: showFireworks)
                         
                         VStack(spacing: 12) {
-                            Text("온기 가입 완료! 🎉")
+                            Text(isEmailVerified ? "온기 가입 완료! 🎉" : "가입이 거의 완료되었어요! 🎊")
                                 .pretendardTitle1()
                                 .foregroundColor(.primary)
                                 .opacity(showCelebration ? 1.0 : 0.0)
                             
-                            Text("모든 설정이 완료되었어요\n이제 새로운 인연을 만나볼까요?")
+                            Text(isEmailVerified ? 
+                                 "모든 설정이 완료되었어요\n이제 새로운 인연을 만나볼까요?" :
+                                 "프로필과 자기소개가 완료되었어요\n이제 온기를 시작해보세요")
                                 .pretendardHeadline()
                                 .foregroundColor(.secondary)
                                 .multilineTextAlignment(.center)
@@ -82,7 +86,7 @@ struct OnboardingCompletionView: View {
                 
                 if showContent {
                     VStack(spacing: 24) {
-                        // All Steps Completed Section
+                        // Steps Section
                         VStack(spacing: 16) {
                             HStack(spacing: 15) {
                                 // Step 1 - Completed
@@ -108,19 +112,21 @@ struct OnboardingCompletionView: View {
                                     isCurrent: false
                                 )
                                 
-                                // Arrow
-                                Image(systemName: "arrow.right")
-                                    .foregroundColor(.green)
-                                    .font(.caption)
-                                
-                                // Step 3 - Completed
-                                stepIndicator(
-                                    number: "3", 
-                                    title: "이메일 인증", 
-                                    subtitle: "완료",
-                                    isCompleted: true,
-                                    isCurrent: false
-                                )
+                                if isEmailVerified {
+                                    // Arrow
+                                    Image(systemName: "arrow.right")
+                                        .foregroundColor(.green)
+                                        .font(.caption)
+                                    
+                                    // Step 3 - Completed
+                                    stepIndicator(
+                                        number: "3", 
+                                        title: "이메일 인증", 
+                                        subtitle: "완료",
+                                        isCompleted: true,
+                                        isCurrent: false
+                                    )
+                                }
                             }
                             .padding(.horizontal, 20)
                         }
@@ -128,11 +134,13 @@ struct OnboardingCompletionView: View {
                         
                         // Completion Summary
                         VStack(spacing: 16) {
-                            Text("준비가 모두 끝났어요!")
+                            Text(isEmailVerified ? "준비가 모두 끝났어요!" : "기본 설정이 완료되었어요!")
                                 .pretendardHeadline()
                                 .foregroundColor(.primary)
                             
-                            Text("완성된 프로필로 온기에서\n특별한 인연을 만나보세요")
+                            Text(isEmailVerified ? 
+                                 "완성된 프로필로 온기에서\n특별한 인연을 만나보세요" :
+                                 "이제 온기를 시작할 수 있어요\n언제든 설정에서 이메일 인증을 완료하세요")
                                 .pretendardBody()
                                 .foregroundColor(.secondary)
                                 .multilineTextAlignment(.center)
@@ -142,23 +150,43 @@ struct OnboardingCompletionView: View {
                         
                         // Achievement Section
                         VStack(spacing: 12) {
-                            achievementRow(
-                                icon: "checkmark.seal.fill",
-                                title: "인증 완료",
-                                description: "신뢰할 수 있는 프로필이 준비되었어요"
-                            )
-                            
-                            achievementRow(
-                                icon: "heart.circle.fill",
-                                title: "매칭 준비",
-                                description: "이제 다른 사용자들과 매칭을 시작할 수 있어요"
-                            )
-                            
-                            achievementRow(
-                                icon: "star.circle.fill",
-                                title: "온기 시작",
-                                description: "따뜻한 인연이 기다리고 있어요"
-                            )
+                            if isEmailVerified {
+                                achievementRow(
+                                    icon: "checkmark.seal.fill",
+                                    title: "인증 완료",
+                                    description: "신뢰할 수 있는 프로필이 준비되었어요"
+                                )
+                                
+                                achievementRow(
+                                    icon: "heart.circle.fill",
+                                    title: "매칭 준비",
+                                    description: "이제 다른 사용자들과 매칭을 시작할 수 있어요"
+                                )
+                                
+                                achievementRow(
+                                    icon: "star.circle.fill",
+                                    title: "온기 시작",
+                                    description: "따뜻한 인연이 기다리고 있어요"
+                                )
+                            } else {
+                                achievementRow(
+                                    icon: "person.crop.circle.fill",
+                                    title: "프로필 완성",
+                                    description: "매력적인 프로필이 준비되었어요"
+                                )
+                                
+                                achievementRow(
+                                    icon: "text.bubble.fill",
+                                    title: "자기소개 완료",
+                                    description: "나만의 개성이 담긴 소개를 작성했어요"
+                                )
+                                
+                                achievementRow(
+                                    icon: "heart.fill",
+                                    title: "온기 시작 가능",
+                                    description: "기본 설정으로도 충분히 시작할 수 있어요"
+                                )
+                            }
                         }
                         .padding(.horizontal, 24)
                         .opacity(showContent ? 1.0 : 0.0)
@@ -198,7 +226,7 @@ struct OnboardingCompletionView: View {
                     .opacity(showButton ? 1.0 : 0.0)
                     .scaleEffect(showButton ? 1.0 : 0.9)
                     
-                    Text("새로운 시작을 축하드려요! ✨")
+                    Text(isEmailVerified ? "새로운 시작을 축하드려요! ✨" : "언제든 설정에서 이메일 인증을 완료하세요 💌")
                         .pretendardCaption()
                         .foregroundColor(.secondary)
                         .multilineTextAlignment(.center)
@@ -292,8 +320,13 @@ struct OnboardingCompletionView: View {
 }
 
 #if DEBUG
-#Preview {
-    OnboardingCompletionView()
+#Preview("Email Verified") {
+    OnboardingCompletionView(isEmailVerified: true)
+        .preferredColorScheme(.dark)
+}
+
+#Preview("Email Not Verified") {
+    OnboardingCompletionView(isEmailVerified: false)
         .preferredColorScheme(.dark)
 }
 #endif
