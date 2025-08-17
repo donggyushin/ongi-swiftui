@@ -43,6 +43,13 @@ extension Container {
         }
         .singleton
     }
+    
+    var connectionRepository: Factory<PConnectionRepository> {
+        self {
+            ConnectionRepository()
+        }
+        .singleton
+    }
 }
 
 // MARK: - Use Case Layer Dependencies
@@ -75,6 +82,13 @@ extension Container {
                 profileRepository: self.profileRepository(),
                 qnaRepository: self.qnaRepository()
             )
+        }
+        .singleton
+    }
+    
+    var connectionUseCase: Factory<ConnectionUseCase> {
+        self {
+            ConnectionUseCase(connectionRepository: connectionRepository())
         }
         .singleton
     }
