@@ -62,7 +62,8 @@ extension Container {
         self {
             AuthUseCase(
                 authRepository: self.authRepository(),
-                jwtRepository: self.jwtRepository()
+                jwtRepository: self.jwtRepository(),
+                verificationRepository: self.verificationRepository()
             )
         }
         .singleton
