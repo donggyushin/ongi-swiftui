@@ -16,9 +16,14 @@ final class OnboardingCompanyEmailVerificationViewModel: ObservableObject {
     @Published var companyEmail = ""
     @Published var verificationCode = "" // 6 digits
     
-    @Published var showCodeInput = false 
+    @Published var showCodeInput = false
     
-    @Published var verificationLeftTime = 300
+    @Published var expiredDate: Date?
+    
+    var verificationLeftTime: Int {
+        guard let expiredDate else { return 300 }
+        return Int(expiredDate.timeIntervalSince1970 - Date().timeIntervalSince1970)
+    }
     
     let authUseCase = Container.shared.authUseCase()
     
@@ -33,7 +38,7 @@ final class OnboardingCompanyEmailVerificationViewModel: ObservableObject {
         withAnimation {
             showCodeInput = true
         }
-        // start count verificationLeftTime
+        expiredDate = Date() + 300
     }
     
     @MainActor
@@ -50,7 +55,7 @@ final class OnboardingCompanyEmailVerificationViewModel: ObservableObject {
             companyEmail = ""
             verificationCode = ""
             showCodeInput = false
-            verificationLeftTime = 300
+            expiredDate = nil
         }
     }
 }
