@@ -17,11 +17,15 @@ struct ProfileCard: View {
         ZStack(alignment: .topLeading) {
             // Background Image
             if let backgroundImage = presentation.backgroundImage {
-                KFImage(backgroundImage.url)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .blur(radius: presentation.blur ? 20 : 0)
-                    .clipped()
+                Rectangle()
+                    .fill(.clear)
+                    .background {
+                        KFImage(backgroundImage.url)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .blur(radius: presentation.blur ? 20 : 0)
+                            .clipped()
+                    }
             } else {
                 Rectangle()
                     .fill(Color.gray.opacity(0.3))
@@ -48,12 +52,10 @@ struct ProfileCard: View {
                             .aspectRatio(contentMode: .fill)
                             .frame(width: 60, height: 60)
                             .clipShape(Circle())
-                            .blur(radius: presentation.blur ? 10 : 0)
                     } else {
                         Circle()
                             .fill(Color.gray.opacity(0.5))
                             .frame(width: 60, height: 60)
-                            .blur(radius: presentation.blur ? 10 : 0)
                     }
                     
                     VStack(alignment: .leading, spacing: 4) {
@@ -128,9 +130,9 @@ struct ProfileCard: View {
             }
             .padding(16)
         }
-        .frame(height: 200)
         .cornerRadius(16)
         .shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 4)
+        .ignoresSafeArea()
     }
 }
 
@@ -143,6 +145,8 @@ private struct ProfileCardPreview: View {
     
     var body: some View {
         ProfileCard(presentation: presentation)
+            .frame(height: 500)
+            .preferredColorScheme(.dark)
     }
 }
 

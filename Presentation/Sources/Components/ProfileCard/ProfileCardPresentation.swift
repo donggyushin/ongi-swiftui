@@ -26,7 +26,7 @@ struct ProfileCardPresentation {
         nickname = domain.nickname
         isVerified = domain.email != nil
         profileImage = domain.profileImage
-        backgroundImage = domain.images.first
+        backgroundImage = domain.images.randomElement()
         mbti = domain.mbti
         height = domain.height
         weight = domain.weight
