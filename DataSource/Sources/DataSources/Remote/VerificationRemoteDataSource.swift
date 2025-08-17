@@ -32,4 +32,23 @@ final class VerificationRemoteDataSource {
             }
         }
     }
+    
+    func verify(code: String) async throws {
+        let parameters = [
+            "code": code
+        ]
+        
+        let url = "\(ongiExpressUrl)email-verification/verify"
+        
+        let response: APIResponse<Empty> = try await networkManager
+            .request(url: url, method: .post, parameters: parameters)
+        
+        if response.success == false {
+            if let message = response.message {
+                throw AppError.custom(message)
+            } else {
+                throw AppError.networkError(.invalidResponse)
+            }
+        }
+    }
 }

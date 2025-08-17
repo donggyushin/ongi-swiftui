@@ -20,6 +20,10 @@ public final class AuthUseCase {
         self.verificationRepository = verificationRepository
     }
     
+    public func verifyEmailVerificationCode(code: String) async throws {
+        try await verificationRepository.verify(code: code)
+    }
+    
     public func sendVerificationCode(companyEmail: String) async throws {
         try await verificationRepository.sendCompany(email: companyEmail)
     }

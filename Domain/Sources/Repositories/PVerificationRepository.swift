@@ -7,4 +7,5 @@
 
 public protocol PVerificationRepository {
     func sendCompany(email: String) async throws
+    func verify(code: String) async throws
 }

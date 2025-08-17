@@ -8,6 +8,11 @@
 import Domain
 
 public final class VerificationRepository: PVerificationRepository {
+    
+    public func verify(code: String) async throws {
+        try await verificationRemoteDataSource.verify(code: code)
+    }
+    
     public func sendCompany(email: String) async throws {
         try await verificationRemoteDataSource.sendCompany(email: email)
     }
