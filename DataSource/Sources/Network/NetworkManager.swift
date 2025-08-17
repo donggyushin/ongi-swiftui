@@ -3,6 +3,10 @@ import ThirdParty
 import Alamofire
 import os.log
 
+public extension Notification.Name {
+    static let userShouldLogout = Notification.Name("userShouldLogout")
+}
+
 public final class NetworkManager {
     
     public static let shared = NetworkManager()
@@ -170,6 +174,8 @@ private final class JWTInterceptor: RequestInterceptor {
                 try await jwtRepository.refreshToken()
                 completion(.retryWithDelay(1))
             } catch {
+                // 토큰 갱신 실패 시 로그아웃 이벤트 발송
+                NotificationCenter.default.post(name: .userShouldLogout, object: nil)
                 completion(.doNotRetry)
             }
         }

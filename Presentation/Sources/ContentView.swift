@@ -40,6 +40,15 @@ public struct ContentView: View {
                     }
             }
         }
+        .dialog(
+            title: "인증",
+            message: "인증에 실패하여 로그아웃 됩니다",
+            primaryButtonText: "로그아웃",
+            primaryAction: {
+                model.handleLogout()
+            },
+            isPresented: $model.authenticationFailDialog
+        )
     }
 }
 
