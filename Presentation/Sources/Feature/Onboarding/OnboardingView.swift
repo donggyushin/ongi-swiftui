@@ -93,13 +93,18 @@ public struct OnboardingView: View {
                             model.nextStep()
                         }
                         .navigationBarBackButtonHidden()
+                case .email:
+                    OnboardingCompanyEmailVerificationView(model: .init())
+                        .onNext {
+                            model.nextStep()
+                        }
+                        .navigationBarBackButtonHidden()
                 }
             }
         }
         .modifier(BackgroundModifier())
         .onAppear {
             Task {
-                try await model.updateProfile()
                 try await Task.sleep(for: .seconds(1))
                 withAnimation {
                     animation1 = true

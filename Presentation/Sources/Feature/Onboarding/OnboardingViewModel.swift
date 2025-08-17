@@ -8,6 +8,8 @@
 import Domain
 import Combine
 import Factory
+import Foundation
+import SwiftUI
 
 public final class OnboardingViewModel: ObservableObject {
     
@@ -17,15 +19,18 @@ public final class OnboardingViewModel: ObservableObject {
     var skipMultipleImages = false
     var skipProfileCompletion = false
     
-    let profileUseCase: ProfileUseCase
+    private var cancellables = Set<AnyCancellable>()
     
     public init() {
-        profileUseCase = Container.shared.profileUseCase()
+        bind()
     }
     
-    @MainActor
-    func updateProfile() async throws {
-        myProfile = try await profileUseCase.getMe()
+    private func bind() {
+        Container.shared.contentViewModel()
+            .$me
+            .compactMap { $0 }
+            .receive(on: DispatchQueue.main)
+            .assign(to: &$myProfile)
     }
     
     @MainActor
@@ -54,6 +59,8 @@ public final class OnboardingViewModel: ObservableObject {
             path.append(.introduce)
         } else if myProfile.qnas.isEmpty {
             path.append(.qnas)
+        } else if myProfile.email == nil {
+            path.append(.email)
         }
     }
 }

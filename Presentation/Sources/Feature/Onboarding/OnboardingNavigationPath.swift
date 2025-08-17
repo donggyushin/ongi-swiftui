@@ -13,5 +13,6 @@ enum OnboardingNavigationPath: Hashable {
     case profileSectionCompletion
     case mbti
     case introduce
-    case qnas 
+    case qnas
+    case email
 }
