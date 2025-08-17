@@ -28,33 +28,27 @@ public final class OnboardingProfileImageViewModel: ObservableObject {
         profileUseCase = Container.shared.profileUseCase()
     }
     
-    func updateProfileImage() {
-        Task {
-            do {
-                let me = try await profileUseCase.getMe()
-                guard let url = me.profileImage?.url else { return }
-                KingfisherManager.shared.retrieveImage(with: url) { [weak self] result in
-                    switch result {
-                    case .success(let result):
-                        DispatchQueue.main.async {
-                            self?.profileImage = result.image
-                        }
-                    case .failure(_):
-                        break
-                    }
-                }
-            } catch {
-                print("Failed to load profile image: \(error)")
-            }
-            
-            try await Task.sleep(for: .seconds(0.5))
-            
-            await MainActor.run {
-                withAnimation {
-                    loadingInitialImage = false
-                }
+    @MainActor
+    func updateProfileImage() async throws {
+        defer {
+            withAnimation {
+                loadingInitialImage = false
             }
         }
+        
+        let me = try await profileUseCase.getMe()
+        guard let url = me.profileImage?.url else { return }
+        KingfisherManager.shared.retrieveImage(with: url) { [weak self] result in
+            switch result {
+            case .success(let result):
+                DispatchQueue.main.async {
+                    self?.profileImage = result.image
+                }
+            case .failure(_):
+                break
+            }
+        }
+        try await Task.sleep(for: .seconds(1))
     }
     
     func selectImage() {

@@ -114,7 +114,15 @@ struct OnboardingProfileImageView: View {
                 }
         }
         .onAppear {
-            model.updateProfileImage()
+            Task {
+                do {
+                    try await model.updateProfileImage()
+                } catch AppError.custom(let message, code: _) {
+                    withAnimation {
+                        errorMessage = message
+                    }
+                }
+            }
         }
         .loading(model.loading)
     }

@@ -245,11 +245,12 @@ struct PhotoUploadCell: View {
         .overlay(alignment: .topTrailing) {
             if let onDelete = onDelete {
                 Button(action: onDelete) {
-                    Image(systemName: "xmark.circle.fill")
-                        .font(.title3)
+                    Image(systemName: "xmark")
+                        .font(.caption)
+                        .bold()
                         .foregroundColor(.white)
-                        .background(Color.black.opacity(0.6))
-                        .clipShape(Circle())
+                        .frame(width: 20, height: 20)
+                        .background(Circle().fill(Color.red))
                 }
                 .padding(4)
             }
