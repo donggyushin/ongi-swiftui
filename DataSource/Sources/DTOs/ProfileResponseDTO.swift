@@ -12,7 +12,7 @@ struct ProfileResponseDTO: Codable {
     let height: Double?
     let weight: Double?
     let bodyType: String?
-    let introduce: String?
+    let introduction: String?
     let createdAt: String
     let updatedAt: String
 }

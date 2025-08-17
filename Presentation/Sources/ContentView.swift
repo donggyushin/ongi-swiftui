@@ -13,15 +13,7 @@ public struct ContentView: View {
     public var body: some View {
         Group {
             if model.isLogin {
-                ZStack {
-                    ProfileListView(model: .init())
-                    if model.onboarding {
-                        OnboardingView(
-                            model: .init(),
-                            isPresent: $model.onboarding
-                        )
-                    }
-                }
+                ProfileListView(model: .init())
             } else {
                 LoginView(model: model.loginViewModel)
             }
@@ -29,6 +21,14 @@ public struct ContentView: View {
         .modifier(BackgroundModifier())
         .onAppear {
             model.getMe()
+        }
+        .overlay {
+            if model.isLogin && model.onboarding {
+                OnboardingView(
+                    model: .init(),
+                    isPresent: $model.onboarding
+                )
+            }
         }
         .overlay {
             if splash {

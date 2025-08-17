@@ -41,28 +41,32 @@ public final class OnboardingViewModel: ObservableObject {
             return
         }
         
-        guard let myProfile else { return }
-        
-        if myProfile.profileImage == nil {
-            path.append(.profileImage)
-        } else if myProfile.images.isEmpty && skipMultipleImages == false {
-            path.append(.images)
-            skipMultipleImages = true 
-        } else if myProfile.gender == nil {
-            path.append(.physicalAndGender)
-        } else if skipProfileCompletion == false && myProfile.mbti == nil {
-            path.append(.profileSectionCompletion)
-            skipProfileCompletion = true
-        } else if myProfile.mbti == nil {
-            path.append(.mbti)
-        } else if myProfile.introduce == nil {
-            path.append(.introduce)
-        } else if myProfile.qnas.isEmpty {
-            path.append(.qnas)
-        } else if myProfile.email == nil {
-            path.append(.email)
-        } else {
-            path.append(.complete)
+        Task {
+            // wait for myProfile updated.
+            try await Task.sleep(for: .seconds(0.3))
+            guard let myProfile else { return }
+            
+            if myProfile.profileImage == nil {
+                path.append(.profileImage)
+            } else if myProfile.images.isEmpty && skipMultipleImages == false {
+                path.append(.images)
+                skipMultipleImages = true
+            } else if myProfile.gender == nil {
+                path.append(.physicalAndGender)
+            } else if skipProfileCompletion == false && myProfile.mbti == nil {
+                path.append(.profileSectionCompletion)
+                skipProfileCompletion = true
+            } else if myProfile.mbti == nil {
+                path.append(.mbti)
+            } else if myProfile.introduction == nil {
+                path.append(.introduce)
+            } else if myProfile.qnas.isEmpty {
+                path.append(.qnas)
+            } else if myProfile.email == nil {
+                path.append(.email)
+            } else {
+                path.append(.complete)
+            }
         }
     }
 }

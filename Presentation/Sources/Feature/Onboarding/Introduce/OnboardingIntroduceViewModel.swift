@@ -18,11 +18,12 @@ final class OnboardingIntroduceViewModel: ObservableObject {
     let profileUseCase = Container.shared.profileUseCase()
     
     let maxCharacterCount = 500
+    let minCharacterCount = 50
     
     var isValidIntroduce: Bool {
         !introduceText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && 
         introduceText.count <= maxCharacterCount &&
-        introduceText.count >= 100
+        introduceText.count >= minCharacterCount
     }
     
     var characterCount: Int {
@@ -40,7 +41,7 @@ final class OnboardingIntroduceViewModel: ObservableObject {
                 fetchingInitialData = false
             }
         }
-        introduceText = try await profileUseCase.getMe().introduce ?? ""
+        introduceText = try await profileUseCase.getMe().introduction ?? ""
     }
     
     @MainActor

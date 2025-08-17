@@ -73,6 +73,7 @@ struct OnboardingPhysicalGenderInfoView: View {
                         isTextFieldFocused: false
                     )
                     .setSuffix("cm")
+                    .keyboardType(.decimalPad)
                     
                 }
                 
@@ -88,6 +89,7 @@ struct OnboardingPhysicalGenderInfoView: View {
                         isTextFieldFocused: false
                     )
                     .setSuffix("kg")
+                    .keyboardType(.decimalPad)
                 }
             }
             

@@ -38,7 +38,6 @@ final class OnboardingCompanyEmailVerificationViewModel: ObservableObject {
             showCodeInput = true
         }
         expiredDate = Date() + 300
-        verificationLeftTime = 300
         startTimer()
     }
     
@@ -50,7 +49,6 @@ final class OnboardingCompanyEmailVerificationViewModel: ObservableObject {
         try await authUseCase.verifyEmailVerificationCode(code: verificationCode)
         stopTimer()
         Container.shared.contentViewModel().me = try await profileUseCase.getMe()
-        try await Task.sleep(for: .seconds(0.3))
     }
     
     @MainActor

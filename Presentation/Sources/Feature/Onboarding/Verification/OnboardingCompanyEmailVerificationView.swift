@@ -24,49 +24,52 @@ struct OnboardingCompanyEmailVerificationView: View {
     var body: some View {
         VStack(spacing: 0) {
             // Header Section
-            VStack(spacing: 12) {
-                ZStack {
-                    Circle()
-                        .fill(.blue.opacity(0.1))
-                        .frame(width: 80, height: 80)
-                    
-                    Image(systemName: "envelope.badge.shield.half.filled")
-                        .font(.system(size: 40))
-                        .foregroundColor(.blue)
-                }
-                
-                // Benefits Section
-                VStack(spacing: 16) {
-                    HStack {
-                        Text("이메일 인증의 장점")
-                            .pretendardHeadline()
-                            .foregroundColor(.primary)
-                        Spacer()
+            
+            if model.showCodeInput == false {
+                VStack(spacing: 12) {
+                    ZStack {
+                        Circle()
+                            .fill(.blue.opacity(0.1))
+                            .frame(width: 80, height: 80)
+                        
+                        Image(systemName: "envelope.badge.shield.half.filled")
+                            .font(.system(size: 40))
+                            .foregroundColor(.blue)
                     }
                     
-                    VStack(spacing: 12) {
-                        benefitRow(
-                            icon: "checkmark.shield.fill",
-                            title: "신뢰도 향상",
-                            description: "인증된 회사 이메일로 다른 유저들에게 신뢰감을 줄 수 있어요"
-                        )
+                    // Benefits Section
+                    VStack(spacing: 16) {
+                        HStack {
+                            Text("이메일 인증의 장점")
+                                .pretendardHeadline()
+                                .foregroundColor(.primary)
+                            Spacer()
+                        }
                         
-//                        benefitRow(
-//                            icon: "building.2.fill",
-//                            title: "직장 정보 확인",
-//                            description: "회사 이메일을 통해 직장 정보를 안전하게 확인해요"
-//                        )
-                        
-                        benefitRow(
-                            icon: "person.2.fill",
-                            title: "매칭 우선권",
-                            description: "인증된 계정은 더 많은 매칭 기회를 받을 수 있어요"
-                        )
+                        VStack(spacing: 12) {
+                            benefitRow(
+                                icon: "checkmark.shield.fill",
+                                title: "신뢰도 향상",
+                                description: "인증된 회사 이메일로 다른 유저들에게 신뢰감을 줄 수 있어요"
+                            )
+                            
+    //                        benefitRow(
+    //                            icon: "building.2.fill",
+    //                            title: "직장 정보 확인",
+    //                            description: "회사 이메일을 통해 직장 정보를 안전하게 확인해요"
+    //                        )
+                            
+                            benefitRow(
+                                icon: "person.2.fill",
+                                title: "매칭 우선권",
+                                description: "인증된 계정은 더 많은 매칭 기회를 받을 수 있어요"
+                            )
+                        }
                     }
                 }
+                .padding(.horizontal, 24)
+                .padding(.top, 40)
             }
-            .padding(.horizontal, 24)
-            .padding(.top, 40)
             
             Spacer()
             

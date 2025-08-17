@@ -67,8 +67,8 @@ struct OnboardingIntroduceView: View {
                 }
                 
                 HStack {
-                    if model.characterCount > 0 && model.characterCount < 100 {
-                        Text("100자 이상 작성해주세요")
+                    if model.characterCount > 0 && model.characterCount < model.minCharacterCount {
+                        Text("\(model.minCharacterCount)자 이상 작성해주세요")
                             .pretendardCaption1()
                             .foregroundStyle(.orange)
                     } else if let errorMessage {
