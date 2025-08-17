@@ -36,7 +36,7 @@ struct ProfileCard: View {
                 gradient: Gradient(colors: [
                     Color.black.opacity(0.6),
                     Color.black.opacity(0.3),
-                    Color.clear
+                    Color.black.opacity(0.4)
                 ]),
                 startPoint: .top,
                 endPoint: .bottom
@@ -140,7 +140,7 @@ struct ProfileCard: View {
 private struct ProfileCardPreview: View {
     
     var presentation: ProfileCardPresentation {
-        return .init(MockProfileRepository().profile1, blur: true)
+        return .init(MockProfileRepository().profile1, blur: Bool.random())
     }
     
     var body: some View {
