@@ -36,6 +36,13 @@ extension Container {
         }
         .singleton
     }
+    
+    var verificationRepository: Factory<PVerificationRepository> {
+        self {
+            VerificationRepository()
+        }
+        .singleton
+    }
 }
 
 // MARK: - Use Case Layer Dependencies

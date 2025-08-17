@@ -23,6 +23,7 @@ extension Container {
         shared.profileRepository.onPreview { MockProfileRepository() }
         shared.authRepository.onPreview { MockAuthRepository() }
         shared.qnaRepository.onPreview { MockQnARepository() }
+        shared.verificationRepository.onPreview { MockVerificationRepository() }
     }
     #endif
     

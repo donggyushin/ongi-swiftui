@@ -8,13 +8,20 @@
 public final class AuthUseCase {
     let authRepository: PAuthRepository
     let jwtRepository: PJWTRepository
+    let verificationRepository: PVerificationRepository
     
     public init(
         authRepository: PAuthRepository,
-        jwtRepository: PJWTRepository
+        jwtRepository: PJWTRepository,
+        verificationRepository: PVerificationRepository
     ) {
         self.authRepository = authRepository
         self.jwtRepository = jwtRepository
+        self.verificationRepository = verificationRepository
+    }
+    
+    public func sendVerificationCode(companyEmail: String) async throws {
+        try await verificationRepository.sendCompany(email: companyEmail)
     }
     
     public func loginOrSignup(id: String, type: String) async throws {
