@@ -13,16 +13,18 @@ public struct ProfileListView: View {
     
     @StateObject var model: ProfileListViewModel
     @State private var currentIndex: Int = 0
-    @Namespace private var heroNamespace
-    @State private var navigationPath = NavigationPath()
+    let heroNamespace: Namespace.ID
     
-    public init(model: ProfileListViewModel) {
+    public init(
+        model: ProfileListViewModel,
+        heroNamespace: Namespace.ID
+    ) {
         self._model = .init(wrappedValue: model)
+        self.heroNamespace = heroNamespace
     }
     
     public var body: some View {
-        NavigationStack(path: $navigationPath) {
-            ZStack {
+        ZStack {
             // Background gradient
             LinearGradient(
                 gradient: Gradient(colors: [
@@ -50,19 +52,10 @@ public struct ProfileListView: View {
                 Spacer()
             }
         }
-        .navigationDestination(for: Navigation.self) { navigation in
-            
-            switch navigation {
-            case .profileDetail(let id):
-                ProfileDetailView(model: .init(profileId: id))
-                    .navigationTransition(.zoom(sourceID: id, in: heroNamespace))
-            }
-        }
         .onAppear {
             Task {
                 try await model.fetchConnectionList()
             }
-        }
         }
     }
     
@@ -133,7 +126,7 @@ public struct ProfileListView: View {
                 .tag(index)
                 .padding(.horizontal, 20)
                 .onTapGesture {
-                    navigationPath.append(Navigation.profileDetail(profile.id))
+                    navigationManager?.navigationPath.append(.profileDetail(profile.id))
                 }
             }
         }
@@ -200,6 +193,11 @@ public struct ProfileListView: View {
 }
 
 #Preview {
-    ProfileListView(model: .init())
-        .preferredColorScheme(.dark)
+    @Previewable @Namespace var heroNamespace
+    
+    ProfileListView(
+        model: .init(),
+        heroNamespace: heroNamespace
+    )
+    .preferredColorScheme(.dark)
 }

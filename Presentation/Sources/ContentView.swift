@@ -5,6 +5,8 @@ public struct ContentView: View {
     
     @StateObject var model: ContentViewModel
     @State var splash = true
+    @State private var navigationPath: [Navigation] = [] 
+    @Namespace private var heroNamespace
 
     public init(model: ContentViewModel) {
         _model = .init(wrappedValue: model)
@@ -13,7 +15,19 @@ public struct ContentView: View {
     public var body: some View {
         Group {
             if model.isLogin {
-                ProfileListView(model: .init())
+                NavigationStack(path: $navigationPath) {
+                    ProfileListView(
+                        model: .init(),
+                        heroNamespace: heroNamespace
+                    )
+                    .navigationDestination(for: Navigation.self) { navigation in
+                        switch navigation {
+                        case .profileDetail(let id):
+                            ProfileDetailView(model: .init(profileId: id))
+                                .navigationTransition(.zoom(sourceID: id, in: heroNamespace))
+                        }
+                    }
+                }
             } else {
                 LoginView(model: model.loginViewModel)
             }
@@ -21,6 +35,7 @@ public struct ContentView: View {
         .modifier(BackgroundModifier())
         .onAppear {
             model.getMe()
+            navigationManager = .init(navigationPath: $navigationPath)
         }
         .overlay {
             if model.isLogin && model.onboarding {
