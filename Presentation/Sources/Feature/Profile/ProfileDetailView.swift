@@ -126,25 +126,46 @@ public struct ProfileDetailView: View {
     
     private var alternatingContentSection: some View {
         VStack(spacing: 20) {
-            ForEach(0..<maxContentCount, id: \.self) { index in
-                let photoIndex = index / 2
-                let qnaIndex = index / 2
-                
-                if index % 2 == 0 && photoIndex < model.photoURLs.count {
-                    photoView(url: model.photoURLs[photoIndex])
-                } else if index % 2 == 1 && qnaIndex < model.qnas.count {
-                    qnaView(qna: model.qnas[qnaIndex])
-                } else if model.photoURLs.count > model.qnas.count && photoIndex < model.photoURLs.count {
-                    photoView(url: model.photoURLs[photoIndex])
-                } else if model.qnas.count > model.photoURLs.count && qnaIndex < model.qnas.count {
-                    qnaView(qna: model.qnas[qnaIndex])
-                }
+            ForEach(0..<totalContentItems, id: \.self) { index in
+                contentItem(at: index)
             }
         }
     }
     
-    private var maxContentCount: Int {
-        max(model.photoURLs.count, model.qnas.count) * 2
+    private var totalContentItems: Int {
+        model.photoURLs.count + model.qnas.count
+    }
+    
+    @ViewBuilder
+    private func contentItem(at index: Int) -> some View {
+        let minCount = min(model.photoURLs.count, model.qnas.count)
+        let alternatingCount = minCount * 2
+        
+        if index < alternatingCount {
+            // 교차 표시 구간
+            if index % 2 == 0 {
+                // 짝수 인덱스 = 사진
+                let photoIndex = index / 2
+                photoView(url: model.photoURLs[photoIndex])
+            } else {
+                // 홀수 인덱스 = Q&A
+                let qnaIndex = index / 2
+                qnaView(qna: model.qnas[qnaIndex])
+            }
+        } else {
+            // 남은 항목들 연속 표시
+            let remainingIndex = index - alternatingCount
+            
+            if model.photoURLs.count > model.qnas.count {
+                // 사진이 더 많은 경우
+                let photoIndex = minCount + remainingIndex
+                photoView(url: model.photoURLs[photoIndex])
+            } else {
+                // Q&A가 더 많은 경우
+                let qnaIndex = minCount + remainingIndex
+                qnaView(qna: model.qnas[qnaIndex])
+            }
+        }
     }
     
     private func photoView(url: URL) -> some View {
