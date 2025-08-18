@@ -68,6 +68,13 @@ let project = Project(
             infoPlist: .extendingDefault(
                 with: [
                     "CFBundleDisplayName": "온기",
+                    "CFBundleURLTypes": [
+                        [
+                            "CFBundleURLName": "io.tuist.ongi-swiftui",
+                            "CFBundleURLSchemes": ["ongi"]
+                        ]
+                    ],
+                    "UISupportedInterfaceOrientations": ["UIInterfaceOrientationPortrait"],
                     "UILaunchScreen": [
                         "UIColorName": "",
                         "UIImageName": "",
