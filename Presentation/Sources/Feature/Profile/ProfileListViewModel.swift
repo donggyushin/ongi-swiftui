@@ -22,6 +22,12 @@ public final class ProfileListViewModel: ObservableObject {
     }
     
     @MainActor
+    func tapProfile(at index: Int) {
+        let profile = profiles[index]
+        newProfilesIds.removeAll { $0 == profile.id }
+    }
+    
+    @MainActor
     func fetchConnectionList() async throws {
         loading = true
         defer { loading = false }

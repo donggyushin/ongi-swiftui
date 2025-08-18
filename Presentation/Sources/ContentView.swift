@@ -35,7 +35,9 @@ public struct ContentView: View {
         .modifier(BackgroundModifier())
         .onAppear {
             model.getMe()
-            navigationManager = .init(navigationPath: $navigationPath)
+            if navigationManager == nil {
+                navigationManager = .init(navigationPath: $navigationPath)
+            }
         }
         .overlay {
             if model.isLogin && model.onboarding {
