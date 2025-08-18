@@ -20,4 +20,10 @@ public final class NavigationManager {
     public func append(_ navigation: Navigation) {
         self.navigationPath.append(navigation)
     }
+    
+    public func pop() {
+        if navigationPath.isEmpty == false {
+            navigationPath.removeLast()
+        }
+    }
 }
