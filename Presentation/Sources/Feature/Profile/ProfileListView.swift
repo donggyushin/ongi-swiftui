@@ -24,39 +24,26 @@ public struct ProfileListView: View {
     }
     
     public var body: some View {
-        ZStack {
-            // Background gradient
-            LinearGradient(
-                gradient: Gradient(colors: [
-                    Color.pink.opacity(0.1),
-                    Color.purple.opacity(0.05),
-                    Color.white
-                ]),
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-            .ignoresSafeArea()
+        VStack(spacing: 0) {
+            // Header
+            headerView
             
-            VStack(spacing: 0) {
-                // Header
-                headerView
-                
-                if model.loading {
-                    loadingView
-                } else if model.profiles.isEmpty {
-                    emptyStateView
-                } else {
-                    profileCardsView
-                }
-                
-                Spacer()
+            if model.loading {
+                loadingView
+            } else if model.profiles.isEmpty {
+                emptyStateView
+            } else {
+                profileCardsView
             }
+            
+            Spacer()
         }
         .onAppear {
             Task {
                 try await model.fetchConnectionList()
             }
         }
+        .modifier(BackgroundModifier())
     }
     
     private var headerView: some View {

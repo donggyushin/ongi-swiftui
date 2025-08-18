@@ -18,18 +18,9 @@ public struct ProfileDetailView: View {
     
     public var body: some View {
         ZStack {
-            // Background gradient
-            LinearGradient(
-                gradient: Gradient(colors: [
-                    Color.pink.opacity(0.1),
-                    Color.purple.opacity(0.05),
-                    Color.white
-                ]),
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-            .ignoresSafeArea()
+            Text("Profile Detail View")
         }
+        .modifier(BackgroundModifier())
         .navigationBarBackButtonHidden()
     }
 }
