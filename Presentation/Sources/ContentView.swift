@@ -13,9 +13,7 @@ public struct ContentView: View {
     public var body: some View {
         Group {
             if model.isLogin {
-                NavigationStack {
-                    ProfileListView(model: .init())
-                }
+                ProfileListView(model: .init())
             } else {
                 LoginView(model: model.loginViewModel)
             }

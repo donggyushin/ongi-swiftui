@@ -13,13 +13,16 @@ public struct ProfileListView: View {
     
     @StateObject var model: ProfileListViewModel
     @State private var currentIndex: Int = 0
+    @Namespace private var heroNamespace
+    @State private var navigationPath = NavigationPath()
     
     public init(model: ProfileListViewModel) {
         self._model = .init(wrappedValue: model)
     }
     
     public var body: some View {
-        ZStack {
+        NavigationStack(path: $navigationPath) {
+            ZStack {
             // Background gradient
             LinearGradient(
                 gradient: Gradient(colors: [
@@ -47,10 +50,19 @@ public struct ProfileListView: View {
                 Spacer()
             }
         }
+        .navigationDestination(for: Navigation.self) { navigation in
+            
+            switch navigation {
+            case .profileDetail(let id):
+                ProfileDetailView(model: .init(profileId: id))
+                    .navigationTransition(.zoom(sourceID: id, in: heroNamespace))
+            }
+        }
         .onAppear {
             Task {
                 try await model.fetchConnectionList()
             }
+        }
         }
     }
     
@@ -112,6 +124,7 @@ public struct ProfileListView: View {
                     presentation: ProfileCardPresentation(profile, blur: isNew)
                 )
                 .frame(width: UIScreen.main.bounds.width - 40)
+                .matchedTransitionSource(id: profile.id, in: heroNamespace)
                 .overlay(
                     // New badge
                     isNew ? newBadgeView : nil,
@@ -119,6 +132,9 @@ public struct ProfileListView: View {
                 )
                 .tag(index)
                 .padding(.horizontal, 20)
+                .onTapGesture {
+                    navigationPath.append(Navigation.profileDetail(profile.id))
+                }
             }
         }
         .tabViewStyle(.page(indexDisplayMode: .automatic))

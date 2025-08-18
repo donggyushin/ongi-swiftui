@@ -6,12 +6,30 @@
 //
 
 import SwiftUI
+import Domain
 
-struct ProfileDetailView: View {
+public struct ProfileDetailView: View {
     
     @StateObject var model: ProfileDetailViewModel
     
-    var body: some View {
-        Text(model.profileId)
+    public init(model: ProfileDetailViewModel) {
+        self._model = .init(wrappedValue: model)
+    }
+    
+    public var body: some View {
+        ZStack {
+            // Background gradient
+            LinearGradient(
+                gradient: Gradient(colors: [
+                    Color.pink.opacity(0.1),
+                    Color.purple.opacity(0.05),
+                    Color.white
+                ]),
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+            .ignoresSafeArea()
+        }
+        .navigationBarBackButtonHidden()
     }
 }

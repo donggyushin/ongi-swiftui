@@ -10,11 +10,11 @@ import Domain
 import SwiftUI
 import Combine
 
-final class ProfileDetailViewModel: ObservableObject {
+public final class ProfileDetailViewModel: ObservableObject {
     
-    let profileId: String
+    public let profileId: String
     
-    init(profileId: String) {
+    public init(profileId: String) {
         self.profileId = profileId
     }
     
