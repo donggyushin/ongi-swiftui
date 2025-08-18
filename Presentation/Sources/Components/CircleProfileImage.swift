@@ -11,7 +11,7 @@ import Kingfisher
 struct CircleProfileImage: View {
     
     let url: URL?
-    let size: CGFloat = 40
+    var size: CGFloat = 40
     
     var body: some View {
         if let url {

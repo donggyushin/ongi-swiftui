@@ -48,14 +48,7 @@ public struct ProfileDetailView: View {
             }
             
             HStack {
-                if let profilePhotoURL = model.profilePhotoURL {
-                    KFImage(profilePhotoURL)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 60, height: 60)
-                        .clipShape(Circle())
-                        .clipped()
-                }
+                CircleProfileImage(url: model.profilePhotoURL, size: 60)
                 
                 VStack(alignment: .leading, spacing: 4) {
                     HStack {
