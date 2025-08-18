@@ -22,5 +22,10 @@ public struct ProfileDetailView: View {
         }
         .modifier(BackgroundModifier())
         .navigationBarBackButtonHidden()
+        .onAppear {
+            Task {
+                try await model.fetchProfile()
+            }
+        }
     }
 }
