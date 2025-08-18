@@ -8,7 +8,7 @@
 import Domain
 import Foundation
 
-struct ProfileCardPresentation {
+public struct ProfileCardPresentation {
     
     let id: String
     var nickname: String
@@ -21,7 +21,7 @@ struct ProfileCardPresentation {
     let bodyType: BodyType?
     let blur: Bool
     
-    init(_ domain: ProfileEntitiy, blur: Bool) {
+    public init(_ domain: ProfileEntitiy, blur: Bool) {
         id = domain.id
         nickname = domain.nickname
         isVerified = domain.email != nil
@@ -34,7 +34,7 @@ struct ProfileCardPresentation {
         self.blur = blur
     }
     
-    var bodyTypeString: String? {
+    public var bodyTypeString: String? {
         guard let bodyType else { return nil }
         
         switch bodyType {

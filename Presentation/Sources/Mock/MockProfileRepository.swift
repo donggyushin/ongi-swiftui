@@ -36,7 +36,7 @@ final class MockProfileRepository: PProfileRepository {
     
     var profile2: ProfileEntitiy {
         .init(
-            id: "id",
+            id: "id2",
             nickname: "달콤한레이지",
             email: nil,
             profileImage: nil,

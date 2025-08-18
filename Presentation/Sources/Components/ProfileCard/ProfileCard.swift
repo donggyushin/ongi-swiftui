@@ -9,11 +9,15 @@ import SwiftUI
 import Domain
 import ThirdParty
 
-struct ProfileCard: View {
+public struct ProfileCard: View {
     
     let presentation: ProfileCardPresentation
     
-    var body: some View {
+    public init(presentation: ProfileCardPresentation) {
+        self.presentation = presentation
+    }
+    
+    public var body: some View {
         ZStack(alignment: .topLeading) {
             // Background Image
             UserBackgroundImage(
