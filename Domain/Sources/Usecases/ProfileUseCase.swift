@@ -55,4 +55,8 @@ public final class ProfileUseCase {
     public func updateIntroduce(introduce: String) async throws -> ProfileEntitiy {
         try await profileRepository.updateIntroduce(introduce: introduce)
     }
+    
+    public func search(profileId: String) async throws -> ProfileEntitiy {
+        try await profileRepository.search(profileId: profileId)
+    }
 }

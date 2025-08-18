@@ -65,4 +65,8 @@ public final class ProfileRepository: PProfileRepository {
     public func updateQNA(qnaId: String, answer: String) async throws -> ProfileEntitiy {
         try await profileRemoteDataSource.updateQNA(qnaId: qnaId, answer: answer)
     }
+    
+    public func search(profileId: String) async throws -> ProfileEntitiy {
+        try await profileRemoteDataSource.search(profileId: profileId)
+    }
 }

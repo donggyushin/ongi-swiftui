@@ -11,6 +11,21 @@ import Foundation
 final class ProfileRemoteDataSource {
     let networkManager = NetworkManager.shared
     
+    func search(profileId: String) async throws -> ProfileEntitiy {
+        let url = "\(ongiExpressUrl)profiles/\(profileId)"
+        
+        let response: APIResponse<ProfileResponseDTO> = try await networkManager
+            .request(url: url)
+        
+        if let profile = response.data?.toDomainEntity() {
+            return profile
+        } else if let message = response.message {
+            throw AppError.custom(message)
+        } else {
+            throw AppError.networkError(.invalidResponse)
+        }
+    }
+    
     func getMe(accessToken: String) async throws -> ProfileEntitiy {
         struct DTO: Decodable {
             let profile: ProfileResponseDTO

@@ -116,4 +116,8 @@ final class MockProfileRepository: PProfileRepository {
         try await Task.sleep(for: .seconds(1))
         return profile1
     }
+    
+    func search(profileId: String) async throws -> ProfileEntitiy {
+        return profile1
+    }
 }
