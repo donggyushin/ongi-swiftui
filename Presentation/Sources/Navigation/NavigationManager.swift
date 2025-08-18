@@ -16,4 +16,8 @@ public final class NavigationManager {
     public init(navigationPath: Binding<[Navigation]>) {
         self._navigationPath = navigationPath
     }
+    
+    public func append(_ navigation: Navigation) {
+        self.navigationPath.append(navigation)
+    }
 }

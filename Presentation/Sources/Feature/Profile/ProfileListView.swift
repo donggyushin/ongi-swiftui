@@ -126,7 +126,7 @@ public struct ProfileListView: View {
                 .tag(index)
                 .padding(.horizontal, 20)
                 .onTapGesture {
-                    navigationManager?.navigationPath.append(.profileDetail(profile.id))
+                    navigationManager?.append(.profileDetail(profile.id))
                 }
             }
         }
