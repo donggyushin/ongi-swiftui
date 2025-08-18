@@ -14,7 +14,20 @@ public final class ProfileDetailViewModel: ObservableObject {
     
     public let profileId: String
     
-    @Published var profile: ProfileEntitiy?
+    @Published var photoURLOfTheMainGate: URL?
+    @Published var profilePhotoURL: URL?
+    @Published var nickname = ""
+    @Published var isVerified = false
+    @Published var mbti: MBTIEntity?
+    @Published var gender: GenderEntity?
+    @Published var height: CGFloat?
+    @Published var weight: CGFloat?
+    @Published var bodyType: BodyType?
+    
+    @Published var introduction: String?
+    
+    @Published var photoURLs: [URL] = []
+    @Published var qnas: [QnAEntity] = []
     
     let profileUseCase = Container.shared.profileUseCase()
     
@@ -24,7 +37,24 @@ public final class ProfileDetailViewModel: ObservableObject {
     
     @MainActor
     func fetchProfile() async throws {
-        profile = try await profileUseCase.search(profileId: profileId)
+        var profile = try await profileUseCase.search(profileId: profileId)
+        
+        if profile.images.isEmpty == false {
+            photoURLOfTheMainGate = profile.images.removeFirst().url
+        }
+        
+        profilePhotoURL = profile.profileImage?.url
+        nickname = profile.nickname
+        isVerified = profile.email != nil
+        mbti = profile.mbti
+        gender = profile.gender
+        height = profile.height
+        weight = profile.weight
+        bodyType = profile.bodyType
+        introduction = profile.introduction
+        
+        photoURLs = profile.images.map { $0.url }
+        qnas = profile.qnas
     }
     
 }

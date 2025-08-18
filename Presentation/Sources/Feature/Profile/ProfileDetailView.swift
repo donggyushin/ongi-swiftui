@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Domain
+import Kingfisher
 
 public struct ProfileDetailView: View {
     
