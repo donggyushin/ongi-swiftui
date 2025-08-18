@@ -34,6 +34,7 @@ public struct ProfileDetailView: View {
                 try await model.fetchProfile()
             }
         }
+        .scrollIndicators(.never)
     }
     
     private var headerSection: some View {
@@ -57,7 +58,7 @@ public struct ProfileDetailView: View {
                         
                         if model.isVerified {
                             Image(systemName: "checkmark.seal.fill")
-                                .foregroundStyle(.blue)
+                                .foregroundStyle(model.gender == .male ? .blue : .pink)
                                 .font(.caption)
                         }
                     }
