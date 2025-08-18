@@ -112,7 +112,6 @@ public struct ProfileListView: View {
                     presentation: ProfileCardPresentation(profile, blur: isNew)
                 )
                 .frame(width: UIScreen.main.bounds.width - 40)
-//                .matchedTransitionSource(id: profile.id, in: heroNamespace)
                 .overlay(
                     // New badge
                     isNew ? newBadgeView : nil,
