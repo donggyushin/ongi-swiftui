@@ -12,7 +12,6 @@ import Factory
 public struct ProfileListView: View {
     
     @StateObject var model: ProfileListViewModel
-    @Namespace private var heroNamespace
     @State private var currentIndex: Int = 0
     
     public init(model: ProfileListViewModel) {
@@ -104,42 +103,28 @@ public struct ProfileListView: View {
     }
     
     private var profileCardsView: some View {
-        VStack(spacing: 20) {
-            // Horizontal ScrollView with ProfileCards
-            ScrollViewReader { proxy in
-                ScrollView(.horizontal, showsIndicators: false) {
-                    LazyHStack(spacing: 16) {
-                        ForEach(Array(model.profiles.enumerated()), id: \.element.id) { index, profile in
-                            let isNew = model.newProfilesIds.contains(profile.id)
-                            
-                            ProfileCard(
-                                presentation: ProfileCardPresentation(profile, blur: isNew)
-                            )
-                            .frame(width: UIScreen.main.bounds.width - 40)
-                            .id(index)
-                            .overlay(
-                                // New badge
-                                isNew ? newBadgeView : nil,
-                                alignment: .topTrailing
-                            )
-                        }
-                    }
-                    .padding(.horizontal, 20)
-                }
-                .scrollTargetBehavior(.viewAligned)
-                .onChange(of: currentIndex) { _, newIndex in
-                    withAnimation(.easeInOut(duration: 0.5)) {
-                        proxy.scrollTo(newIndex, anchor: .center)
-                    }
-                }
-            }
-            
-            // Page dots indicator
-            if model.profiles.count > 1 {
-                pageDotsView
+        // TabView Carousel
+        TabView(selection: $currentIndex) {
+            ForEach(Array(model.profiles.enumerated()), id: \.element.id) { index, profile in
+                let isNew = model.newProfilesIds.contains(profile.id)
+                
+                ProfileCard(
+                    presentation: ProfileCardPresentation(profile, blur: false)
+                )
+                .frame(width: UIScreen.main.bounds.width - 40)
+//                .matchedTransitionSource(id: profile.id, in: heroNamespace)
+                .overlay(
+                    // New badge
+                    isNew ? newBadgeView : nil,
+                    alignment: .topTrailing
+                )
+                .tag(index)
+                .padding(.horizontal, 20)
             }
         }
+        .tabViewStyle(.page(indexDisplayMode: .automatic))
         .frame(height: 520)
+        .animation(.easeInOut(duration: 0.4), value: currentIndex)
     }
     
     private var newBadgeView: some View {
@@ -162,19 +147,6 @@ public struct ProfileListView: View {
         .cornerRadius(8)
         .shadow(color: .orange.opacity(0.3), radius: 4, x: 0, y: 2)
         .offset(x: -12, y: 12)
-    }
-    
-    private var pageDotsView: some View {
-        HStack(spacing: 8) {
-            ForEach(0..<model.profiles.count, id: \.self) { index in
-                Circle()
-                    .fill(index == currentIndex ? Color.primary : Color.primary.opacity(0.3))
-                    .frame(width: 8, height: 8)
-                    .scaleEffect(index == currentIndex ? 1.2 : 1.0)
-                    .animation(.easeInOut(duration: 0.3), value: currentIndex)
-            }
-        }
-        .padding(.top, 16)
     }
     
     private var loadingView: some View {
