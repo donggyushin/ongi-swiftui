@@ -109,7 +109,7 @@ public struct ProfileListView: View {
                 let isNew = model.newProfilesIds.contains(profile.id)
                 
                 ProfileCard(
-                    presentation: ProfileCardPresentation(profile, blur: false)
+                    presentation: ProfileCardPresentation(profile, blur: isNew)
                 )
                 .frame(width: UIScreen.main.bounds.width - 40)
 //                .matchedTransitionSource(id: profile.id, in: heroNamespace)
