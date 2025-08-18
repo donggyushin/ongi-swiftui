@@ -34,19 +34,4 @@ public struct ProfileCardPresentation {
         self.blur = blur
     }
     
-    public var bodyTypeString: String? {
-        guard let bodyType else { return nil }
-        
-        switch bodyType {
-        case .slim:
-            return "마른"
-        case .normal:
-            return "보통"
-        case .chubby:
-            return "통통"
-        case .large:
-            return "큰"
-        }
-    }
-    
 }

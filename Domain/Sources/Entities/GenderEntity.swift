@@ -7,5 +7,14 @@
 
 public enum GenderEntity {
     case male
-    case female 
+    case female
+    
+    public var text: String {
+        switch self {
+        case .male:
+            return "MALE"
+        case .female:
+            return "FEMALE"
+        }
+    }
 }

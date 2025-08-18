@@ -96,7 +96,7 @@ public struct ProfileCard: View {
                                     .foregroundColor(.white)
                             }
                             
-                            if let bodyTypeString = presentation.bodyTypeString {
+                            if let bodyTypeString = presentation.bodyType?.text {
                                 VStack(alignment: .leading, spacing: 2) {
                                     Text("체형")
                                         .pretendardCaption(.regular)
