@@ -6,6 +6,7 @@
 //
 
 import Domain
+import Foundation
 
 final class MockConnectionRepository: PConnectionRepository {
     func getConnection() async throws -> ConnectionEntity {
@@ -22,17 +23,14 @@ final class MockConnectionRepository: PConnectionRepository {
         )
     }
     
-    func markViewed(profileId: String) async throws -> ConnectionEntity {
+    func markViewed(profileId: String) async throws -> [IsNewProfileEntitiy] {
         let profileRepository = MockProfileRepository()
         
         try await Task.sleep(for: .seconds(2))
         
-        return .init(
-            profiles: [profileRepository.profile1, profileRepository.profile2],
-//            profiles: [],
-            newProfileIds: [profileRepository.profile2.id],
-            count: 2,
-            limit: 100
-        )
+        return [
+            .init(profileId: profileRepository.profile1.id, addedAt: Date(), isNew: false),
+            .init(profileId: profileRepository.profile2.id, addedAt: Date(), isNew: false)
+        ]
     }
 }

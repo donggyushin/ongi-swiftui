@@ -25,14 +25,18 @@ final class ConnectionRemoteDataSource {
         }
     }
     
-    func markViewed(profileId: String) async throws -> ConnectionEntity {
+    func markViewed(profileId: String) async throws -> [IsNewProfileEntitiy] {
         let url = "\(ongiExpressUrl)profile-connections/\(profileId)/mark-viewed"
         
-        let response: APIResponse<ConnectionResponseDTO> = try await networkManager
+        struct ResponseData: Decodable {
+            let otherProfiles: [IsNewProfileDTO]
+        }
+        
+        let response: APIResponse<ResponseData> = try await networkManager
             .request(url: url, method: .patch)
         
-        if let connection = response.data?.toDomainEntity() {
-            return connection
+        if let profiles = response.data?.otherProfiles.compactMap({ $0.toDomainEntity() }) {
+            return profiles
         } else if let message = response.message {
             throw AppError.custom(message)
         } else {
