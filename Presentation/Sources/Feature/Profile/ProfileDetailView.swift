@@ -16,7 +16,8 @@ public struct ProfileDetailView: View {
     @State private var showingEditOptions = false
     
     @State private var presentEmailEdit = false
-    @State private var presentMultipleImages = false
+    @State private var presentMultipleImagesEdit = false
+    @State private var presentIntroduceEdit = false
     
     public init(model: ProfileDetailViewModel) {
         self._model = .init(wrappedValue: model)
@@ -47,9 +48,9 @@ public struct ProfileDetailView: View {
                     case .email:
                         presentEmailEdit = true
                     case .images:
-                        presentMultipleImages = true
+                        presentMultipleImagesEdit = true
                     case .introduce:
-                        print("introduce")
+                        presentIntroduceEdit = true 
                     case .mbti:
                         print("mbti")
                     case .nickname:
@@ -67,15 +68,24 @@ public struct ProfileDetailView: View {
             OnboardingCompanyEmailVerificationView(model: .init())
                 .onNext(updateProfileSheetDismissed)
         }
-        .sheet(isPresented: $presentMultipleImages) {
+        .sheet(isPresented: $presentMultipleImagesEdit) {
             OnboardingMultipleImagesView(model: .init())
                 .onNextAction(updateProfileSheetDismissed)
+        }
+        .sheet(isPresented: $presentIntroduceEdit) {
+            OnboardingIntroduceView(model: .init())
+                .onComplete(updateProfileSheetDismissed)
         }
     }
     
     private func updateProfileSheetDismissed() {
         presentEmailEdit = false
-        presentMultipleImages = false
+        presentMultipleImagesEdit = false
+        presentIntroduceEdit = false
+        
+        Task {
+            try await model.fetchProfile()
+        }
     }
     
     private var headerSection: some View {
