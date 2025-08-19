@@ -15,6 +15,7 @@ public final class ProfileDetailViewModel: ObservableObject {
     public let profileId: String
     
     @Published var me: ProfileEntitiy?
+    @Published var isMe = false
     
     @Published var photoURLOfTheMainGate: URL?
     @Published var profilePhotoURL: URL?
@@ -67,5 +68,13 @@ public final class ProfileDetailViewModel: ObservableObject {
             .map { $0 }
             .receive(on: DispatchQueue.main)
             .assign(to: &$me)
+        
+        let profileId = profileId
+        $me
+            .map { $0?.id }
+            .map { $0 == profileId }
+            .removeDuplicates()
+            .receive(on: DispatchQueue.main)
+            .assign(to: &$isMe)
     }
 }
