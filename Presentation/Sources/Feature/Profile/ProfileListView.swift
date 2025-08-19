@@ -42,28 +42,7 @@ public struct ProfileListView: View {
                     .frame(height: 80)
                 
                 if let me = model.me {
-                    VStack(spacing: 20) {
-                        HStack {
-                            VStack(alignment: .leading, spacing: 4) {
-                                Text("내 프로필")
-                                    .pretendardTitle2(.bold)
-                                    .foregroundColor(.primary)
-                                
-                                Text("매칭이 잘 안되시나요? 프로필을 꾸며보세요")
-                                    .pretendardSubheadline(.medium)
-                                    .foregroundColor(.secondary)
-                            }
-                            Spacer()
-                        }
-                        
-                        ProfileCard(presentation: .init(me, blur: false))
-                            .matchedTransitionSource(id: me.id, in: heroNamespace)
-                            .frame(height: 200)
-                            .onTapGesture {
-                                navigationManager?.append(.profileDetail(me.id))
-                            }
-                    }
-                    .padding(.horizontal, 20)
+                    myProfileCard(me)
                 }
                 
                 Rectangle()
@@ -210,6 +189,32 @@ public struct ProfileListView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(.horizontal, 40)
+    }
+    
+    @ViewBuilder
+    func myProfileCard(_ me: ProfileEntitiy) -> some View {
+        VStack(spacing: 20) {
+            HStack {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("내 프로필")
+                        .pretendardTitle2(.bold)
+                        .foregroundColor(.primary)
+                    
+                    Text("매칭이 잘 안되시나요? 프로필을 꾸며보세요")
+                        .pretendardSubheadline(.medium)
+                        .foregroundColor(.secondary)
+                }
+                Spacer()
+            }
+            
+            ProfileCard(presentation: .init(me, blur: false))
+                .matchedTransitionSource(id: me.id, in: heroNamespace)
+                .frame(height: 200)
+                .onTapGesture {
+                    navigationManager?.append(.profileDetail(me.id))
+                }
+        }
+        .padding(.horizontal, 20)
     }
 }
 
