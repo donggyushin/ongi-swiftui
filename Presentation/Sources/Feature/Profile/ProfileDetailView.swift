@@ -15,6 +15,8 @@ public struct ProfileDetailView: View {
     @StateObject var model: ProfileDetailViewModel
     @State private var showingEditOptions = false
     
+    @State private var presentEmailEdit = false
+    
     public init(model: ProfileDetailViewModel) {
         self._model = .init(wrappedValue: model)
     }
@@ -40,13 +42,42 @@ public struct ProfileDetailView: View {
         .sheet(isPresented: $showingEditOptions) {
             ProfileEditOptionsSheet(isPresent: $showingEditOptions)
                 .onComplete { option in
-                    print(option)
+                    switch option {
+                    case .email:
+                        presentEmailEdit = true
+                    case .images:
+                        print("images")
+                    case .introduce:
+                        print("introduce")
+                    case .mbti:
+                        print("mbti")
+                    case .nickname:
+                        print("nickname")
+                    case .physicalInfo:
+                        print("physical info")
+                    case .profileImage:
+                        print("profile image")
+                    case .qna:
+                        print("qna")
+                    }
+                }
+        }
+        .sheet(isPresented: $presentEmailEdit) {
+            OnboardingCompanyEmailVerificationView(model: .init())
+                .onNext {
+                    presentEmailEdit = false
+                    Task {
+                        try await model.fetchProfile()
+                    }
                 }
         }
     }
     
     private var headerSection: some View {
         VStack(spacing: 12) {
+            UserBackgroundImage(url: model.photoURLOfTheMainGate, blur: false)
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+                .frame(height: 400)
             
             HStack {
                 CircleProfileImage(url: model.profilePhotoURL, size: 60)
@@ -85,10 +116,6 @@ public struct ProfileDetailView: View {
                     }
                 }
             }
-            
-            UserBackgroundImage(url: model.photoURLOfTheMainGate, blur: false)
-                .clipShape(RoundedRectangle(cornerRadius: 12))
-                .frame(height: 400)
         }
     }
     
