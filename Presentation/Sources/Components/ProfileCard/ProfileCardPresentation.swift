@@ -20,6 +20,7 @@ public struct ProfileCardPresentation {
     let weight: CGFloat?
     let bodyType: BodyType?
     let blur: Bool
+    let isLikedByMe: Bool
     
     public init(_ domain: ProfileEntitiy) {
         id = domain.id
@@ -31,7 +32,8 @@ public struct ProfileCardPresentation {
         height = domain.height
         weight = domain.weight
         bodyType = domain.bodyType
-        self.blur = domain.isNew
+        blur = domain.isNew
+        isLikedByMe = domain.isLikedByMe
     }
     
 }

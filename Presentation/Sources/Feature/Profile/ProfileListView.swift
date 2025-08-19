@@ -112,7 +112,8 @@ public struct ProfileListView: View {
         TabView(selection: $currentIndex) {
             ForEach(Array(model.profiles.enumerated()), id: \.element.id) { index, profile in
                 ProfileCard(
-                    presentation: ProfileCardPresentation(profile)
+                    presentation: ProfileCardPresentation(profile),
+                    isMe: false
                 )
                 .frame(width: UIScreen.main.bounds.width - 40)
                 .matchedTransitionSource(id: profile.id, in: heroNamespace)
@@ -205,7 +206,7 @@ public struct ProfileListView: View {
                 Spacer()
             }
             
-            ProfileCard(presentation: .init(me))
+            ProfileCard(presentation: .init(me), isMe: true)
                 .matchedTransitionSource(id: me.id, in: heroNamespace)
                 .frame(height: 200)
                 .onTapGesture {

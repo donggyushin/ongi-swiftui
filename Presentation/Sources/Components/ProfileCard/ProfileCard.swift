@@ -12,10 +12,7 @@ import ThirdParty
 public struct ProfileCard: View {
     
     let presentation: ProfileCardPresentation
-    
-    public init(presentation: ProfileCardPresentation) {
-        self.presentation = presentation
-    }
+    let isMe: Bool
     
     public var body: some View {
         ZStack(alignment: .topLeading) {
@@ -128,7 +125,7 @@ private struct ProfileCardPreview: View {
     }
     
     var body: some View {
-        ProfileCard(presentation: presentation)
+        ProfileCard(presentation: presentation, isMe: false)
             .frame(height: 500)
             .preferredColorScheme(.dark)
     }
