@@ -21,7 +21,7 @@ public struct ProfileCardPresentation {
     let bodyType: BodyType?
     let blur: Bool
     
-    public init(_ domain: ProfileEntitiy, blur: Bool) {
+    public init(_ domain: ProfileEntitiy) {
         id = domain.id
         nickname = domain.nickname
         isVerified = domain.email != nil
@@ -31,7 +31,7 @@ public struct ProfileCardPresentation {
         height = domain.height
         weight = domain.weight
         bodyType = domain.bodyType
-        self.blur = blur
+        self.blur = domain.isNew
     }
     
 }

@@ -124,7 +124,7 @@ public struct ProfileCard: View {
 private struct ProfileCardPreview: View {
     
     var presentation: ProfileCardPresentation {
-        return .init(MockProfileRepository().profile1, blur: false)
+        return .init(MockProfileRepository().profile1)
     }
     
     var body: some View {

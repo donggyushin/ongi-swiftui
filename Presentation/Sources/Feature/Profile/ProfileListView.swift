@@ -111,16 +111,14 @@ public struct ProfileListView: View {
         // TabView Carousel
         TabView(selection: $currentIndex) {
             ForEach(Array(model.profiles.enumerated()), id: \.element.id) { index, profile in
-                let isNew = model.newProfilesIds.contains(profile.id)
-                
                 ProfileCard(
-                    presentation: ProfileCardPresentation(profile, blur: isNew)
+                    presentation: ProfileCardPresentation(profile)
                 )
                 .frame(width: UIScreen.main.bounds.width - 40)
                 .matchedTransitionSource(id: profile.id, in: heroNamespace)
                 .overlay(
                     // New badge
-                    isNew ? newBadgeView : nil,
+                    profile.isNew ? newBadgeView : nil,
                     alignment: .topTrailing
                 )
                 .tag(index)
@@ -207,7 +205,7 @@ public struct ProfileListView: View {
                 Spacer()
             }
             
-            ProfileCard(presentation: .init(me, blur: false))
+            ProfileCard(presentation: .init(me))
                 .matchedTransitionSource(id: me.id, in: heroNamespace)
                 .frame(height: 200)
                 .onTapGesture {
