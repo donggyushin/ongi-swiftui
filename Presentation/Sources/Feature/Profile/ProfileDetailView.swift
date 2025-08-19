@@ -13,6 +13,7 @@ import Factory
 public struct ProfileDetailView: View {
     
     @StateObject var model: ProfileDetailViewModel
+    @State private var showingEditOptions = false
     
     public init(model: ProfileDetailViewModel) {
         self._model = .init(wrappedValue: model)
@@ -36,6 +37,12 @@ public struct ProfileDetailView: View {
             }
         }
         .scrollIndicators(.never)
+        .sheet(isPresented: $showingEditOptions) {
+            ProfileEditOptionsSheet(isPresent: $showingEditOptions)
+                .onComplete { option in
+                    print(option)
+                }
+        }
     }
     
     private var headerSection: some View {
@@ -72,6 +79,19 @@ public struct ProfileDetailView: View {
                 }
                 
                 Spacer()
+                
+                if model.isMe {
+                    Button {
+                        showingEditOptions = true
+                    } label: {
+                        Image(systemName: "pencil")
+                            .font(.system(size: 20, weight: .medium))
+                            .foregroundStyle(.primary)
+                            .frame(width: 44, height: 44)
+                            .background(Color(.systemGray6))
+                            .clipShape(Circle())
+                    }
+                }
             }
         }
     }
@@ -196,7 +216,7 @@ public struct ProfileDetailView: View {
 }
 
 #Preview {
-    ProfileDetailView(model: .init(profileId: "1"))
+    ProfileDetailView(model: .init(profileId: "me"))
         .onAppear {
             Container.shared.contentViewModel().getMe()
         }
