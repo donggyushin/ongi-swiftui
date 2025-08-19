@@ -47,14 +47,6 @@ public struct ProfileDetailView: View {
     
     private var headerSection: some View {
         VStack(spacing: 12) {
-            if let photoURL = model.photoURLOfTheMainGate {
-                KFImage(photoURL)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(height: 300)
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
-                    .clipped()
-            }
             
             HStack {
                 CircleProfileImage(url: model.profilePhotoURL, size: 60)
@@ -93,6 +85,10 @@ public struct ProfileDetailView: View {
                     }
                 }
             }
+            
+            UserBackgroundImage(url: model.photoURLOfTheMainGate, blur: false)
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+                .frame(height: 400)
         }
     }
     

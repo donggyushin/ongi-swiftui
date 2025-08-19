@@ -20,6 +20,7 @@ struct UserBackgroundImage: View {
                 .background {
                     KFImage(url)
                         .resizable()
+                        .scaledToFill()
                         .aspectRatio(contentMode: .fill)
                         .blur(radius: blur ? 20 : 0)
                         .clipped()
