@@ -24,23 +24,57 @@ public struct ProfileListView: View {
     }
     
     public var body: some View {
-        VStack(spacing: 0) {
-            // Header
-            headerView
-            
-            if model.loading {
-                loadingView
-            } else if model.profiles.isEmpty {
-                emptyStateView
-            } else {
-                profileCardsView
+        ScrollView {
+            VStack(spacing: 0) {
+                // Header
+                headerView
+                
+                if model.loading && model.profiles.isEmpty {
+                    loadingView
+                } else if model.profiles.isEmpty {
+                    emptyStateView
+                } else {
+                    profileCardsView
+                }
+                
+                Rectangle()
+                    .fill(.clear)
+                    .frame(height: 80)
+                
+                if let me = model.me {
+                    VStack(spacing: 20) {
+                        HStack {
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text("내 프로필")
+                                    .pretendardTitle2(.bold)
+                                    .foregroundColor(.primary)
+                                
+                                Text("매칭이 잘 안되시나요? 프로필을 꾸며보세요")
+                                    .pretendardSubheadline(.medium)
+                                    .foregroundColor(.secondary)
+                            }
+                            Spacer()
+                        }
+                        
+                        ProfileCard(presentation: .init(me, blur: false))
+                            .matchedTransitionSource(id: me.id, in: heroNamespace)
+                            .frame(height: 200)
+                            .onTapGesture {
+                                navigationManager?.append(.profileDetail(me.id))
+                            }
+                    }
+                    .padding(.horizontal, 20)
+                }
+                
+                Rectangle()
+                    .fill(.clear)
+                    .frame(height: 60)
             }
-            
-            Spacer()
         }
+        .scrollIndicators(.never)
         .onAppear {
             Task {
-                try await model.fetchConnectionList()
+                try await model.onAppear()
             }
         }
         .modifier(BackgroundModifier())
