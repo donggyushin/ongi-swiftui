@@ -20,6 +20,9 @@ public struct ProfileDetailView: View {
     @State private var presentIntroduceEdit = false
     @State private var presentMBTIEdit = false
     @State private var presentNicknameEdit = false
+    @State private var presentPhysicalInfoEdit = false
+    @State private var presentProfileImageEdit = false
+    @State private var presentQnAEdit = false
     
     public init(model: ProfileDetailViewModel) {
         self._model = .init(wrappedValue: model)
@@ -58,11 +61,11 @@ public struct ProfileDetailView: View {
                     case .nickname:
                         presentNicknameEdit = true
                     case .physicalInfo:
-                        print("physical info")
+                        presentPhysicalInfoEdit = true
                     case .profileImage:
-                        print("profile image")
+                        presentProfileImageEdit = true
                     case .qna:
-                        print("qna")
+                        presentQnAEdit = true
                     }
                 }
         }
@@ -86,6 +89,18 @@ public struct ProfileDetailView: View {
             OnboardingNicknameView(model: .init())
                 .onNextAction(updateProfileSheetDismissed)
         }
+        .sheet(isPresented: $presentPhysicalInfoEdit) {
+            OnboardingPhysicalGenderInfoView(model: .init())
+                .onComplete(updateProfileSheetDismissed)
+        }
+        .sheet(isPresented: $presentProfileImageEdit) {
+            OnboardingProfileImageView(model: .init())
+                .onComplete(updateProfileSheetDismissed)
+        }
+        .sheet(isPresented: $presentQnAEdit) {
+            OnboardingQNAsView(model: .init())
+                .onComplete(updateProfileSheetDismissed)
+        }
     }
     
     private func updateProfileSheetDismissed() {
@@ -94,6 +109,9 @@ public struct ProfileDetailView: View {
         presentIntroduceEdit = false
         presentMBTIEdit = false
         presentNicknameEdit = false
+        presentPhysicalInfoEdit = false
+        presentProfileImageEdit = false
+        presentQnAEdit = false 
         
         Task {
             try await model.fetchProfile()
