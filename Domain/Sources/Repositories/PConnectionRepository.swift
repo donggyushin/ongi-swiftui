@@ -7,4 +7,5 @@
 
 public protocol PConnectionRepository {
     func getConnection() async throws -> ConnectionEntity
+    func markViewed(profileId: String) async throws -> ConnectionEntity
 }

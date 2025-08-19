@@ -16,4 +16,8 @@ public final class ConnectionRepository: PConnectionRepository {
     public func getConnection() async throws -> ConnectionEntity {
         try await connectionRemoteDataSource.getConnection()
     }
+    
+    public func markViewed(profileId: String) async throws -> ConnectionEntity {
+        try await connectionRemoteDataSource.markViewed(profileId: profileId)
+    }
 }

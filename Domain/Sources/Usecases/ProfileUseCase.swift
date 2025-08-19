@@ -10,13 +10,16 @@ import Foundation
 public final class ProfileUseCase {
     let jwtRepository: PJWTRepository
     let profileRepository: PProfileRepository
+    let connectionRepository: PConnectionRepository
     
     public init(
         jwtRepository: PJWTRepository,
-        profileRepository: PProfileRepository
+        profileRepository: PProfileRepository,
+        connectionRepository: PConnectionRepository
     ) {
         self.jwtRepository = jwtRepository
         self.profileRepository = profileRepository
+        self.connectionRepository = connectionRepository
     }
     
     public func getMe() async throws -> ProfileEntitiy {
@@ -57,6 +60,11 @@ public final class ProfileUseCase {
     }
     
     public func search(profileId: String) async throws -> ProfileEntitiy {
-        try await profileRepository.search(profileId: profileId)
+        
+        Task {
+            try await connectionRepository.markViewed(profileId: profileId)
+        }
+        
+        return try await profileRepository.search(profileId: profileId)
     }
 }

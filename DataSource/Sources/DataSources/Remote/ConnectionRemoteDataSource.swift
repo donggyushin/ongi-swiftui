@@ -24,4 +24,19 @@ final class ConnectionRemoteDataSource {
             throw AppError.networkError(.invalidResponse)
         }
     }
+    
+    func markViewed(profileId: String) async throws -> ConnectionEntity {
+        let url = "\(ongiExpressUrl)profile-connections/\(profileId)/mark-viewed"
+        
+        let response: APIResponse<ConnectionResponseDTO> = try await networkManager
+            .request(url: url, method: .patch)
+        
+        if let connection = response.data?.toDomainEntity() {
+            return connection
+        } else if let message = response.message {
+            throw AppError.custom(message)
+        } else {
+            throw AppError.networkError(.invalidResponse)
+        }
+    }
 }

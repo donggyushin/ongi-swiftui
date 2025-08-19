@@ -59,7 +59,8 @@ extension Container {
         self {
             ProfileUseCase(
                 jwtRepository: self.jwtRepository(),
-                profileRepository: self.profileRepository()
+                profileRepository: self.profileRepository(),
+                connectionRepository: self.connectionRepository()
             )
         }
         .singleton

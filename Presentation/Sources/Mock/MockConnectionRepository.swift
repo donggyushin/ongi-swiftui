@@ -21,4 +21,18 @@ final class MockConnectionRepository: PConnectionRepository {
             limit: 100
         )
     }
+    
+    func markViewed(profileId: String) async throws -> ConnectionEntity {
+        let profileRepository = MockProfileRepository()
+        
+        try await Task.sleep(for: .seconds(2))
+        
+        return .init(
+            profiles: [profileRepository.profile1, profileRepository.profile2],
+//            profiles: [],
+            newProfileIds: [profileRepository.profile2.id],
+            count: 2,
+            limit: 100
+        )
+    }
 }
