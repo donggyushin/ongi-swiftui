@@ -17,9 +17,10 @@ public final class ProfileListViewModel: ObservableObject {
     @Published var loading = false
     
     let connectionUseCase = Container.shared.connectionUseCase()
-    let profileUseCase = Container.shared.profileUseCase()
     
-    public init() { }
+    public init() {
+        bind()
+    }
     
     @MainActor
     func onAppear() async throws {
@@ -27,12 +28,17 @@ public final class ProfileListViewModel: ObservableObject {
         defer { loading = false }
         
         async let connectionResult = connectionUseCase.getConnection()
-        async let meProfile = profileUseCase.getMe()
         
         let result: ConnectionEntity = try await connectionResult
         profiles = result.profiles
         newProfilesIds = result.newProfileIds
-        
-        me = try await meProfile
+    }
+    
+    private func bind() {
+        Container.shared.contentViewModel()
+            .$me
+            .map { $0 }
+            .receive(on: DispatchQueue.main)
+            .assign(to: &$me)
     }
 }

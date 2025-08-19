@@ -220,5 +220,9 @@ public struct ProfileListView: View {
         model: .init(),
         heroNamespace: heroNamespace
     )
+    .onAppear {
+        let contentViewModel = Container.shared.contentViewModel()
+        contentViewModel.getMe()
+    }
     .preferredColorScheme(.dark)
 }
