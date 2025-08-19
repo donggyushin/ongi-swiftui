@@ -1,5 +1,5 @@
 //
-//  IsNewProfileEntitiy.swift
+//  ConnectedProfileEntity.swift
 //  Domain
 //
 //  Created by 신동규 on 8/19/25.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct IsNewProfileEntitiy {
+public struct ConnectedProfileEntity {
     public let profileId: String
     public let addedAt: Date
     public let isNew: Bool

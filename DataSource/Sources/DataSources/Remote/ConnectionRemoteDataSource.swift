@@ -25,11 +25,11 @@ final class ConnectionRemoteDataSource {
         }
     }
     
-    func markViewed(profileId: String) async throws -> [IsNewProfileEntitiy] {
+    func markViewed(profileId: String) async throws -> [ConnectedProfileEntity] {
         let url = "\(ongiExpressUrl)profile-connections/\(profileId)/mark-viewed"
         
         struct ResponseData: Decodable {
-            let otherProfiles: [IsNewProfileDTO]
+            let otherProfiles: [ConnectedProfileDTO]
         }
         
         let response: APIResponse<ResponseData> = try await networkManager

@@ -23,7 +23,7 @@ final class MockConnectionRepository: PConnectionRepository {
         )
     }
     
-    func markViewed(profileId: String) async throws -> [IsNewProfileEntitiy] {
+    func markViewed(profileId: String) async throws -> [ConnectedProfileEntity] {
         let profileRepository = MockProfileRepository()
         
         try await Task.sleep(for: .seconds(2))
