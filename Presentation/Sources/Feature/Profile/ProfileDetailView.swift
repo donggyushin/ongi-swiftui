@@ -111,7 +111,7 @@ public struct ProfileDetailView: View {
         presentNicknameEdit = false
         presentPhysicalInfoEdit = false
         presentProfileImageEdit = false
-        presentQnAEdit = false 
+        presentQnAEdit = false
         
         Task {
             try await model.fetchProfile()
