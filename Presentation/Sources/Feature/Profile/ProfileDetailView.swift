@@ -18,6 +18,7 @@ public struct ProfileDetailView: View {
     @State private var presentEmailEdit = false
     @State private var presentMultipleImagesEdit = false
     @State private var presentIntroduceEdit = false
+    @State private var presentMBTIEdit = false
     
     public init(model: ProfileDetailViewModel) {
         self._model = .init(wrappedValue: model)
@@ -50,9 +51,9 @@ public struct ProfileDetailView: View {
                     case .images:
                         presentMultipleImagesEdit = true
                     case .introduce:
-                        presentIntroduceEdit = true 
+                        presentIntroduceEdit = true
                     case .mbti:
-                        print("mbti")
+                        presentMBTIEdit = true
                     case .nickname:
                         print("nickname")
                     case .physicalInfo:
@@ -76,12 +77,17 @@ public struct ProfileDetailView: View {
             OnboardingIntroduceView(model: .init())
                 .onComplete(updateProfileSheetDismissed)
         }
+        .sheet(isPresented: $presentMBTIEdit) {
+            OnboardingMBTIView(model: .init())
+                .onComplete(updateProfileSheetDismissed)
+        }
     }
     
     private func updateProfileSheetDismissed() {
         presentEmailEdit = false
         presentMultipleImagesEdit = false
         presentIntroduceEdit = false
+        presentMBTIEdit = false 
         
         Task {
             try await model.fetchProfile()
