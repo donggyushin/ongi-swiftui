@@ -29,6 +29,8 @@ final class MockProfileRepository: PProfileRepository {
             weight: 53,
             bodyType: .chubby,
             introduction: "I love reading books and learning new technologies. It helps me grow both personally and professionally.",
+            isNew: false,
+            isLikedByMe: true,
             createdAt: .init(),
             updatedAt: .init()
         )
@@ -54,6 +56,8 @@ final class MockProfileRepository: PProfileRepository {
             weight: 53,
             bodyType: .chubby,
             introduction: "I love reading books and learning new technologies. It helps me grow both personally and professionally.",
+            isNew: true,
+            isLikedByMe: false,
             createdAt: .init(),
             updatedAt: .init()
         )
@@ -73,6 +77,8 @@ final class MockProfileRepository: PProfileRepository {
             weight: nil,
             bodyType: nil,
             introduction: nil,
+            isNew: false,
+            isLikedByMe: true,
             createdAt: .init(),
             updatedAt: .init()
         )

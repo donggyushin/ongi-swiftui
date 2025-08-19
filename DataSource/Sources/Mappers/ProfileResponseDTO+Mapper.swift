@@ -75,6 +75,8 @@ extension ProfileResponseDTO {
             weight: self.weight.map { CGFloat($0) },
             bodyType: bodyTypeEntity,
             introduction: introduction,
+            isNew: isNew ?? false,
+            isLikedByMe: isLikedByMe ?? false,
             createdAt: createdAt,
             updatedAt: updatedAt
         )

@@ -13,6 +13,8 @@ struct ProfileResponseDTO: Codable {
     let weight: Double?
     let bodyType: String?
     let introduction: String?
+    let isNew: Bool?
+    let isLikedByMe: Bool?
     let createdAt: String
     let updatedAt: String
 }
