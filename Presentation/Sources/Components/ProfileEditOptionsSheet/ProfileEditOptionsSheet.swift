@@ -22,12 +22,14 @@ public struct ProfileEditOptionsSheet: View {
     
     @Binding var isPresent: Bool
     
-    var complete: ((ProfileEditOption) -> ())?
-    public func onComplete(_ action: ((ProfileEditOption) -> ())?) -> Self {
-        var copy = self
-        copy.complete = action
-        return copy
-    }
+    @State private var presentEmailEdit = false
+    @State private var presentMultipleImagesEdit = false
+    @State private var presentIntroduceEdit = false
+    @State private var presentMBTIEdit = false
+    @State private var presentNicknameEdit = false
+    @State private var presentPhysicalInfoEdit = false
+    @State private var presentProfileImageEdit = false
+    @State private var presentQnAEdit = false
     
     public var body: some View {
         NavigationView {
@@ -38,8 +40,7 @@ public struct ProfileEditOptionsSheet: View {
                         title: "프로필 사진 변경",
                         description: "대표 프로필 사진을 변경하세요"
                     ) {
-                        isPresent = false
-                        complete?(.profileImage)
+                        presentProfileImageEdit = true
                     }
                     
                     ProfileEditOptionRow(
@@ -47,8 +48,7 @@ public struct ProfileEditOptionsSheet: View {
                         title: "닉네임 변경",
                         description: "다른 사용자에게 보여질 닉네임을 변경하세요"
                     ) {
-                        isPresent = false
-                        complete?(.nickname)
+                        presentNicknameEdit = true
                     }
                     
                     ProfileEditOptionRow(
@@ -56,8 +56,7 @@ public struct ProfileEditOptionsSheet: View {
                         title: "이메일 인증",
                         description: "프로필 인증을 위해 이메일을 등록하세요"
                     ) {
-                        isPresent = false
-                        complete?(.email)
+                        presentEmailEdit = true
                     }
                     
                     ProfileEditOptionRow(
@@ -65,8 +64,7 @@ public struct ProfileEditOptionsSheet: View {
                         title: "자기소개 수정",
                         description: "나를 소개하는 글을 작성해주세요"
                     ) {
-                        isPresent = false
-                        complete?(.introduce)
+                        presentIntroduceEdit = true
                     }
                     
                     ProfileEditOptionRow(
@@ -74,8 +72,7 @@ public struct ProfileEditOptionsSheet: View {
                         title: "성별 및 신체정보",
                         description: "성별, 키, 몸무게, 체형 정보를 수정하세요"
                     ) {
-                        isPresent = false
-                        complete?(.physicalInfo)
+                        presentPhysicalInfoEdit = true
                     }
                     
                     ProfileEditOptionRow(
@@ -83,8 +80,7 @@ public struct ProfileEditOptionsSheet: View {
                         title: "MBTI 변경",
                         description: "나의 성격 유형을 업데이트하세요"
                     ) {
-                        isPresent = false
-                        complete?(.mbti)
+                        presentMBTIEdit = true
                     }
                     
                     ProfileEditOptionRow(
@@ -92,8 +88,7 @@ public struct ProfileEditOptionsSheet: View {
                         title: "사진 관리",
                         description: "프로필에 표시될 사진들을 추가하거나 삭제하세요"
                     ) {
-                        isPresent = false
-                        complete?(.images)
+                        presentMultipleImagesEdit = true
                     }
                     
                     ProfileEditOptionRow(
@@ -101,8 +96,7 @@ public struct ProfileEditOptionsSheet: View {
                         title: "Q&A 관리",
                         description: "질문과 답변을 추가하거나 수정하세요"
                     ) {
-                        isPresent = false
-                        complete?(.qna)
+                        presentQnAEdit = true 
                     }
                 }
                 .padding(.horizontal, 20)
@@ -119,6 +113,49 @@ public struct ProfileEditOptionsSheet: View {
                 }
             }
         }
+        .sheet(isPresented: $presentEmailEdit) {
+            OnboardingCompanyEmailVerificationView(model: .init())
+                .onNext(updateProfileSheetDismissed)
+        }
+        .sheet(isPresented: $presentMultipleImagesEdit) {
+            OnboardingMultipleImagesView(model: .init())
+                .onNextAction(updateProfileSheetDismissed)
+        }
+        .sheet(isPresented: $presentIntroduceEdit) {
+            OnboardingIntroduceView(model: .init())
+                .onComplete(updateProfileSheetDismissed)
+        }
+        .sheet(isPresented: $presentMBTIEdit) {
+            OnboardingMBTIView(model: .init())
+                .onComplete(updateProfileSheetDismissed)
+        }
+        .sheet(isPresented: $presentNicknameEdit) {
+            OnboardingNicknameView(model: .init())
+                .onNextAction(updateProfileSheetDismissed)
+        }
+        .sheet(isPresented: $presentPhysicalInfoEdit) {
+            OnboardingPhysicalGenderInfoView(model: .init())
+                .onComplete(updateProfileSheetDismissed)
+        }
+        .sheet(isPresented: $presentProfileImageEdit) {
+            OnboardingProfileImageView(model: .init())
+                .onComplete(updateProfileSheetDismissed)
+        }
+        .sheet(isPresented: $presentQnAEdit) {
+            OnboardingQNAsView(model: .init())
+                .onComplete(updateProfileSheetDismissed)
+        }
+    }
+    
+    private func updateProfileSheetDismissed() {
+        presentEmailEdit = false
+        presentMultipleImagesEdit = false
+        presentIntroduceEdit = false
+        presentMBTIEdit = false
+        presentNicknameEdit = false
+        presentPhysicalInfoEdit = false
+        presentProfileImageEdit = false
+        presentQnAEdit = false
     }
 }
 

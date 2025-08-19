@@ -15,15 +15,6 @@ public struct ProfileDetailView: View {
     @StateObject var model: ProfileDetailViewModel
     @State private var showingEditOptions = false
     
-    @State private var presentEmailEdit = false
-    @State private var presentMultipleImagesEdit = false
-    @State private var presentIntroduceEdit = false
-    @State private var presentMBTIEdit = false
-    @State private var presentNicknameEdit = false
-    @State private var presentPhysicalInfoEdit = false
-    @State private var presentProfileImageEdit = false
-    @State private var presentQnAEdit = false
-    
     public init(model: ProfileDetailViewModel) {
         self._model = .init(wrappedValue: model)
     }
@@ -47,75 +38,13 @@ public struct ProfileDetailView: View {
         }
         .scrollIndicators(.never)
         .sheet(isPresented: $showingEditOptions) {
+            Task {
+                try await model.fetchProfile()
+            }
+        } content: {
             ProfileEditOptionsSheet(isPresent: $showingEditOptions)
-                .onComplete { option in
-                    switch option {
-                    case .email:
-                        presentEmailEdit = true
-                    case .images:
-                        presentMultipleImagesEdit = true
-                    case .introduce:
-                        presentIntroduceEdit = true
-                    case .mbti:
-                        presentMBTIEdit = true
-                    case .nickname:
-                        presentNicknameEdit = true
-                    case .physicalInfo:
-                        presentPhysicalInfoEdit = true
-                    case .profileImage:
-                        presentProfileImageEdit = true
-                    case .qna:
-                        presentQnAEdit = true
-                    }
-                }
         }
-        .sheet(isPresented: $presentEmailEdit) {
-            OnboardingCompanyEmailVerificationView(model: .init())
-                .onNext(updateProfileSheetDismissed)
-        }
-        .sheet(isPresented: $presentMultipleImagesEdit) {
-            OnboardingMultipleImagesView(model: .init())
-                .onNextAction(updateProfileSheetDismissed)
-        }
-        .sheet(isPresented: $presentIntroduceEdit) {
-            OnboardingIntroduceView(model: .init())
-                .onComplete(updateProfileSheetDismissed)
-        }
-        .sheet(isPresented: $presentMBTIEdit) {
-            OnboardingMBTIView(model: .init())
-                .onComplete(updateProfileSheetDismissed)
-        }
-        .sheet(isPresented: $presentNicknameEdit) {
-            OnboardingNicknameView(model: .init())
-                .onNextAction(updateProfileSheetDismissed)
-        }
-        .sheet(isPresented: $presentPhysicalInfoEdit) {
-            OnboardingPhysicalGenderInfoView(model: .init())
-                .onComplete(updateProfileSheetDismissed)
-        }
-        .sheet(isPresented: $presentProfileImageEdit) {
-            OnboardingProfileImageView(model: .init())
-                .onComplete(updateProfileSheetDismissed)
-        }
-        .sheet(isPresented: $presentQnAEdit) {
-            OnboardingQNAsView(model: .init())
-                .onComplete(updateProfileSheetDismissed)
-        }
-    }
-    
-    private func updateProfileSheetDismissed() {
-        presentEmailEdit = false
-        presentMultipleImagesEdit = false
-        presentIntroduceEdit = false
-        presentMBTIEdit = false
-        presentNicknameEdit = false
-        presentPhysicalInfoEdit = false
-        presentProfileImageEdit = false
-        presentQnAEdit = false
-        
-        Task {
-            try await model.fetchProfile()
-        }
+
     }
     
     private var headerSection: some View {
