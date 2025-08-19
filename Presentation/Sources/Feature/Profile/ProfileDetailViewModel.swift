@@ -14,6 +14,8 @@ public final class ProfileDetailViewModel: ObservableObject {
     
     public let profileId: String
     
+    @Published var me: ProfileEntitiy?
+    
     @Published var photoURLOfTheMainGate: URL?
     @Published var profilePhotoURL: URL?
     @Published var nickname = ""
@@ -33,6 +35,8 @@ public final class ProfileDetailViewModel: ObservableObject {
     
     public init(profileId: String) {
         self.profileId = profileId
+        
+        bind()
     }
     
     @MainActor
@@ -57,4 +61,11 @@ public final class ProfileDetailViewModel: ObservableObject {
         qnas = profile.qnas
     }
     
+    private func bind() {
+        Container.shared.contentViewModel()
+            .$me
+            .map { $0 }
+            .receive(on: DispatchQueue.main)
+            .assign(to: &$me)
+    }
 }

@@ -8,6 +8,7 @@
 import SwiftUI
 import Domain
 import Kingfisher
+import Factory
 
 public struct ProfileDetailView: View {
     
@@ -196,5 +197,8 @@ public struct ProfileDetailView: View {
 
 #Preview {
     ProfileDetailView(model: .init(profileId: "1"))
+        .onAppear {
+            Container.shared.contentViewModel().getMe()
+        }
         .preferredColorScheme(.dark)
 }
