@@ -33,6 +33,7 @@ public final class ProfileDetailViewModel: ObservableObject {
     @Published var qnas: [QnAEntity] = []
     
     @Injected(\.profileUseCase) private var profileUseCase
+    @Injected(\.contentViewModel) private var contentViewModel
     
     public init(profileId: String) {
         self.profileId = profileId
@@ -63,7 +64,7 @@ public final class ProfileDetailViewModel: ObservableObject {
     }
     
     private func bind() {
-        Container.shared.contentViewModel()
+        contentViewModel
             .$me
             .map { $0 }
             .receive(on: DispatchQueue.main)

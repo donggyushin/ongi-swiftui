@@ -25,8 +25,10 @@ public final class OnboardingViewModel: ObservableObject {
         bind()
     }
     
+    @Injected(\.contentViewModel) private var contentViewModel
+    
     private func bind() {
-        Container.shared.contentViewModel()
+        contentViewModel
             .$me
             .compactMap { $0 }
             .receive(on: DispatchQueue.main)

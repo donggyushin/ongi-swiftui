@@ -16,7 +16,7 @@ public final class ProfileListViewModel: ObservableObject {
     @Published var newProfilesIds: [String] = []
     @Published var loading = false
     
-    let connectionUseCase = Container.shared.connectionUseCase()
+    @Injected(\.connectionUseCase) private var connectionUseCase
     
     public init() {
         bind()
@@ -34,8 +34,10 @@ public final class ProfileListViewModel: ObservableObject {
         newProfilesIds = result.newProfileIds
     }
     
+    @Injected(\.contentViewModel) private var contentViewModel
+    
     private func bind() {
-        Container.shared.contentViewModel()
+        contentViewModel
             .$me
             .map { $0 }
             .receive(on: DispatchQueue.main)

@@ -22,7 +22,8 @@ public final class QnAFormViewModel: ObservableObject {
     
     @Published var loading = false 
     
-    let qnaUseCase = Container.shared.qnaUseCase()
+    @Injected(\.qnaUseCase) private var qnaUseCase
+    @Injected(\.contentViewModel) private var contentViewModel
     
     var isValidForm: Bool {
         question.count >= 8 && answer.count >= 60
@@ -35,7 +36,7 @@ public final class QnAFormViewModel: ObservableObject {
         loading = true
         defer { loading = false }
         let updatedProfile = try await qnaUseCase.add(question: question, answer: answer)
-        Container.shared.contentViewModel().me = updatedProfile
+        contentViewModel.me = updatedProfile
         return updatedProfile.qnas.last!
     }
     

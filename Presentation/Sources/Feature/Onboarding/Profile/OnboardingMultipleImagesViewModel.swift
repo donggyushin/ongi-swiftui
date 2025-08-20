@@ -17,11 +17,10 @@ final class OnboardingMultipleImagesViewModel: ObservableObject {
     @Published var fetchingInitialData = true
     @Published var loading = false 
     
-    let profileUseCase: ProfileUseCase
+    @Injected(\.profileUseCase) private var profileUseCase
+    @Injected(\.contentViewModel) private var contentViewModel
     
-    init() {
-        profileUseCase = Container.shared.profileUseCase()
-    }
+    init() { }
     
     @MainActor
     func addPhoto(_ image: UIImage) async throws {
@@ -30,7 +29,7 @@ final class OnboardingMultipleImagesViewModel: ObservableObject {
         guard let imageData = image.jpegData(compressionQuality: 0.8) else { return }
         let updatedProfile = try await profileUseCase.uploadImage(imageData: imageData)
         images.append(image)
-        Container.shared.contentViewModel().me = updatedProfile
+        contentViewModel.me = updatedProfile
     }
     
     @MainActor
@@ -47,7 +46,7 @@ final class OnboardingMultipleImagesViewModel: ObservableObject {
         let updatedProfile = try await profileUseCase.deleteImage(publicId: imageToDelete.publicId)
         
         images.remove(at: index)
-        Container.shared.contentViewModel().me = updatedProfile
+        contentViewModel.me = updatedProfile
     }
     
     @MainActor

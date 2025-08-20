@@ -22,8 +22,9 @@ final class OnboardingCompanyEmailVerificationViewModel: ObservableObject {
     
     @Published var verificationLeftTime: Int = 300
     
-    let authUseCase = Container.shared.authUseCase()
-    let profileUseCase = Container.shared.profileUseCase()
+    @Injected(\.authUseCase) private var authUseCase
+    @Injected(\.profileUseCase) private var profileUseCase
+    @Injected(\.contentViewModel) private var contentViewModel
     private var timer: AnyCancellable?
     
     init() { }
@@ -48,7 +49,7 @@ final class OnboardingCompanyEmailVerificationViewModel: ObservableObject {
         
         try await authUseCase.verifyEmailVerificationCode(code: verificationCode)
         stopTimer()
-        Container.shared.contentViewModel().me = try await profileUseCase.getMe()
+        contentViewModel.me = try await profileUseCase.getMe()
     }
     
     @MainActor

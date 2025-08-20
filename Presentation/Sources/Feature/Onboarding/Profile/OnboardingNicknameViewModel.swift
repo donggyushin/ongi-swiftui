@@ -18,11 +18,10 @@ final class OnboardingNicknameViewModel: ObservableObject {
     
     @Published var fetchingInitialData = true
     
-    let profileUseCase: ProfileUseCase
+    @Injected(\.profileUseCase) private var profileUseCase
+    @Injected(\.contentViewModel) private var contentViewModel
     
-    init() {
-        profileUseCase = Container.shared.profileUseCase()
-    }
+    init() { }
     
     var isNicknameValid: Bool {
         return nickname.trimmingCharacters(in: .whitespacesAndNewlines).count >= 2 &&
@@ -42,7 +41,7 @@ final class OnboardingNicknameViewModel: ObservableObject {
         let trimmedNickname = nickname.trimmingCharacters(in: .whitespacesAndNewlines)
         let updatedProfile = try await profileUseCase.updateNickname(nickname: trimmedNickname)
         
-        Container.shared.contentViewModel().me = updatedProfile
+        contentViewModel.me = updatedProfile
         errorMessage = nil
     }
     

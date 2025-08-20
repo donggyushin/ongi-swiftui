@@ -19,8 +19,9 @@ final class OnboardingQNAsViewModel: ObservableObject {
         qnas.count >= 6 
     }
     
-    let profileUseCase = Container.shared.profileUseCase()
-    let qnaUseCase = Container.shared.qnaUseCase()
+    @Injected(\.profileUseCase) private var profileUseCase
+    @Injected(\.qnaUseCase) private var qnaUseCase
+    @Injected(\.contentViewModel) private var contentViewModel
     
     init() { }
     
@@ -37,7 +38,7 @@ final class OnboardingQNAsViewModel: ObservableObject {
         defer { loading = false }
         let qna = qnas[at]
         let updatedProfile = try await qnaUseCase.delete(qnaId: qna.id)
-        Container.shared.contentViewModel().me = updatedProfile
+        contentViewModel.me = updatedProfile
         _ = withAnimation {
             qnas.remove(at: at)
         }

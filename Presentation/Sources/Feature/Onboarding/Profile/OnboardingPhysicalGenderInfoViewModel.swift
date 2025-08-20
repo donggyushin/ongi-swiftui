@@ -17,7 +17,8 @@ final class OnboardingPhysicalGenderInfoViewModel: ObservableObject {
     @Published var weight: String = ""
     @Published var loading: Bool = false
     
-    let profileUseCase = Container.shared.profileUseCase()
+    @Injected(\.profileUseCase) private var profileUseCase
+    @Injected(\.contentViewModel) private var contentViewModel
     
     var isFormValid: Bool {
         return selectedGender != nil && 
@@ -60,6 +61,6 @@ final class OnboardingPhysicalGenderInfoViewModel: ObservableObject {
         
         _ = try await profileUseCase.updateGender(gender: gender)
         let updatedProfile = try await profileUseCase.updatePhysicalInfo(height: heightValue, weight: weightValue)
-        Container.shared.contentViewModel().me = updatedProfile
+        contentViewModel.me = updatedProfile
     }
 }

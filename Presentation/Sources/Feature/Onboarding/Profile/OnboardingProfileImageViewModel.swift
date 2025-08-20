@@ -22,11 +22,10 @@ public final class OnboardingProfileImageViewModel: ObservableObject {
     
     @Published var loading = false
     
-    let profileUseCase: ProfileUseCase
+    @Injected(\.profileUseCase) private var profileUseCase
+    @Injected(\.contentViewModel) private var contentViewModel
     
-    public init() {
-        profileUseCase = Container.shared.profileUseCase()
-    }
+    public init() { }
     
     @MainActor
     func updateProfileImage() async throws {
@@ -64,6 +63,6 @@ public final class OnboardingProfileImageViewModel: ObservableObject {
         guard let profileImage else { throw AppError.unknown(nil) }
         guard let data = profileImage.jpegData(compressionQuality: 0.8) else { throw AppError.unknown(nil) }
         let updatedProfile = try await profileUseCase.profileImageUpload(imageData: data)
-        Container.shared.contentViewModel().me = updatedProfile
+        contentViewModel.me = updatedProfile
     }
 }
