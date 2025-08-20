@@ -41,8 +41,12 @@ public struct ProfileListView: View {
                     .fill(.clear)
                     .frame(height: 40)
                 
-                
-                
+                // 나를 좋아하는 사람들 버튼
+                if !model.profileIDsLikeMe.isEmpty {
+                    usersLikeMeProfileListButton
+                        .padding(.horizontal, 20)
+                        .padding(.bottom, 30)
+                }
                 
                 if let me = model.me {
                     myProfileCard(me)
@@ -191,6 +195,70 @@ public struct ProfileListView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(.horizontal, 40)
+    }
+    
+    private var usersLikeMeProfileListButton: some View {
+        Button {
+            print("나를 좋아하는 사람들 페이지로 이동")
+        } label: {
+            HStack(spacing: 12) {
+                ZStack {
+                    Circle()
+                        .fill(
+                            LinearGradient(
+                                gradient: Gradient(colors: [.pink, .red]),
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                        )
+                        .frame(width: 48, height: 48)
+                    
+                    Image(systemName: "heart.fill")
+                        .font(.system(size: 24, weight: .medium))
+                        .foregroundColor(.white)
+                }
+                
+                VStack(alignment: .leading, spacing: 2) {
+                    HStack(spacing: 4) {
+                        Text("나에게 관심있어요!")
+                            .pretendardSubheadline(.semiBold)
+                            .foregroundColor(.primary)
+                        
+                        Image(systemName: "sparkles")
+                            .font(.caption)
+                            .foregroundColor(.pink)
+                    }
+                    
+                    Text("\(model.profileIDsLikeMe.count)명이 회원님을 좋아해요")
+                        .pretendardCallout(.medium)
+                        .foregroundColor(.secondary)
+                }
+                
+                Spacer()
+                
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 16, weight: .medium))
+                    .foregroundColor(.secondary)
+            }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 12)
+            .background(
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(Color(.systemGray6))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 16)
+                            .stroke(
+                                LinearGradient(
+                                    gradient: Gradient(colors: [.pink.opacity(0.3), .red.opacity(0.3)]),
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                ),
+                                lineWidth: 1.5
+                            )
+                    )
+            )
+        }
+        .buttonStyle(.plain)
     }
     
     @ViewBuilder
