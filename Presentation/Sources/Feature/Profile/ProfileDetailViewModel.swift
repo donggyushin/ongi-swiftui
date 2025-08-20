@@ -47,6 +47,8 @@ public final class ProfileDetailViewModel: ObservableObject {
     
     @MainActor
     func fetchProfile() async throws {
+        loading = true
+        defer { loading = false }
         var profile = try await profileUseCase.search(profileId: profileId)
         
         if profile.images.isEmpty == false {
