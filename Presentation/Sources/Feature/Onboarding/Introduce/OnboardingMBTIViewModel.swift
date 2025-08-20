@@ -15,7 +15,8 @@ final class OnboardingMBTIViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var fetchingInitialData = true
     
-    let profileUseCase = Container.shared.profileUseCase()
+    @Injected(\.profileUseCase) var profileUseCase
+    @Injected(\.contentViewModel) var contentViewModel
     
     let mbtiOptions = MBTIEntity.allCases
     
@@ -25,7 +26,7 @@ final class OnboardingMBTIViewModel: ObservableObject {
         defer { isLoading = false }
         guard let selectedMBTI else { return }
         let updatedProfile = try await profileUseCase.updateMBTI(mbti: selectedMBTI)
-        Container.shared.contentViewModel().me = updatedProfile
+        contentViewModel.me = updatedProfile
     }
     
     @MainActor

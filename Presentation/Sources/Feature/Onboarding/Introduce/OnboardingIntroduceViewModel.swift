@@ -15,7 +15,8 @@ final class OnboardingIntroduceViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var fetchingInitialData = true
     
-    let profileUseCase = Container.shared.profileUseCase()
+    @Injected(\.profileUseCase) var profileUseCase
+    @Injected(\.contentViewModel) var contentViewModel
     
     let maxCharacterCount = 500
     let minCharacterCount = 50
@@ -49,6 +50,6 @@ final class OnboardingIntroduceViewModel: ObservableObject {
         isLoading = true
         defer { isLoading = false }
         let updatedProfile = try await profileUseCase.updateIntroduce(introduce: introduceText)
-        Container.shared.contentViewModel().me = updatedProfile
+        contentViewModel.me = updatedProfile
     }
 }

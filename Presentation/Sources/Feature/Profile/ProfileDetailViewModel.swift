@@ -32,7 +32,7 @@ public final class ProfileDetailViewModel: ObservableObject {
     @Published var photoURLs: [URL] = []
     @Published var qnas: [QnAEntity] = []
     
-    let profileUseCase = Container.shared.profileUseCase()
+    @Injected(\.profileUseCase) private var profileUseCase
     
     public init(profileId: String) {
         self.profileId = profileId

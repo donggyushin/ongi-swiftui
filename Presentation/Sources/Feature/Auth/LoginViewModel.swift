@@ -13,7 +13,7 @@ import Factory
 
 public final class LoginViewModel: ObservableObject {
     
-    let authUseCase: AuthUseCase
+    @Injected(\.authUseCase) private var authUseCase
     
     // MARK: - Private Properties
     private var cancellables = Set<AnyCancellable>()
@@ -21,9 +21,7 @@ public final class LoginViewModel: ObservableObject {
     var loginSuccessSubject = PassthroughSubject<Void, Never>()
     
     // MARK: - Initialization
-    public init() {
-        self.authUseCase = Container.shared.authUseCase()
-    }
+    public init() { }
     
     /// Apple Sign In handling
     public func handleAppleSignIn(_ result: Result<ASAuthorization, Error>) {
