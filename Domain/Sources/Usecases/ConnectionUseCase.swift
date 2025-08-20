@@ -15,4 +15,12 @@ public final class ConnectionUseCase {
     public func getConnection() async throws -> ConnectionEntity {
         try await connectionRepository.getConnection()
     }
+    
+    public func like(profileId: String, currentValue: Bool) async throws {
+        if currentValue {
+            try await connectionRepository.cancelLike(profileId: profileId)
+        } else {
+            try await connectionRepository.like(profileId: profileId)
+        }
+    }
 }

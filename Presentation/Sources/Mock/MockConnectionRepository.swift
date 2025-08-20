@@ -33,4 +33,12 @@ final class MockConnectionRepository: PConnectionRepository {
             .init(profileId: profileRepository.profile2.id, addedAt: Date(), isNew: false)
         ]
     }
+    
+    func like(profileId: String) async throws {
+        try await Task.sleep(for: .seconds(0.7))
+    }
+    
+    func cancelLike(profileId: String) async throws {
+        try await Task.sleep(for: .seconds(0.7))
+    }
 }

@@ -43,4 +43,40 @@ final class ConnectionRemoteDataSource {
             throw AppError.networkError(.invalidResponse)
         }
     }
+    
+    func like(profileId: String) async throws {
+        let url = "\(ongiExpressUrl)profile-connections/like/\(profileId)"
+        
+        let response: APIResponse<Empty> = try await networkManager
+            .request(url: url, method: .post)
+        
+        // success가 false이거나 에러가 있으면 예외 던지기
+        if !response.success {
+            if let error = response.error {
+                throw AppError.custom(error)
+            } else if let message = response.message {
+                throw AppError.custom(message)
+            } else {
+                throw AppError.networkError(.invalidResponse)
+            }
+        }
+    }
+    
+    func cancelLike(profileId: String) async throws {
+        let url = "\(ongiExpressUrl)profile-connections/like/\(profileId)"
+        
+        let response: APIResponse<Empty> = try await networkManager
+            .request(url: url, method: .delete)
+        
+        // success가 false이거나 에러가 있으면 예외 던지기
+        if !response.success {
+            if let error = response.error {
+                throw AppError.custom(error)
+            } else if let message = response.message {
+                throw AppError.custom(message)
+            } else {
+                throw AppError.networkError(.invalidResponse)
+            }
+        }
+    }
 }

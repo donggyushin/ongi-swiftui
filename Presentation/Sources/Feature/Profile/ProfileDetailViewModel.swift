@@ -36,6 +36,7 @@ public final class ProfileDetailViewModel: ObservableObject {
     @Published var loading = false
     
     @Injected(\.profileUseCase) private var profileUseCase
+    @Injected(\.connectionUseCase) private var connectionUseCase
     @Injected(\.contentViewModel) private var contentViewModel
     
     public init(profileId: String) {
@@ -70,6 +71,7 @@ public final class ProfileDetailViewModel: ObservableObject {
     func like() async throws {
         loading = true
         defer { loading = false }
+        try await connectionUseCase.like(profileId: profileId, currentValue: isLikedByMe)
         isLikedByMe.toggle()
     }
     

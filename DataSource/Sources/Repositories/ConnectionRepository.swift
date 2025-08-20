@@ -20,4 +20,11 @@ public final class ConnectionRepository: PConnectionRepository {
     public func markViewed(profileId: String) async throws -> [ConnectedProfileEntity] {
         try await connectionRemoteDataSource.markViewed(profileId: profileId)
     }
+    
+    public func like(profileId: String) async throws {
+        try await connectionRemoteDataSource.like(profileId: profileId)
+    }
+    public func cancelLike(profileId: String) async throws {
+        try await connectionRemoteDataSource.cancelLike(profileId: profileId)
+    }
 }
