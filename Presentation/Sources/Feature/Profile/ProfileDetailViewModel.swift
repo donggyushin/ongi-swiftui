@@ -16,6 +16,7 @@ public final class ProfileDetailViewModel: ObservableObject {
     
     @Published var me: ProfileEntitiy?
     @Published var isMe = false
+    @Published var isLikedByMe = false
     
     @Published var photoURLOfTheMainGate: URL?
     @Published var profilePhotoURL: URL?
@@ -31,6 +32,8 @@ public final class ProfileDetailViewModel: ObservableObject {
     
     @Published var photoURLs: [URL] = []
     @Published var qnas: [QnAEntity] = []
+    
+    @Published var loading = false
     
     @Injected(\.profileUseCase) private var profileUseCase
     @Injected(\.contentViewModel) private var contentViewModel
@@ -58,9 +61,16 @@ public final class ProfileDetailViewModel: ObservableObject {
         weight = profile.weight
         bodyType = profile.bodyType
         introduction = profile.introduction
-        
+        isLikedByMe = profile.isLikedByMe
         photoURLs = profile.images.map { $0.url }
         qnas = profile.qnas
+    }
+    
+    @MainActor
+    func like() async throws {
+        loading = true
+        defer { loading = false }
+        isLikedByMe.toggle()
     }
     
     private func bind() {

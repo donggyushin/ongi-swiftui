@@ -5,8 +5,6 @@ import Factory
 @main
 struct OngiSwiftuiApp: App {
     
-    @Injected(\.contentViewModel) private var contentViewModel
-    
     init() {
         // Setup dependency injection container
         Container.setupApp()
@@ -14,7 +12,7 @@ struct OngiSwiftuiApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView(model: contentViewModel)
+            ContentView(model: Container.shared.contentViewModel())
                 .tint(OngiSwiftuiAsset.Assets.accentColor.swiftUIColor)
                 .onOpenURL { url in
                     urlSchemeManager.implement(url)

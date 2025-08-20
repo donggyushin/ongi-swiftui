@@ -44,7 +44,7 @@ public struct ProfileDetailView: View {
         } content: {
             ProfileEditOptionsSheet(isPresent: $showingEditOptions)
         }
-
+        .loading(model.loading)
     }
     
     private var headerSection: some View {
@@ -88,6 +88,22 @@ public struct ProfileDetailView: View {
                             .background(Color(.systemGray6))
                             .clipShape(Circle())
                     }
+                } else {
+                    Button {
+                        Task {
+                            try await model.like()
+                        }
+                    } label: {
+                        Image(systemName: model.isLikedByMe ? "heart.fill" : "heart")
+                            .font(.system(size: 20, weight: .medium))
+                            .foregroundStyle(model.isLikedByMe ? .red : .primary)
+                            .frame(width: 44, height: 44)
+                            .background(Color(.systemGray6))
+                            .clipShape(Circle())
+                            .scaleEffect(model.isLikedByMe ? 1.1 : 1.0)
+                    }
+                    .animation(.spring(response: 0.4, dampingFraction: 0.6, blendDuration: 0), value: model.isLikedByMe)
+                    .sensoryFeedback(.impact(flexibility: .soft, intensity: 0.7), trigger: model.isLikedByMe)
                 }
             }
         }
@@ -213,7 +229,7 @@ public struct ProfileDetailView: View {
 }
 
 #Preview {
-    ProfileDetailView(model: .init(profileId: "me"))
+    ProfileDetailView(model: .init(profileId: "!me"))
         .onAppear {
             Container.shared.contentViewModel().getMe()
         }
