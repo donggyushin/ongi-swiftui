@@ -14,6 +14,7 @@ public final class ProfileListViewModel: ObservableObject {
     @Published var me: ProfileEntitiy?
     @Published var profiles: [ProfileEntitiy] = []
     @Published var newProfilesIds: [String] = []
+    @Published var profileIDsLikeMe: [String] = []
     @Published var loading = false
     
     @Injected(\.connectionUseCase) private var connectionUseCase
@@ -32,6 +33,7 @@ public final class ProfileListViewModel: ObservableObject {
         let result: ConnectionEntity = try await connectionResult
         profiles = result.profiles
         newProfilesIds = result.newProfileIds
+        profileIDsLikeMe = result.profileIDsLikeMe
     }
     
     @Injected(\.contentViewModel) private var contentViewModel

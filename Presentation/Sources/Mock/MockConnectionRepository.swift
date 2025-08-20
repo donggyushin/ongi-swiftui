@@ -18,6 +18,8 @@ final class MockConnectionRepository: PConnectionRepository {
             profiles: [profileRepository.profile1, profileRepository.profile2],
 //            profiles: [],
             newProfileIds: [profileRepository.profile2.id],
+            profileIDsILike: ["asd", "asdsad"],
+            profileIDsLikeMe: ["asd", "asdsad"],
             count: 2,
             limit: 100
         )

@@ -39,7 +39,10 @@ public struct ProfileListView: View {
                 
                 Rectangle()
                     .fill(.clear)
-                    .frame(height: 80)
+                    .frame(height: 40)
+                
+                
+                
                 
                 if let me = model.me {
                     myProfileCard(me)

@@ -12,6 +12,8 @@ extension ConnectionResponseDTO {
         return .init(
             profiles: profiles.compactMap { $0.toDomainEntity() },
             newProfileIds: newProfileIds,
+            profileIDsILike: profileIDsILike,
+            profileIDsLikeMe: profileIDsLikeMe,
             count: count,
             limit: limit
         )
