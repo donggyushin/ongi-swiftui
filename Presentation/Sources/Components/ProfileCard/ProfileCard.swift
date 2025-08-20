@@ -38,6 +38,14 @@ public struct ProfileCard: View {
                 HStack(alignment: .top, spacing: 12) {
                     // Profile Image
                     CircleProfileImage(url: presentation.profileImage?.url)
+                        .overlay(alignment: .bottomTrailing) {
+                            if presentation.isLikedByMe {
+                                Image(systemName: "suit.heart.fill")
+                                    .pretendardCaption()
+                                    .foregroundStyle(.red)
+                                    .offset(x: 3, y: 3)
+                            }
+                        }
                     
                     VStack(alignment: .leading, spacing: 4) {
                         // Nickname with verification badge
