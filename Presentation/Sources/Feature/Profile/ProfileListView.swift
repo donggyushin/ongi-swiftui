@@ -199,7 +199,7 @@ public struct ProfileListView: View {
     
     private var usersLikeMeProfileListButton: some View {
         Button {
-            print("나를 좋아하는 사람들 페이지로 이동")
+            navigationManager?.append(.profileListLikeMe)
         } label: {
             HStack(spacing: 12) {
                 ZStack {
