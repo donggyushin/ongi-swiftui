@@ -5,7 +5,7 @@
 //  Created by 신동규 on 8/15/25.
 //
 
-public enum GenderEntity {
+public enum GenderEntity: CaseIterable {
     case male
     case female
     

@@ -178,7 +178,7 @@ public class MockDataGenerator {
     
     public func generateRandomDate(withinDays days: Int) -> Date {
         let now = Date()
-        let randomInterval = TimeInterval.random(in: 0...(days * 24 * 60 * 60))
+        let randomInterval = TimeInterval.random(in: 0...(TimeInterval(days * 24 * 60 * 60)))
         return now.addingTimeInterval(-randomInterval)
     }
     

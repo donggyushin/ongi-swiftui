@@ -141,4 +141,275 @@ public class MockDataStore: ObservableObject {
         guard let likedIds = likes[userId] else { return [] }
         return getProfiles(ids: Array(likedIds)).map { profile in
             updateProfileLikeStatus(profile, likedBy: userId)
-        }\n    }\n    \n    public func getProfilesWhoLike(_ userId: String) -> [ProfileEntitiy] {\n        var profilesWhoLike: [ProfileEntitiy] = []\n        \n        for (profileId, likedUsers) in likes {\n            if likedUsers.contains(userId), let profile = profiles[profileId] {\n                let updatedProfile = updateProfileLikeStatus(profile, likedBy: userId)\n                profilesWhoLike.append(updatedProfile)\n            }\n        }\n        \n        return profilesWhoLike.sorted { $0.createdAt > $1.createdAt }\n    }\n    \n    public func addLike(from userId: String, to targetId: String) {\n        if likes[userId] == nil {\n            likes[userId] = Set()\n        }\n        likes[userId]?.insert(targetId)\n        \n        // Check for mutual like and create connection\n        if let targetLikes = likes[targetId], targetLikes.contains(userId) {\n            addConnection(from: userId, to: targetId)\n        }\n    }\n    \n    public func removeLike(from userId: String, to targetId: String) {\n        likes[userId]?.remove(targetId)\n        \n        // Remove connection if it exists\n        removeConnection(from: userId, to: targetId)\n    }\n    \n    public func isLiked(profileId: String, by userId: String) -> Bool {\n        return likes[userId]?.contains(profileId) ?? false\n    }\n    \n    public func isLiking(userId: String, profile profileId: String) -> Bool {\n        return likes[profileId]?.contains(userId) ?? false\n    }\n    \n    // MARK: - View History Management\n    public func addToViewHistory(userId: String, viewedProfileId: String) {\n        if viewHistory[userId] == nil {\n            viewHistory[userId] = Set()\n        }\n        viewHistory[userId]?.insert(viewedProfileId)\n    }\n    \n    public func getViewHistory(for userId: String) -> [String] {\n        return Array(viewHistory[userId] ?? [])\n    }\n    \n    public func hasViewed(userId: String, profileId: String) -> Bool {\n        return viewHistory[userId]?.contains(profileId) ?? false\n    }\n    \n    // MARK: - Query Methods\n    public func getAvailableProfiles(for userId: String, excludeViewed: Bool = true) -> [ProfileEntitiy] {\n        var availableProfiles = Array(profiles.values)\n        \n        // Exclude self\n        availableProfiles = availableProfiles.filter { $0.id != userId }\n        \n        // Exclude viewed profiles if requested\n        if excludeViewed {\n            let viewed = viewHistory[userId] ?? Set()\n            availableProfiles = availableProfiles.filter { !viewed.contains($0.id) }\n        }\n        \n        // Update like status\n        return availableProfiles.map { profile in\n            updateProfileLikeStatus(profile, likedBy: userId)\n        }\n    }\n    \n    public func getNewProfiles(for userId: String, withinDays days: Int = 3) -> [ProfileEntitiy] {\n        let cutoffDate = Date().addingTimeInterval(-TimeInterval(days * 24 * 60 * 60))\n        \n        return getAvailableProfiles(for: userId)\n            .filter { $0.createdAt > cutoffDate }\n            .sorted { $0.createdAt > $1.createdAt }\n    }\n    \n    public func getMutualLikes(for userId: String) -> [ProfileEntitiy] {\n        guard let myLikes = likes[userId] else { return [] }\n        \n        var mutualLikes: [ProfileEntitiy] = []\n        \n        for profileId in myLikes {\n            if let theirLikes = likes[profileId], theirLikes.contains(userId),\n               let profile = profiles[profileId] {\n                let updatedProfile = updateProfileLikeStatus(profile, likedBy: userId)\n                mutualLikes.append(updatedProfile)\n            }\n        }\n        \n        return mutualLikes\n    }\n    \n    // MARK: - Statistics\n    public func getStatistics(for userId: String) -> MockDataStatistics {\n        let myLikes = likes[userId]?.count ?? 0\n        let likesReceived = likes.values.reduce(0) { count, likedUsers in\n            count + (likedUsers.contains(userId) ? 1 : 0)\n        }\n        let mutualLikes = getMutualLikes(for: userId).count\n        let viewedCount = viewHistory[userId]?.count ?? 0\n        let totalProfiles = profiles.count\n        \n        return MockDataStatistics(\n            totalProfiles: totalProfiles,\n            likesGiven: myLikes,\n            likesReceived: likesReceived,\n            mutualLikes: mutualLikes,\n            profilesViewed: viewedCount,\n            connectionsCount: connections[userId]?.count ?? 0\n        )\n    }\n    \n    // MARK: - Helper Methods\n    private func updateProfileLikeStatus(_ profile: ProfileEntitiy, likedBy userId: String) -> ProfileEntitiy {\n        let isLikedByMe = isLiked(profileId: profile.id, by: userId)\n        \n        return ProfileEntitiy(\n            id: profile.id,\n            nickname: profile.nickname,\n            email: profile.email,\n            profileImage: profile.profileImage,\n            images: profile.images,\n            mbti: profile.mbti,\n            qnas: profile.qnas,\n            gender: profile.gender,\n            height: profile.height,\n            weight: profile.weight,\n            bodyType: profile.bodyType,\n            introduction: profile.introduction,\n            isNew: profile.isNew,\n            isLikedByMe: isLikedByMe,\n            createdAt: profile.createdAt,\n            updatedAt: profile.updatedAt\n        )\n    }\n    \n    // MARK: - Scenario Management\n    public func applyScenario(_ scenario: MockScenario) {\n        switch scenario {\n        case .empty:\n            applyEmptyScenario()\n        case .popular:\n            applyPopularScenario()\n        case .newUser:\n            applyNewUserScenario()\n        default:\n            break\n        }\n    }\n    \n    private func applyEmptyScenario() {\n        likes[\"me\"] = Set()\n        \n        // Remove all likes to me\n        for userId in likes.keys {\n            likes[userId]?.remove(\"me\")\n        }\n        \n        connections[\"me\"] = Set()\n    }\n    \n    private func applyPopularScenario() {\n        let allProfileIds = Array(profiles.keys)\n        let manyLikes = Set(allProfileIds.shuffled().prefix(Int.random(in: 10...15)))\n        \n        // Add many likes to me\n        for profileId in manyLikes {\n            if likes[profileId] == nil {\n                likes[profileId] = Set()\n            }\n            likes[profileId]?.insert(\"me\")\n        }\n    }\n    \n    private func applyNewUserScenario() {\n        // Simulate new user with minimal data\n        likes[\"me\"] = Set()\n        connections[\"me\"] = Set()\n        viewHistory[\"me\"] = Set()\n        \n        // Only a few people like the new user\n        let allProfileIds = Array(profiles.keys)\n        let fewLikes = Set(allProfileIds.shuffled().prefix(Int.random(in: 0...2)))\n        \n        for profileId in fewLikes {\n            if likes[profileId] == nil {\n                likes[profileId] = Set()\n            }\n            likes[profileId]?.insert(\"me\")\n        }\n    }\n    \n    // MARK: - Reset Methods\n    public func reset() {\n        profiles.removeAll()\n        connections.removeAll()\n        likes.removeAll()\n        viewHistory.removeAll()\n        \n        initializeWithDefaultData()\n    }\n    \n    public func resetUserData(userId: String = \"me\") {\n        likes[userId] = Set()\n        connections[userId] = Set()\n        viewHistory[userId] = Set()\n        \n        // Remove from other users' data\n        for otherUserId in likes.keys {\n            likes[otherUserId]?.remove(userId)\n        }\n        \n        for otherUserId in connections.keys {\n            connections[otherUserId]?.remove(userId)\n        }\n    }\n}\n\n// MARK: - Supporting Types\npublic struct MockDataStatistics {\n    public let totalProfiles: Int\n    public let likesGiven: Int\n    public let likesReceived: Int\n    public let mutualLikes: Int\n    public let profilesViewed: Int\n    public let connectionsCount: Int\n    \n    public var summary: String {\n        return \"\"\"\n        총 프로필: \\(totalProfiles)개\n        보낸 좋아요: \\(likesGiven)개\n        받은 좋아요: \\(likesReceived)개\n        서로 좋아요: \\(mutualLikes)개\n        조회한 프로필: \\(profilesViewed)개\n        연결된 사용자: \\(connectionsCount)개\n        \"\"\"\n    }\n}\n\n// MARK: - Debug Extensions\n#if DEBUG\nextension MockDataStore {\n    \n    public func debugPrint() {\n        print(\"=== Mock Data Store Debug ===\")\n        print(\"Profiles: \\(profiles.count)\")\n        print(\"Connections: \\(connections)\")\n        print(\"Likes: \\(likes)\")\n        print(\"View History: \\(viewHistory)\")\n        print(\"===========================\")\n    }\n    \n    public func exportData() -> [String: Any] {\n        return [\n            \"profiles\": profiles.mapValues { $0.nickname },\n            \"connections\": connections,\n            \"likes\": likes,\n            \"viewHistory\": viewHistory\n        ]\n    }\n}\n#endif"
+        }
+    }
+    
+    public func getProfilesWhoLike(_ userId: String) -> [ProfileEntitiy] {
+        var profilesWhoLike: [ProfileEntitiy] = []
+        
+        for (profileId, likedUsers) in likes {
+            if likedUsers.contains(userId), let profile = profiles[profileId] {
+                let updatedProfile = updateProfileLikeStatus(profile, likedBy: userId)
+                profilesWhoLike.append(updatedProfile)
+            }
+        }
+        
+        return profilesWhoLike.sorted { $0.createdAt > $1.createdAt }
+    }
+    
+    public func addLike(from userId: String, to targetId: String) {
+        if likes[userId] == nil {
+            likes[userId] = Set()
+        }
+        likes[userId]?.insert(targetId)
+        
+        // Check for mutual like and create connection
+        if let targetLikes = likes[targetId], targetLikes.contains(userId) {
+            addConnection(from: userId, to: targetId)
+        }
+    }
+    
+    public func removeLike(from userId: String, to targetId: String) {
+        likes[userId]?.remove(targetId)
+        
+        // Remove connection if it exists
+        removeConnection(from: userId, to: targetId)
+    }
+    
+    public func isLiked(profileId: String, by userId: String) -> Bool {
+        return likes[userId]?.contains(profileId) ?? false
+    }
+    
+    public func isLiking(userId: String, profile profileId: String) -> Bool {
+        return likes[profileId]?.contains(userId) ?? false
+    }
+    
+    // MARK: - View History Management
+    public func addToViewHistory(userId: String, viewedProfileId: String) {
+        if viewHistory[userId] == nil {
+            viewHistory[userId] = Set()
+        }
+        viewHistory[userId]?.insert(viewedProfileId)
+    }
+    
+    public func getViewHistory(for userId: String) -> [String] {
+        return Array(viewHistory[userId] ?? [])
+    }
+    
+    public func hasViewed(userId: String, profileId: String) -> Bool {
+        return viewHistory[userId]?.contains(profileId) ?? false
+    }
+    
+    // MARK: - Query Methods
+    public func getAvailableProfiles(for userId: String, excludeViewed: Bool = true) -> [ProfileEntitiy] {
+        var availableProfiles = Array(profiles.values)
+        
+        // Exclude self
+        availableProfiles = availableProfiles.filter { $0.id != userId }
+        
+        // Exclude viewed profiles if requested
+        if excludeViewed {
+            let viewed = viewHistory[userId] ?? Set()
+            availableProfiles = availableProfiles.filter { !viewed.contains($0.id) }
+        }
+        
+        // Update like status
+        return availableProfiles.map { profile in
+            updateProfileLikeStatus(profile, likedBy: userId)
+        }
+    }
+    
+    public func getNewProfiles(for userId: String, withinDays days: Int = 3) -> [ProfileEntitiy] {
+        let cutoffDate = Date().addingTimeInterval(-TimeInterval(days * 24 * 60 * 60))
+        
+        return getAvailableProfiles(for: userId)
+            .filter { $0.createdAt > cutoffDate }
+            .sorted { $0.createdAt > $1.createdAt }
+    }
+    
+    public func getMutualLikes(for userId: String) -> [ProfileEntitiy] {
+        guard let myLikes = likes[userId] else { return [] }
+        
+        var mutualLikes: [ProfileEntitiy] = []
+        
+        for profileId in myLikes {
+            if let theirLikes = likes[profileId], theirLikes.contains(userId),
+               let profile = profiles[profileId] {
+                let updatedProfile = updateProfileLikeStatus(profile, likedBy: userId)
+                mutualLikes.append(updatedProfile)
+            }
+        }
+        
+        return mutualLikes
+    }
+    
+    // MARK: - Statistics
+    public func getStatistics(for userId: String) -> MockDataStatistics {
+        let myLikes = likes[userId]?.count ?? 0
+        let likesReceived = likes.values.reduce(0) { count, likedUsers in
+            count + (likedUsers.contains(userId) ? 1 : 0)
+        }
+        let mutualLikes = getMutualLikes(for: userId).count
+        let viewedCount = viewHistory[userId]?.count ?? 0
+        let totalProfiles = profiles.count
+        
+        return MockDataStatistics(
+            totalProfiles: totalProfiles,
+            likesGiven: myLikes,
+            likesReceived: likesReceived,
+            mutualLikes: mutualLikes,
+            profilesViewed: viewedCount,
+            connectionsCount: connections[userId]?.count ?? 0
+        )
+    }
+    
+    // MARK: - Helper Methods
+    private func updateProfileLikeStatus(_ profile: ProfileEntitiy, likedBy userId: String) -> ProfileEntitiy {
+        let isLikedByMe = isLiked(profileId: profile.id, by: userId)
+        
+        return ProfileEntitiy(
+            id: profile.id,
+            nickname: profile.nickname,
+            email: profile.email,
+            profileImage: profile.profileImage,
+            images: profile.images,
+            mbti: profile.mbti,
+            qnas: profile.qnas,
+            gender: profile.gender,
+            height: profile.height,
+            weight: profile.weight,
+            bodyType: profile.bodyType,
+            introduction: profile.introduction,
+            isNew: profile.isNew,
+            isLikedByMe: isLikedByMe,
+            createdAt: profile.createdAt,
+            updatedAt: profile.updatedAt
+        )
+    }
+    
+    // MARK: - Scenario Management
+    public func applyScenario(_ scenario: MockScenario) {
+        switch scenario {
+        case .empty:
+            applyEmptyScenario()
+        case .popular:
+            applyPopularScenario()
+        case .newUser:
+            applyNewUserScenario()
+        default:
+            break
+        }
+    }
+    
+    private func applyEmptyScenario() {
+        likes["me"] = Set()
+        
+        // Remove all likes to me
+        for userId in likes.keys {
+            likes[userId]?.remove("me")
+        }
+        
+        connections["me"] = Set()
+    }
+    
+    private func applyPopularScenario() {
+        let allProfileIds = Array(profiles.keys)
+        let manyLikes = Set(allProfileIds.shuffled().prefix(Int.random(in: 10...15)))
+        
+        // Add many likes to me
+        for profileId in manyLikes {
+            if likes[profileId] == nil {
+                likes[profileId] = Set()
+            }
+            likes[profileId]?.insert("me")
+        }
+    }
+    
+    private func applyNewUserScenario() {
+        // Simulate new user with minimal data
+        likes["me"] = Set()
+        connections["me"] = Set()
+        viewHistory["me"] = Set()
+        
+        // Only a few people like the new user
+        let allProfileIds = Array(profiles.keys)
+        let fewLikes = Set(allProfileIds.shuffled().prefix(Int.random(in: 0...2)))
+        
+        for profileId in fewLikes {
+            if likes[profileId] == nil {
+                likes[profileId] = Set()
+            }
+            likes[profileId]?.insert("me")
+        }
+    }
+    
+    // MARK: - Reset Methods
+    public func reset() {
+        profiles.removeAll()
+        connections.removeAll()
+        likes.removeAll()
+        viewHistory.removeAll()
+        
+        initializeWithDefaultData()
+    }
+    
+    public func resetUserData(userId: String = "me") {
+        likes[userId] = Set()
+        connections[userId] = Set()
+        viewHistory[userId] = Set()
+        
+        // Remove from other users' data
+        for otherUserId in likes.keys {
+            likes[otherUserId]?.remove(userId)
+        }
+        
+        for otherUserId in connections.keys {
+            connections[otherUserId]?.remove(userId)
+        }
+    }
+}
+
+// MARK: - Supporting Types
+public struct MockDataStatistics {
+    public let totalProfiles: Int
+    public let likesGiven: Int
+    public let likesReceived: Int
+    public let mutualLikes: Int
+    public let profilesViewed: Int
+    public let connectionsCount: Int
+    
+    public var summary: String {
+        return """
+        총 프로필: \(totalProfiles)개
+        보낸 좋아요: \(likesGiven)개
+        받은 좋아요: \(likesReceived)개
+        서로 좋아요: \(mutualLikes)개
+        조회한 프로필: \(profilesViewed)개
+        연결된 사용자: \(connectionsCount)개
+        """
+    }
+}
+
+// MARK: - Debug Extensions
+#if DEBUG
+extension MockDataStore {
+    
+    public func debugPrint() {
+        print("=== Mock Data Store Debug ===")
+        print("Profiles: \(profiles.count)")
+        print("Connections: \(connections)")
+        print("Likes: \(likes)")
+        print("View History: \(viewHistory)")
+        print("===========================")
+    }
+    
+    public func exportData() -> [String: Any] {
+        return [
+            "profiles": profiles.mapValues { $0.nickname },
+            "connections": connections,
+            "likes": likes,
+            "viewHistory": viewHistory
+        ]
+    }
+}
+#endif

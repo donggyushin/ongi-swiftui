@@ -10,6 +10,9 @@ import Foundation
 
 final class MockProfileRepository: PProfileRepository {
     
+    // MARK: - Shared Data Store
+    private let dataStore = MockDataStore.shared
+    
     // MARK: - Mock Data Generator
     private static func randomDate(within days: Int = 30) -> Date {
         let now = Date()
@@ -634,18 +637,18 @@ final class MockProfileRepository: PProfileRepository {
     
     // MARK: - Additional Helper Methods for Testing
     func getAllProfiles() -> [ProfileEntitiy] {
-        return allMockProfiles
+        return dataStore.getAllProfiles()
     }
     
     func getRandomProfiles(count: Int = 5) -> [ProfileEntitiy] {
-        return Array(allMockProfiles.shuffled().prefix(count))
+        return Array(dataStore.getAllProfiles().shuffled().prefix(count))
     }
     
     func getProfilesLikedByMe() -> [ProfileEntitiy] {
-        return allMockProfiles.filter { $0.isLikedByMe }
+        return dataStore.getLikedProfiles(by: "me")
     }
     
     func getNewProfiles() -> [ProfileEntitiy] {
-        return allMockProfiles.filter { $0.isNew }
+        return dataStore.getNewProfiles(for: "me")
     }
 }

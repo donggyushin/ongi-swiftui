@@ -10,13 +10,9 @@ import Foundation
 
 final class MockConnectionRepository: PConnectionRepository {
     
-    // MARK: - Shared Profile Repository
-    private let profileRepository = MockProfileRepository()
+    // MARK: - Shared Data Store
+    private let dataStore = MockDataStore.shared
     
-    // MARK: - Mock State Management
-    private var likedProfiles: Set<String> = ["user_002", "user_006", "user_008"]
-    private var profilesWhoLikeMe: Set<String> = ["user_001", "user_003", "user_005", "user_007", "user_009"]
-    private var viewedProfiles: Set<String> = []
     
     // MARK: - Helper Methods
     private func simulateNetworkDelay() async throws {
@@ -41,51 +37,22 @@ final class MockConnectionRepository: PConnectionRepository {
             throw randomError()
         }
         
-        let allProfiles = profileRepository.getAllProfiles()
-        
-        // Filter out viewed profiles for variety
-        let availableProfiles = allProfiles.filter { profile in
-            !viewedProfiles.contains(profile.id)
-        }
+        // Get available profiles from data store
+        let availableProfiles = dataStore.getAvailableProfiles(for: "me", excludeViewed: true)
         
         // Get random subset of profiles (2-5 profiles)
         let profileCount = min(Int.random(in: 2...5), availableProfiles.count)
         let selectedProfiles = Array(availableProfiles.shuffled().prefix(profileCount))
         
-        // Update liked status based on our state
-        let profilesWithLikeStatus = selectedProfiles.map { profile in
-            ProfileEntitiy(
-                id: profile.id,
-                nickname: profile.nickname,
-                email: profile.email,
-                profileImage: profile.profileImage,
-                images: profile.images,
-                mbti: profile.mbti,
-                qnas: profile.qnas,
-                gender: profile.gender,
-                height: profile.height,
-                weight: profile.weight,
-                bodyType: profile.bodyType,
-                introduction: profile.introduction,
-                isNew: profile.isNew,
-                isLikedByMe: likedProfiles.contains(profile.id),
-                createdAt: profile.createdAt,
-                updatedAt: profile.updatedAt
-            )
-        }
-        
         // Identify new profiles (created within last 3 days)
-        let threeDaysAgo = Date().addingTimeInterval(-3 * 24 * 60 * 60)
-        let newProfileIds = profilesWithLikeStatus
-            .filter { $0.createdAt > threeDaysAgo }
-            .map { $0.id }
+        let newProfileIds = dataStore.getNewProfiles(for: "me").map { $0.id }
         
         return .init(
-            profiles: profilesWithLikeStatus,
+            profiles: selectedProfiles,
             newProfileIds: newProfileIds,
-            profileIDsILike: Array(likedProfiles),
-            profileIDsLikeMe: Array(profilesWhoLikeMe),
-            count: profilesWithLikeStatus.count,
+            profileIDsILike: dataStore.getViewHistory(for: "me"),
+            profileIDsLikeMe: dataStore.getProfilesWhoLike("me").map { $0.id },
+            count: selectedProfiles.count,
             limit: 100
         )
     }
@@ -93,17 +60,17 @@ final class MockConnectionRepository: PConnectionRepository {
     func markViewed(profileId: String) async throws -> [ConnectedProfileEntity] {
         try await simulateNetworkDelay()
         
-        // Add to viewed profiles
-        viewedProfiles.insert(profileId)
+        // Add to viewed profiles in data store
+        dataStore.addToViewHistory(userId: "me", viewedProfileId: profileId)
         
-        // Return connected profiles (profiles who mutually liked)
-        let mutualLikes = likedProfiles.intersection(profilesWhoLikeMe)
+        // Return connected profiles (mutual connections)
+        let connections = dataStore.getConnections(for: "me")
         
-        return mutualLikes.map { profileId in
+        return connections.map { profile in
             ConnectedProfileEntity(
-                profileId: profileId,
-                addedAt: Date().addingTimeInterval(-TimeInterval.random(in: 0...7*24*60*60)), // Random date within last week
-                isNew: Bool.random()
+                profileId: profile.id,
+                addedAt: Date().addingTimeInterval(-TimeInterval.random(in: 0...7*24*60*60)),
+                isNew: profile.isNew
             )
         }
     }
@@ -116,13 +83,8 @@ final class MockConnectionRepository: PConnectionRepository {
             throw AppError.custom("좋아요 처리 중 오류가 발생했습니다.", code: 1004)
         }
         
-        // Add to liked profiles
-        likedProfiles.insert(profileId)
-        
-        // Simulate that sometimes the other person also likes back (30% chance)
-        if Int.random(in: 1...100) <= 30 {
-            profilesWhoLikeMe.insert(profileId)
-        }
+        // Add like to data store
+        dataStore.addLike(from: "me", to: profileId)
     }
     
     func cancelLike(profileId: String) async throws {
@@ -133,8 +95,8 @@ final class MockConnectionRepository: PConnectionRepository {
             throw AppError.custom("좋아요 취소 중 오류가 발생했습니다.", code: 1005)
         }
         
-        // Remove from liked profiles
-        likedProfiles.remove(profileId)
+        // Remove like from data store
+        dataStore.removeLike(from: "me", to: profileId)
     }
     
     func getProfilesLikeMe() async throws -> [ProfileEntitiy] {
@@ -145,61 +107,35 @@ final class MockConnectionRepository: PConnectionRepository {
             throw randomError()
         }
         
-        let allProfiles = profileRepository.getAllProfiles()
-        
-        // Filter profiles who like me
-        let profilesLikingMe = allProfiles.filter { profile in
-            profilesWhoLikeMe.contains(profile.id)
-        }
-        
-        // Update with correct like status
-        return profilesLikingMe.map { profile in
-            ProfileEntitiy(
-                id: profile.id,
-                nickname: profile.nickname,
-                email: profile.email,
-                profileImage: profile.profileImage,
-                images: profile.images,
-                mbti: profile.mbti,
-                qnas: profile.qnas,
-                gender: profile.gender,
-                height: profile.height,
-                weight: profile.weight,
-                bodyType: profile.bodyType,
-                introduction: profile.introduction,
-                isNew: profile.isNew,
-                isLikedByMe: likedProfiles.contains(profile.id),
-                createdAt: profile.createdAt,
-                updatedAt: profile.updatedAt
-            )
-        }.sorted { $0.createdAt > $1.createdAt } // Sort by most recent first
+        // Get profiles who like me from data store
+        return dataStore.getProfilesWhoLike("me")
     }
     
     // MARK: - Test Helper Methods
     func reset() {
-        likedProfiles.removeAll()
-        profilesWhoLikeMe = ["user_001", "user_003", "user_005", "user_007", "user_009"]
-        viewedProfiles.removeAll()
+        dataStore.resetUserData(userId: "me")
     }
     
     func simulateMoreLikes() {
-        // Add more profiles to those who like me
-        let allProfileIds = profileRepository.getAllProfiles().map { $0.id }
-        let additionalLikes = Set(allProfileIds.shuffled().prefix(3))
-        profilesWhoLikeMe.formUnion(additionalLikes)
+        // Add more profiles to those who like me via data store
+        let allProfiles = dataStore.getAllProfiles()
+        let additionalLikes = Array(allProfiles.shuffled().prefix(3))
+        
+        for profile in additionalLikes {
+            dataStore.addLike(from: profile.id, to: "me")
+        }
     }
     
     func simulateEmptyState() {
-        profilesWhoLikeMe.removeAll()
-        likedProfiles.removeAll()
+        dataStore.applyScenario(.empty)
     }
     
     func getLikeStatistics() -> (liked: Int, likedMe: Int, mutual: Int) {
-        let mutual = likedProfiles.intersection(profilesWhoLikeMe).count
+        let stats = dataStore.getStatistics(for: "me")
         return (
-            liked: likedProfiles.count,
-            likedMe: profilesWhoLikeMe.count,
-            mutual: mutual
+            liked: stats.likesGiven,
+            likedMe: stats.likesReceived,
+            mutual: stats.mutualLikes
         )
     }
 }
