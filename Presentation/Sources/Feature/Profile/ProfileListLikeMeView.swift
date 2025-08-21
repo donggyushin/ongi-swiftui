@@ -12,7 +12,6 @@ import Factory
 struct ProfileListLikeMeView: View {
     
     @StateObject var model: ProfileListLikeMeViewModel
-    @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         ScrollView {
@@ -103,12 +102,13 @@ struct ProfileListLikeMeView: View {
     private var profilesListView: some View {
         LazyVStack(spacing: 0) {
             ForEach(Array(model.profiles.enumerated()), id: \.element.id) { index, profile in
-                ProfileListLikeMeItem(profile: profile) {
-                    // Chat button tapped - implement chat logic here
-                    print("Start chat with \(profile.nickname)")
-                }
-                .onTapGesture {
-                    navigationManager?.append(.profileDetail(profile.id))
+                Button {
+                    navigationManager?.append(.profileDetailStack(profile.id))
+                } label: {
+                    ProfileListLikeMeItem(profile: profile) {
+                        // Chat button tapped - implement chat logic here
+                        print("Start chat with \(profile.nickname)")
+                    }
                 }
                 
                 if index < model.profiles.count - 1 {

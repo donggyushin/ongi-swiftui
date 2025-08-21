@@ -25,8 +25,12 @@ public struct ContentView: View {
                         case .profileDetail(let id):
                             ProfileDetailView(model: .init(profileId: id))
                                 .navigationTransition(.zoom(sourceID: id, in: heroNamespace))
+                        case .profileDetailStack(let id):
+                            ProfileDetailView(model: .init(profileId: id))
                         case .profileListLikeMe:
-                            ProfileListLikeMeView(model: .init())
+                            ProfileListLikeMeView(
+                                model: .init()
+                            )
                         }
                     }
                 }

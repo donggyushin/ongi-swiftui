@@ -277,12 +277,13 @@ public struct ProfileListView: View {
                 Spacer()
             }
             
-            ProfileCard(presentation: .init(me), isMe: true)
-                .matchedTransitionSource(id: me.id, in: heroNamespace)
-                .frame(height: 200)
-                .onTapGesture {
-                    navigationManager?.append(.profileDetail(me.id))
-                }
+            Button {
+                navigationManager?.append(.profileDetail(me.id))
+            } label: {
+                ProfileCard(presentation: .init(me), isMe: true)
+                    .matchedTransitionSource(id: me.id, in: heroNamespace)
+                    .frame(height: 200)
+            }
         }
         .padding(.horizontal, 20)
     }
