@@ -35,46 +35,14 @@ public struct ProfileCard: View {
             
             VStack(alignment: .leading, spacing: 12) {
                 // Top section with profile image and basic info
-                HStack(alignment: .top, spacing: 12) {
-                    // Profile Image
-                    CircleProfileImage(url: presentation.profileImage?.url)
-                        .overlay(alignment: .bottomTrailing) {
-                            if presentation.isLikedByMe {
-                                Image(systemName: "suit.heart.fill")
-                                    .pretendardCaption()
-                                    .foregroundStyle(.red)
-                                    .offset(x: 3, y: 3)
-                            }
-                        }
-                    
-                    VStack(alignment: .leading, spacing: 4) {
-                        // Nickname with verification badge
-                        HStack(spacing: 4) {
-                            Text(presentation.blur ? "****" : presentation.nickname)
-                                .pretendardHeadline(.semiBold)
-                                .foregroundColor(.white)
-                            
-                            if presentation.isVerified && !presentation.blur {
-                                Image(systemName: "checkmark.seal.fill")
-                                    .foregroundColor(.blue)
-                                    .font(.caption)
-                            }
-                        }
-                        
-                        // MBTI
-                        if let mbti = presentation.mbti {
-                            Text(presentation.blur ? "****" : mbti.text)
-                                .pretendardCaption(.medium)
-                                .foregroundColor(.white.opacity(0.8))
-                                .padding(.horizontal, 8)
-                                .padding(.vertical, 4)
-                                .background(Color.white.opacity(0.2))
-                                .cornerRadius(8)
-                        }
-                    }
-                    
-                    Spacer()
-                }
+                SimpleProfile(
+                    profileImage: presentation.profileImage?.url,
+                    nickname: presentation.nickname,
+                    isLikedByMe: presentation.isLikedByMe,
+                    blur: presentation.blur,
+                    isVerified: presentation.isVerified,
+                    mbti: presentation.mbti?.text
+                )
                 
                 Spacer()
                 

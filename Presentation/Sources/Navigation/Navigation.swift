@@ -9,4 +9,5 @@ public enum Navigation: Hashable {
     case profileDetail(String)
     case profileDetailStack(String)
     case profileListLikeMe
+    case setting
 }

@@ -90,6 +90,22 @@ public struct ProfileListView: View {
                         .background(Color.primary.opacity(0.1))
                         .cornerRadius(12)
                 }
+                
+                // Settings button
+                Button {
+                    navigationManager?.append(.setting)
+                } label: {
+                    Image(systemName: "gearshape.fill")
+                        .font(.system(size: 20))
+                        .foregroundColor(.secondary)
+                        .frame(width: 32, height: 32)
+                        .background(Color.primary.opacity(0.1))
+                        .clipShape(Circle())
+                }
+                .buttonStyle(.plain)
+                
+                
+                
             }
             
             // New profiles indicator

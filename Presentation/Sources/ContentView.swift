@@ -29,9 +29,9 @@ public struct ContentView: View {
                         case .profileDetailStack(let id):
                             ProfileDetailView(model: .init(profileId: id))
                         case .profileListLikeMe:
-                            ProfileListLikeMeView(
-                                model: .init()
-                            )
+                            ProfileListLikeMeView(model: .init())
+                        case .setting:
+                            SettingView(model: .init())
                         }
                     }
                 }
