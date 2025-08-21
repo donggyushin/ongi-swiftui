@@ -24,6 +24,7 @@ public struct ContentView: View {
                         switch navigation {
                         case .profileDetail(let id):
                             ProfileDetailView(model: .init(profileId: id))
+                                .navigationBarBackButtonHidden()
                                 .navigationTransition(.zoom(sourceID: id, in: heroNamespace))
                         case .profileDetailStack(let id):
                             ProfileDetailView(model: .init(profileId: id))

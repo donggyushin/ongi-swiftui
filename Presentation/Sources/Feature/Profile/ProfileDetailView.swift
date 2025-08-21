@@ -30,7 +30,6 @@ public struct ProfileDetailView: View {
             .padding(.bottom, 40)
         }
         .modifier(BackgroundModifier())
-        .navigationBarBackButtonHidden()
         .onAppear {
             Task {
                 try await model.fetchProfile()
