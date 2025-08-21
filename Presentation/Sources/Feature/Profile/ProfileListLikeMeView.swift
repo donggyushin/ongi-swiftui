@@ -101,22 +101,19 @@ struct ProfileListLikeMeView: View {
     }
     
     private var profilesGridView: some View {
-        LazyVGrid(columns: [
-            GridItem(.flexible(), spacing: 10),
-            GridItem(.flexible(), spacing: 10)
-        ], spacing: 15) {
-            ForEach(model.profiles, id: \.id) { profile in
-                ProfileCard(
-                    presentation: ProfileCardPresentation(profile),
-                    isMe: false
-                )
-                .frame(height: 280)
-                .onTapGesture {
-                    navigationManager?.append(.profileDetail(profile.id))
+        LazyVStack(spacing: 0) {
+            ForEach(Array(model.profiles.enumerated()), id: \.element.id) { index, profile in
+                ProfileListItem(profile: profile)
+                    .onTapGesture {
+                        navigationManager?.append(.profileDetail(profile.id))
+                    }
+                
+                if index < model.profiles.count - 1 {
+                    Divider()
+                        .padding(.horizontal, 20)
                 }
             }
         }
-        .padding(.horizontal, 20)
     }
     
     private var loadingView: some View {
@@ -165,5 +162,6 @@ struct ProfileListLikeMeView: View {
 #Preview {
     NavigationView {
         ProfileListLikeMeView(model: .init())
+            .preferredColorScheme(.dark)
     }
 }
