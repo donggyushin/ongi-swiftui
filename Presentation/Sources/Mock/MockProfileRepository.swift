@@ -84,7 +84,31 @@ final class MockProfileRepository: PProfileRepository {
         )
     }
     
-    
+    var profile3: ProfileEntitiy {
+        .init(
+            id: "3",
+            nickname: "나는 솔로",
+            email: "donggyu9410@gmail.com",
+            profileImage: .init(url: .init(string: "https://res.cloudinary.com/blog-naver-com-donggyu-00/image/upload/v1755269648/profile-images/profile_nickname_test_0023_1755269630832.jpg")!, publicId: "profile-images/profile_nickname_test_0023_1755242951793"),
+            images: [
+                .init(url: .init(string: "https://res.cloudinary.com/blog-naver-com-donggyu-00/image/upload/v1755269648/profile-images/profile_nickname_test_0023_1755269630832.jpg")!, publicId: "profile-images/profile_nickname_test_0023_1755242951793"),
+                .init(url: .init(string: "https://res.cloudinary.com/blog-naver-com-donggyu-00/image/upload/v1755269702/profile-images/profile_gallery_nickname_test_0023_1755269701280.jpg")!, publicId: "profile-images/profile_nickname_test_0023_1755242951793")
+            ],
+            mbti: .infj,
+            qnas: [
+                .init(id: "", question: "What is your favorite hobby?", answer: "I love reading books and learning new technologies. It helps me grow both personally and professionally.", createdAt: .init(), updatedAt: .init())
+            ],
+            gender: .female,
+            height: 151,
+            weight: 53,
+            bodyType: .chubby,
+            introduction: "I love reading books and learning new technologies. It helps me grow both personally and professionally.",
+            isNew: true,
+            isLikedByMe: false,
+            createdAt: .init(),
+            updatedAt: .init()
+        )
+    }
     
     init() { }
     
