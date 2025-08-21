@@ -49,7 +49,8 @@ final class MockConnectionRepository: PConnectionRepository {
         try await Task.sleep(for: .seconds(0.7))
         return [
             profileRepository.profile1,
-            profileRepository.profile2
+            profileRepository.profile2,
+            profileRepository.profile3
         ]
     }
 }
