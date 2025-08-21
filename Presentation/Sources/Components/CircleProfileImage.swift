@@ -17,28 +17,35 @@ struct CircleProfileImage: View {
         if let url {
             KFImage(url)
                 .resizable()
+                .placeholder {
+                    placeholder
+                }
                 .aspectRatio(contentMode: .fill)
                 .frame(width: size, height: size)
                 .clipShape(Circle())
         } else {
-            Circle()
-                .fill(
-                    LinearGradient(
-                        gradient: Gradient(colors: [
-                            Color.gray.opacity(0.3),
-                            Color.gray.opacity(0.6)
-                        ]),
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                )
-                .frame(width: size, height: size)
-                .overlay {
-                    Image(systemName: "person.fill")
-                        .font(.system(size: size * 0.4))
-                        .foregroundColor(.white.opacity(0.8))
-                }
+            placeholder
         }
+    }
+    
+    private var placeholder: some View {
+        Circle()
+            .fill(
+                LinearGradient(
+                    gradient: Gradient(colors: [
+                        Color.gray.opacity(0.3),
+                        Color.gray.opacity(0.6)
+                    ]),
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+            )
+            .frame(width: size, height: size)
+            .overlay {
+                Image(systemName: "person.fill")
+                    .font(.system(size: size * 0.4))
+                    .foregroundColor(.white.opacity(0.8))
+            }
     }
 }
 

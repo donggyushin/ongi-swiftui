@@ -24,7 +24,7 @@ struct ProfileListLikeMeView: View {
                 } else if model.profiles.isEmpty {
                     emptyStateView
                 } else {
-                    profilesGridView
+                    profilesListView
                 }
                 
                 Rectangle()
@@ -100,7 +100,7 @@ struct ProfileListLikeMeView: View {
         .padding(.bottom, 20)
     }
     
-    private var profilesGridView: some View {
+    private var profilesListView: some View {
         LazyVStack(spacing: 0) {
             ForEach(Array(model.profiles.enumerated()), id: \.element.id) { index, profile in
                 ProfileListItem(profile: profile)
