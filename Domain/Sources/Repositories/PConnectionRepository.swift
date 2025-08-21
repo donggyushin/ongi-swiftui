@@ -10,5 +10,5 @@ public protocol PConnectionRepository {
     func markViewed(profileId: String) async throws -> [ConnectedProfileEntity]
     func like(profileId: String) async throws
     func cancelLike(profileId: String) async throws
-    
+    func getProfilesLikeMe() async throws -> [ProfileEntitiy]
 }

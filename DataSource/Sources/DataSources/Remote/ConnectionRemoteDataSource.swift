@@ -79,4 +79,21 @@ final class ConnectionRemoteDataSource {
             }
         }
     }
+    
+    func getProfilesLikeMe() async throws -> [ProfileEntitiy] {
+        let url = "\(ongiExpressUrl)profile-connections/liked-me"
+        struct Response: Decodable {
+            let profiles: [ProfileResponseDTO]
+        }
+        
+        let response: APIResponse<Response> = try await networkManager.request(url: url)
+        
+        if let profiles = response.data?.profiles.compactMap({ $0.toDomainEntity() }) {
+            return profiles
+        } else if let message = response.message {
+            throw AppError.custom(message)
+        } else {
+            throw AppError.networkError(.invalidResponse)
+        }
+    }
 }

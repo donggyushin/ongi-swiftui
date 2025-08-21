@@ -43,4 +43,13 @@ final class MockConnectionRepository: PConnectionRepository {
     func cancelLike(profileId: String) async throws {
         try await Task.sleep(for: .seconds(0.7))
     }
+    
+    func getProfilesLikeMe() async throws -> [ProfileEntitiy] {
+        let profileRepository = MockProfileRepository()
+        try await Task.sleep(for: .seconds(0.7))
+        return [
+            profileRepository.profile1,
+            profileRepository.profile2
+        ]
+    }
 }

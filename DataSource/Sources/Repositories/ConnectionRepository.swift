@@ -27,4 +27,8 @@ public final class ConnectionRepository: PConnectionRepository {
     public func cancelLike(profileId: String) async throws {
         try await connectionRemoteDataSource.cancelLike(profileId: profileId)
     }
+    
+    public func getProfilesLikeMe() async throws -> [ProfileEntitiy] {
+        try await connectionRemoteDataSource.getProfilesLikeMe()
+    }
 }
