@@ -23,4 +23,8 @@ public final class ConnectionUseCase {
             try await connectionRepository.like(profileId: profileId)
         }
     }
+    
+    public func getProfilesLikeMe() async throws -> [ProfileEntitiy] {
+        try await connectionRepository.getProfilesLikeMe()
+    }
 }
