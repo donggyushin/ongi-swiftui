@@ -103,10 +103,13 @@ struct ProfileListLikeMeView: View {
     private var profilesListView: some View {
         LazyVStack(spacing: 0) {
             ForEach(Array(model.profiles.enumerated()), id: \.element.id) { index, profile in
-                ProfileListItem(profile: profile)
-                    .onTapGesture {
-                        navigationManager?.append(.profileDetail(profile.id))
-                    }
+                ProfileListLikeMeItem(profile: profile) {
+                    // Chat button tapped - implement chat logic here
+                    print("Start chat with \(profile.nickname)")
+                }
+                .onTapGesture {
+                    navigationManager?.append(.profileDetail(profile.id))
+                }
                 
                 if index < model.profiles.count - 1 {
                     Divider()
