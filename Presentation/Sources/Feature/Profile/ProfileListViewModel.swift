@@ -29,11 +29,13 @@ public final class ProfileListViewModel: ObservableObject {
         defer { loading = false }
         
         async let connectionResult = connectionUseCase.getConnection()
+        async let profilesLikeMe = connectionUseCase.getProfilesLikeMe()
         
         let result: ConnectionEntity = try await connectionResult
+        let result2: [ProfileEntitiy] = try await profilesLikeMe
         profiles = result.profiles
         newProfilesIds = result.newProfileIds
-        profileIDsLikeMe = result.profileIDsLikeMe
+        profileIDsLikeMe = result2.map { $0.id }
     }
     
     @Injected(\.contentViewModel) private var contentViewModel
