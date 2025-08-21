@@ -5,7 +5,7 @@
 //  Created by 신동규 on 8/15/25.
 //
 
-public enum BodyType {
+public enum BodyType: CaseIterable {
     case slim
     case normal
     case chubby
