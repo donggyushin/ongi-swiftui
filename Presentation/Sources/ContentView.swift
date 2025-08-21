@@ -41,7 +41,11 @@ public struct ContentView: View {
         }
         .modifier(BackgroundModifier())
         .onAppear {
-            model.getMe()
+            Task {
+                if model.isLogin {
+                    try await model.getMe()
+                }
+            }
             if navigationManager == nil {
                 navigationManager = .init(navigationPath: $navigationPath)
             }

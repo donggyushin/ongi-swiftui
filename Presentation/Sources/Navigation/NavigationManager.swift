@@ -26,4 +26,8 @@ public final class NavigationManager {
             navigationPath.removeLast()
         }
     }
+    
+    public func popToRoot() {
+        navigationPath.removeAll()
+    }
 }

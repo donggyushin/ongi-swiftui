@@ -313,8 +313,10 @@ public struct ProfileListView: View {
         heroNamespace: heroNamespace
     )
     .onAppear {
-        let contentViewModel = Container.shared.contentViewModel()
-        contentViewModel.getMe()
+        Task {
+            let contentViewModel = Container.shared.contentViewModel()
+            try await contentViewModel.getMe()
+        }
     }
     .preferredColorScheme(.dark)
 }

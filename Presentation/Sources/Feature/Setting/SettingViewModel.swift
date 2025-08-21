@@ -13,11 +13,21 @@ import Factory
 final class SettingViewModel: ObservableObject {
     
     @Injected(\.contentViewModel) private var contentViewModel
+    @Injected(\.authUseCase) private var authUseCase
     
     @Published var me: ProfileEntitiy?
     
     init() {
         bind()
+    }
+    
+    @MainActor
+    func logout() async throws {
+        contentViewModel.isLogin = false
+        contentViewModel.me = nil
+        try await Task.sleep(for: .seconds(1))
+        authUseCase.logout()
+        navigationManager?.popToRoot()
     }
     
     func bind() {

@@ -230,7 +230,9 @@ public struct ProfileDetailView: View {
 #Preview {
     ProfileDetailView(model: .init(profileId: "!me"))
         .onAppear {
-            Container.shared.contentViewModel().getMe()
+            Task {
+                try await Container.shared.contentViewModel().getMe()
+            }
         }
         .preferredColorScheme(.dark)
 }

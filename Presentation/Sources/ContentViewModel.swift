@@ -39,12 +39,12 @@ public final class ContentViewModel: ObservableObject {
         setupLogoutNotification()
     }
     
-    func getMe() {
-        Task { @MainActor in
-            me = try await profileUseCase.getMe()
-            loading = false
-            onboarding = me?.isCompleted != true
-        }
+    @MainActor
+    func getMe() async throws {
+        loading = true
+        defer { loading = false }
+        me = try await profileUseCase.getMe()
+        onboarding = me?.isCompleted != true
     }
     
     private func bind() {
@@ -60,7 +60,9 @@ public final class ContentViewModel: ObservableObject {
         loginViewModel
             .loginSuccessSubject
             .sink { [weak self] in
-                self?.getMe()
+                Task {
+                    try await self?.getMe()
+                }
             }
             .store(in: &cancellables)
     }

@@ -12,6 +12,7 @@ import Factory
 struct SettingView: View {
     
     @StateObject var model: SettingViewModel
+    @State private var presentLogoutDialog = false
     
     var body: some View {
         ScrollView {
@@ -37,6 +38,11 @@ struct SettingView: View {
         .navigationTitle("설정")
         .navigationBarTitleDisplayMode(.large)
         .modifier(BackgroundModifier())
+        .dialog(message: "로그아웃 하시겠습니까?", primaryAction: {
+            Task {
+                try await model.logout()
+            }
+        }, isPresented: $presentLogoutDialog)
     }
     
     @ViewBuilder
@@ -121,7 +127,7 @@ struct SettingView: View {
     
     private var logoutButton: some View {
         Button {
-            // TODO: Add logout functionality
+            presentLogoutDialog = true
         } label: {
             HStack {
                 Image(systemName: "rectangle.portrait.and.arrow.right")
@@ -151,7 +157,9 @@ struct SettingView: View {
     NavigationView {
         SettingView(model: .init())
             .onAppear {
-                Container.shared.contentViewModel().getMe()
+                Task {
+                    try await Container.shared.contentViewModel().getMe()
+                }
             }
     }
     .preferredColorScheme(.dark)
