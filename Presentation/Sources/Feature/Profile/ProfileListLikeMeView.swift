@@ -108,6 +108,10 @@ struct ProfileListLikeMeView: View {
                     ProfileListLikeMeItem(profile: profile) {
                         // Chat button tapped - implement chat logic here
                         print("Start chat with \(profile.nickname)")
+                        Task {
+                            let chat = try await model.generateChat(profileId: profile.id)
+                            navigationManager?.append(.chat(chat.id))
+                        }
                     }
                 }
                 

@@ -16,7 +16,7 @@ public final class ChatUseCase {
         return try await chatRepository.getChats()
     }
     
-    public func getChat(id: String) async throws -> (ChatEntity, PaginationEntity) {
-        return try await chatRepository.getChat(id: id)
+    public func generateChat(profileId: String) async throws -> ChatEntity {
+        return try await chatRepository.generateChat(profileId: profileId)
     }
 }

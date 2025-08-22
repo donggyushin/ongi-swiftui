@@ -28,18 +28,17 @@ final class ChatRemoteDataSource {
         }
     }
     
-    func getChat(id: String) async throws -> (ChatEntity, PaginationEntity) {
-        let url = "\(ongiExpressUrl)chats/\(id)"
+    func generateChat(profileId: String) async throws -> ChatEntity {
+        let url = "\(ongiExpressUrl)chats/\(profileId)"
         
         struct Response: Decodable {
             let chat: ChatResponseDTO
-            let pagination: PaginationResponseDTO
         }
         
         let response: APIResponse<Response> = try await networkManager.request(url: url, method: .post)
         
-        if let chat = response.data?.chat.toDomainEntity(), let pagination = response.data?.pagination.toDomainEntity() {
-            return (chat, pagination)
+        if let chat = response.data?.chat.toDomainEntity() {
+            return chat
         } else if let message = response.message {
             throw AppError.custom(message)
         } else {

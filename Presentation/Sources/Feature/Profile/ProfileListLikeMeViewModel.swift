@@ -12,12 +12,20 @@ import Factory
 
 final class ProfileListLikeMeViewModel: ObservableObject {
     @Injected(\.connectionUseCase) private var connectionUseCase
+    @Injected(\.chatUseCase) private var chatUseCase
     
     @Published var loading = false
     @Published var profiles: [ProfileEntitiy] = []
     
     init() {
         
+    }
+    
+    @MainActor
+    func generateChat(profileId: String) async throws -> ChatEntity {
+        loading = true
+        defer { loading = false }
+        return try await chatUseCase.generateChat(profileId: profileId)
     }
     
     @MainActor

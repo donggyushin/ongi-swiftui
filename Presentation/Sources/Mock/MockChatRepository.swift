@@ -15,13 +15,7 @@ final class MockChatRepository: PChatRepository {
         return MockDataGenerator.shared.generateRandomChats(count: chatCount)
     }
     
-    func getChat(id: String) async throws -> (ChatEntity, PaginationEntity) {
-        let chat = MockDataGenerator.shared.generateRandomChat(id: id)
-        let pagination = PaginationEntity(
-            limit: chat.messages.count,
-            hasMore: false,
-            nextCursor: chat.messages.last?.id
-        )
-        return (chat, pagination)
+    func generateChat(profileId: String) async throws -> ChatEntity {
+        MockDataGenerator.shared.generateRandomChat()
     }
 }

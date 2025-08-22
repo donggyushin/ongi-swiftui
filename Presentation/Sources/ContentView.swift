@@ -34,6 +34,8 @@ public struct ContentView: View {
                             SettingView(model: .init())
                         case .chatList:
                             ChatListView(model: .init())
+                        case .chat(let chatId):
+                            ChatView(model: .init(chatId: chatId))
                         }
                     }
                 }
