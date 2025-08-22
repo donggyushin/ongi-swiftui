@@ -6,5 +6,5 @@
 //
 
 public protocol PChatRepository {
-    
+    func getChats() async throws -> [ChatEntity]
 }
