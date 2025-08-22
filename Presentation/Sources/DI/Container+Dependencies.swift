@@ -100,6 +100,13 @@ extension Container {
         }
         .singleton
     }
+    
+    var chatUseCase: Factory<ChatUseCase> {
+        self {
+            ChatUseCase(chatRepository: self.chatRepository())
+        }
+        .singleton
+    }
 }
 
 extension Container {
