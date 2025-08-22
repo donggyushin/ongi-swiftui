@@ -142,8 +142,10 @@ public struct ProfileEditOptionsSheet: View {
                 .onComplete(updateProfileSheetDismissed)
         }
         .sheet(isPresented: $presentQnAEdit) {
-            OnboardingQNAsView(model: .init())
-                .onComplete(updateProfileSheetDismissed)
+            NavigationView {
+                OnboardingQNAsView(model: .init())
+                    .onComplete(updateProfileSheetDismissed)
+            }
         }
     }
     
