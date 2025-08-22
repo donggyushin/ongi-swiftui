@@ -11,11 +11,20 @@ import Foundation
 final class MockChatRepository: PChatRepository {
     func getChats() async throws -> [ChatEntity] {
         // Generate 5-8 mock chats with realistic conversation data
+        try await Task.sleep(for: .seconds(1))
         let chatCount = Int.random(in: 5...8)
         return MockDataGenerator.shared.generateRandomChats(count: chatCount)
     }
     
     func generateChat(profileId: String) async throws -> ChatEntity {
-        MockDataGenerator.shared.generateRandomChat()
+        try await Task.sleep(for: .seconds(1))
+        return MockDataGenerator.shared.generateRandomChat()
+    }
+    
+    func getChat(chatId: String) async throws -> (ChatEntity, PaginationEntity) {
+        try await Task.sleep(for: .seconds(1))
+        let chat = MockDataGenerator.shared.generateRandomChat(id: chatId)
+        let pagination = PaginationEntity(limit: 20, hasMore: false, nextCursor: chat.messages.last?.id)
+        return (chat, pagination)
     }
 }
