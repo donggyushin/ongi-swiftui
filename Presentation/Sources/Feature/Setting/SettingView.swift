@@ -59,6 +59,16 @@ struct SettingView: View {
     
     private var menuItemsSection: some View {
         VStack(spacing: 12) {
+            // Chat List Button
+            menuItem(
+                icon: "message.fill",
+                iconColor: .blue,
+                title: "채팅",
+                subtitle: "대화 목록을 확인하세요"
+            ) {
+                navigationManager?.append(.chatList)
+            }
+            
             // Like Me Users Button
             menuItem(
                 icon: "heart.fill",
@@ -72,7 +82,7 @@ struct SettingView: View {
             // Contact Developer Button
             menuItem(
                 icon: "envelope.fill",
-                iconColor: .blue,
+                iconColor: .gray,
                 title: "개발자에게 편지쓰기",
                 subtitle: "피드백이나 문의사항을 보내주세요"
             ) {

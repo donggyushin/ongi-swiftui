@@ -32,6 +32,8 @@ public struct ContentView: View {
                             ProfileListLikeMeView(model: .init())
                         case .setting:
                             SettingView(model: .init())
+                        case .chatList:
+                            ChatListView(model: .init())
                         }
                     }
                 }
