@@ -32,9 +32,20 @@ struct ChatListItemView: View {
     }
     
     private var hasUnreadMessages: Bool {
-        // 읽지 않은 메시지가 있는지 확인하는 로직
-        // 실제 구현에서는 messageReadInfos를 활용
-        true
+        guard let myId = myId else { return false }
+        
+        // 내 메시지 읽음 정보 찾기
+        guard let myReadInfo = chat.messageReadInfos.first(where: { $0.profileId == myId }) else {
+            // 읽음 정보가 없으면 모든 메시지가 읽지 않음
+            return !chat.messages.isEmpty
+        }
+        
+        // 마지막으로 읽은 시간 이후의 메시지가 있는지 확인
+        let unreadMessages = chat.messages.filter { message in
+            message.createdAt > myReadInfo.dateInfoUserViewedRecently
+        }
+        
+        return !unreadMessages.isEmpty
     }
     
     var body: some View {
