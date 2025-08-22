@@ -11,6 +11,18 @@ import Domain
 struct ChatListItemView: View {
     let chat: ChatEntity
     
+    init(chat: ChatEntity, myId: String? = nil) {
+        self.chat = chat
+        self.myId = myId
+    }
+    
+    private var myId: String?
+    public func setMyId(_ value: String?) -> Self {
+        var copy = self
+        copy.myId = value
+        return copy
+    }
+    
     private var lastMessage: MessageEntity? {
         chat.messages.sorted { $0.createdAt > $1.createdAt }.first
     }

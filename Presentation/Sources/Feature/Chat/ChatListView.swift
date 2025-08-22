@@ -58,6 +58,7 @@ struct ChatListView: View {
             LazyVStack(spacing: 0) {
                 ForEach(model.chats, id: \.id) { chat in
                     ChatListItemView(chat: chat)
+                        .setMyId(model.myId)
                     
                     if chat.id != model.chats.last?.id {
                         Divider()

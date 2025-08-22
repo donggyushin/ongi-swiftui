@@ -15,7 +15,14 @@ final class ChatListViewModel: ObservableObject {
     @Published var chats: [ChatEntity] = []
     @Published var error: Error?
     
+    @Published var myId: String?
+    
     @Injected(\.chatUseCase) private var chatUseCase
+    @Injected(\.contentViewModel) private var contentViewModel
+    
+    init() {
+        bind()
+    }
     
     @MainActor
     func fetchChats() async {
@@ -37,5 +44,13 @@ final class ChatListViewModel: ObservableObject {
     @MainActor
     func refresh() async {
         await fetchChats()
+    }
+    
+    private func bind() {
+        contentViewModel
+            .$me
+            .map { $0?.id }
+            .receive(on: DispatchQueue.main)
+            .assign(to: &$myId)
     }
 }
