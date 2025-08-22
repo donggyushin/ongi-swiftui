@@ -15,4 +15,8 @@ public final class ChatRepository: PChatRepository {
     public func getChats() async throws -> [ChatEntity] {
         return try await chatRemoteDataStore.getChats()
     }
+    
+    public func getChat(id: String) async throws -> (ChatEntity, PaginationEntity) {
+        return try await chatRemoteDataStore.getChat(id: id)
+    }
 }
