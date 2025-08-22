@@ -278,4 +278,82 @@ extension MockDataGenerator {
             updatedAt: generateRandomDate(withinDays: 7)
         )
     }
+    
+    // MARK: - Chat Generation
+    public func generateRandomMessage(writerProfileId: String, chatId: String) -> MessageEntity {
+        let messageTexts = [
+            "안녕하세요! 반가워요 😊",
+            "오늘 날씨가 정말 좋네요",
+            "취미가 뭐예요?",
+            "저는 책 읽기를 좋아해요",
+            "같이 커피 한잔 어떠세요?",
+            "영화 보러 갈래요?",
+            "맛있는 식당 추천해주세요!",
+            "주말에 뭐 하세요?",
+            "여행 좋아하세요?",
+            "음악 취향이 어떻게 되세요?",
+            "운동은 하세요?",
+            "요리 잘하세요?",
+            "반려동물 키우세요?",
+            "드라마 추천해주세요",
+            "게임 하세요?",
+            "사진 찍는 거 좋아해요",
+            "산책하기 좋은 날이네요",
+            "오늘 하루 어떠셨어요?",
+            "내일 시간 되세요?",
+            "좋은 밤 보내세요 🌙"
+        ]
+        
+        return MessageEntity(
+            id: "msg_\(UUID().uuidString.prefix(8))",
+            writerProfileId: writerProfileId,
+            text: messageTexts.randomElement()!,
+            createdAt: generateRandomDate(withinDays: 7),
+            updatedAt: generateRandomDate(withinDays: 7)
+        )
+    }
+    
+    public func generateRandomMessages(for participantIds: [String], count: Int, chatId: String) -> [MessageEntity] {
+        return (0..<count).map { _ in
+            let randomWriterId = participantIds.randomElement()!
+            return generateRandomMessage(writerProfileId: randomWriterId, chatId: chatId)
+        }.sorted { $0.createdAt < $1.createdAt }
+    }
+    
+    public func generateRandomMessageReadInfo(for profileId: String, chatId: String) -> MessageReadInfoEntity {
+        return MessageReadInfoEntity(
+            id: "readInfo_\(UUID().uuidString.prefix(8))",
+            profileId: profileId,
+            dateInfoUserViewedRecently: generateRandomDate(withinDays: 1)
+        )
+    }
+    
+    public func generateRandomChat(id: String? = nil, participants: [ProfileEntitiy]? = nil) -> ChatEntity {
+        let chatId = id ?? "chat_\(UUID().uuidString.prefix(8))"
+        let chatParticipants = participants ?? generateProfiles(count: Int.random(in: 2...4))
+        let participantIds = chatParticipants.map { $0.id }
+        
+        let messageCount = Int.random(in: 1...20)
+        let messages = generateRandomMessages(for: participantIds, count: messageCount, chatId: chatId)
+        
+        let messageReadInfos = participantIds.map { profileId in
+            generateRandomMessageReadInfo(for: profileId, chatId: chatId)
+        }
+        
+        return ChatEntity(
+            id: chatId,
+            participantsIds: participantIds,
+            messages: messages,
+            messageReadInfos: messageReadInfos,
+            createdAt: generateRandomDate(withinDays: 30),
+            updatedAt: generateRandomDate(withinDays: 1),
+            participants: chatParticipants
+        )
+    }
+    
+    public func generateRandomChats(count: Int) -> [ChatEntity] {
+        return (0..<count).map { index in
+            generateRandomChat(id: "batch_chat_\(index)")
+        }
+    }
 }
