@@ -28,8 +28,11 @@ final class ChatRemoteDataSource {
         }
     }
     
-    func getChat(chatId: String) async throws -> (ChatEntity, PaginationEntity) {
-        let url = "\(ongiExpressUrl)chats/\(chatId)"
+    func getChat(chatId: String, limit: Int = 20, cursor: String?) async throws -> (ChatEntity, PaginationEntity) {
+        var url = "\(ongiExpressUrl)chats/\(chatId)?limit=\(limit)"
+        if let cursor {
+            url += "&cursor=\(cursor)"
+        }
         struct DataResponse: Decodable {
             let chat: ChatResponseDTO
             let pagination: PaginationResponseDTO

@@ -21,10 +21,10 @@ final class MockChatRepository: PChatRepository {
         return MockDataGenerator.shared.generateRandomChat()
     }
     
-    func getChat(chatId: String) async throws -> (ChatEntity, PaginationEntity) {
+    func getChat(chatId: String, limit: Int, cursor: String?) async throws -> (ChatEntity, PaginationEntity) {
         try await Task.sleep(for: .seconds(1))
         let chat = MockDataGenerator.shared.generateRandomChat(id: chatId)
-        let pagination = PaginationEntity(limit: 20, hasMore: false, nextCursor: chat.messages.last?.id)
+        let pagination = PaginationEntity(limit: limit, hasMore: false, nextCursor: chat.messages.last?.id)
         return (chat, pagination)
     }
 }

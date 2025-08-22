@@ -13,8 +13,11 @@ import Combine
 final class ChatViewModel: ObservableObject {
     let chatId: String
     
+    @Injected(\.chatUseCase) private var chatUseCase
+    
     init(chatId: String) {
         self.chatId = chatId
-        
     }
+    
+    
 }

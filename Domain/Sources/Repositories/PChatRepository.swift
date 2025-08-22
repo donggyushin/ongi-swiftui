@@ -8,5 +8,5 @@
 public protocol PChatRepository {
     func getChats() async throws -> [ChatEntity]
     func generateChat(profileId: String) async throws -> ChatEntity
-    func getChat(chatId: String) async throws -> (ChatEntity, PaginationEntity)
+    func getChat(chatId: String, limit: Int, cursor: String?) async throws -> (ChatEntity, PaginationEntity)
 }
