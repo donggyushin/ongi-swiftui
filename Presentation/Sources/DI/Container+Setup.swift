@@ -25,6 +25,7 @@ extension Container {
         shared.qnaRepository.onPreview { MockQnARepository() }
         shared.verificationRepository.onPreview { MockVerificationRepository() }
         shared.connectionRepository.onPreview { MockConnectionRepository() }
+        shared.chatRepository.onPreview { MockChatRepository() }
     }
     #endif
     

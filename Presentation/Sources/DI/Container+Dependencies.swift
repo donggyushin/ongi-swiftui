@@ -50,6 +50,13 @@ extension Container {
         }
         .singleton
     }
+    
+    var chatRepository: Factory<PChatRepository> {
+        self {
+            ChatRepository()
+        }
+        .singleton
+    }
 }
 
 // MARK: - Use Case Layer Dependencies
