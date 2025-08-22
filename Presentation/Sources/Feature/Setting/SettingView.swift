@@ -8,11 +8,14 @@
 import SwiftUI
 import Domain
 import Factory
+import MessageUI
 
 struct SettingView: View {
     
     @StateObject var model: SettingViewModel
     @State private var presentLogoutDialog = false
+    @State private var presentMailCompose = false
+    @State private var presentMailUnavailableDialog = false
     
     var body: some View {
         ScrollView {
@@ -43,6 +46,10 @@ struct SettingView: View {
                 try await model.logout()
             }
         }, isPresented: $presentLogoutDialog)
+        .dialog(message: "메일 앱을 사용할 수 없습니다. 기기에 메일 계정이 설정되어 있는지 확인해주세요.", isPresented: $presentMailUnavailableDialog)
+        .sheet(isPresented: $presentMailCompose) {
+            MailComposeView(recipients: ["donggyu9410@gmail.com"], subject: "온기 앱 피드백", messageBody: "안녕하세요,\n\n온기 앱에 대한 피드백이나 문의사항을 적어주세요.\n\n")
+        }
     }
     
     @ViewBuilder
@@ -86,7 +93,11 @@ struct SettingView: View {
                 title: "개발자에게 편지쓰기",
                 subtitle: "피드백이나 문의사항을 보내주세요"
             ) {
-                // TODO: Navigate to contact developer
+                if MFMailComposeViewController.canSendMail() {
+                    presentMailCompose = true
+                } else {
+                    presentMailUnavailableDialog = true
+                }
             }
         }
     }
@@ -162,6 +173,8 @@ struct SettingView: View {
         .padding(.top, 20)
     }
 }
+
+
 
 #Preview {
     NavigationView {
