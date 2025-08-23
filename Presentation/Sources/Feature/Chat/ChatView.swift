@@ -37,6 +37,13 @@ struct ChatView: View {
                                 message: message,
                                 isMyMessage: model.me?.id == message.writer.id
                             )
+                            .onAppear {
+                                Task {
+                                    if message.id == model.messages.last?.id {
+                                        try await model.fetchMessages()
+                                    }
+                                }
+                            }
                         }
                     }
                     .padding(.horizontal, 16)
