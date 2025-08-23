@@ -25,7 +25,8 @@ let project = Project(
                 .external(name: "Kingfisher"),
                 .external(name: "SocketIO"),
                 .external(name: "SnapKit"),
-                .external(name: "Firebase"),
+                .external(name: "FirebaseAuth"),
+                .external(name: "FirebaseFirestore"),
             ]
         ),
         .target(
@@ -101,19 +102,8 @@ let project = Project(
             ],
             settings: .settings(
                 base: [
-                    "DEVELOPMENT_TEAM": "YV58Q28W8Z"
-                ],
-                configurations: [
-                    .debug(
-                        name: "Debug",
-                        settings: [
-                            "CODE_SIGN_ENTITLEMENTS": "ongi-swiftui/ongi-swiftui.entitlements"
-                        ]),
-                    .release(
-                        name: "Release",
-                        settings: [
-                            "CODE_SIGN_ENTITLEMENTS": "ongi-swiftui/ongi-swiftui.entitlements"
-                        ]),
+                    "DEVELOPMENT_TEAM": "YV58Q28W8Z",
+                    "CODE_SIGN_ENTITLEMENTS": "ongi-swiftui/ongi-swiftui.entitlements"
                 ]
             )
         ),
