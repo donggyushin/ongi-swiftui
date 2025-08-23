@@ -5,13 +5,13 @@ public struct ContentView: View {
     
     @StateObject var model: ContentViewModel
     @State var splash = true
-    @State private var navigationPath: [Navigation] = [] 
+    @State private var navigationPath: [Navigation] = []
     @Namespace private var heroNamespace
-
+    
     public init(model: ContentViewModel) {
         _model = .init(wrappedValue: model)
     }
-
+    
     public var body: some View {
         Group {
             if model.isLogin {
@@ -23,11 +23,22 @@ public struct ContentView: View {
                     .navigationDestination(for: Navigation.self) { navigation in
                         switch navigation {
                         case .profileDetail(let id):
-                            ProfileDetailView(model: .init(profileId: id))
-                                .navigationBarBackButtonHidden()
-                                .navigationTransition(.zoom(sourceID: id, in: heroNamespace))
+                            ProfileDetailView(
+                                model: .init(profileId: id ),
+                                heroNamespace: heroNamespace
+                            )
+                            .navigationBarBackButtonHidden()
+                            .navigationTransition(
+                                .zoom(
+                                    sourceID: id,
+                                    in: heroNamespace
+                                )
+                            )
                         case .profileDetailStack(let id):
-                            ProfileDetailView(model: .init(profileId: id))
+                            ProfileDetailView(
+                                model: .init(profileId: id),
+                                heroNamespace: heroNamespace
+                            )
                         case .profileListLikeMe:
                             ProfileListLikeMeView(model: .init())
                         case .setting:

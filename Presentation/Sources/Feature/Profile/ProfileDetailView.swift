@@ -12,6 +12,7 @@ import Factory
 
 public struct ProfileDetailView: View {
     
+    let heroNamespace: Namespace.ID
     @StateObject var model: ProfileDetailViewModel
     @State private var showingEditOptions = false
     
@@ -35,8 +36,9 @@ public struct ProfileDetailView: View {
         }
     }
     
-    public init(model: ProfileDetailViewModel) {
+    public init(model: ProfileDetailViewModel, heroNamespace: Namespace.ID) {
         self._model = .init(wrappedValue: model)
+        self.heroNamespace = heroNamespace
     }
     
     public var body: some View {
@@ -254,7 +256,10 @@ public struct ProfileDetailView: View {
 }
 
 #Preview {
-    ProfileDetailView(model: .init(profileId: "user_001"))
+    
+    @Previewable @Namespace var heroNamespace
+    
+    ProfileDetailView(model: .init(profileId: "user_001"), heroNamespace: heroNamespace)
         .onAppear {
             Task {
                 try await Container.shared.contentViewModel().getMe()
