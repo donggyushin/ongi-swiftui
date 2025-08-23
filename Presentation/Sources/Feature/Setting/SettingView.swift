@@ -45,6 +45,8 @@ struct SettingView: View {
             Task {
                 try await model.logout()
             }
+        }, secondaryAction: {
+            
         }, isPresented: $presentLogoutDialog)
         .dialog(message: "메일 앱을 사용할 수 없습니다. 기기에 메일 계정이 설정되어 있는지 확인해주세요.", isPresented: $presentMailUnavailableDialog)
         .sheet(isPresented: $presentMailCompose) {
@@ -62,6 +64,9 @@ struct SettingView: View {
             isVerified: me.email?.isEmpty == false,
             mbti: me.mbti?.text
         )
+        .onTapGesture {
+            navigationManager?.append(.profileDetailStack(me.id))
+        }
     }
     
     private var menuItemsSection: some View {
