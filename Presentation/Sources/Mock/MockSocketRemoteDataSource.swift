@@ -40,8 +40,16 @@ public class MockSocketRemoteDataSource: PSocketRemoteDataSource {
     public func listen<T: Codable>(event: String, type: T.Type) -> AnyPublisher<T, Never> {
         print("[Mock] Listening for event '\(event)' with type \(type)")
         
-        return PassthroughSubject<T, Never>()
-            .eraseToAnyPublisher()
+        // 이미 등록된 Subject가 있다면 재사용
+        if let existingSubject = eventListeners[event] as? PassthroughSubject<T, Never> {
+            return existingSubject.eraseToAnyPublisher()
+        }
+        
+        // 새 Subject 생성 및 저장
+        let subject = PassthroughSubject<T, Never>()
+        eventListeners[event] = subject
+        
+        return subject.eraseToAnyPublisher()
     }
     
     public func listenForConnection() -> AnyPublisher<Bool, Never> {
@@ -54,6 +62,11 @@ public class MockSocketRemoteDataSource: PSocketRemoteDataSource {
     
     public func simulateEvent<T: Codable>(_ event: String, with data: T) {
         print("[Mock] Simulating event '\(event)' with data: \(data)")
+        
+        // 해당 이벤트의 Subject에 데이터 전송
+        if let subject = eventListeners[event] as? PassthroughSubject<T, Never> {
+            subject.send(data)
+        }
     }
     
     public func simulateConnectionChange(isConnected: Bool) {
