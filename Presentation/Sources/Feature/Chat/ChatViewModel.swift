@@ -13,6 +13,8 @@ import Combine
 final class ChatViewModel: ObservableObject {
     let chatId: String
     
+    @Published var text: String = ""
+    
     @Published var participants: [ProfileEntitiy] = []
     @Published var messages: [MessageEntity] = []
     @Published var loading = false
