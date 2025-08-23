@@ -25,10 +25,7 @@ let project = Project(
                 .external(name: "Kingfisher"),
                 .external(name: "SocketIO"),
                 .external(name: "SnapKit"),
-                .external(name: "FirebaseAuth"),
-                .external(name: "FirebaseFirestore"),
-                .external(name: "FirebaseAnalytics"),
-                .external(name: "FirebaseCrashlytics"),
+                .external(name: "FirebaseAnalytics")
             ]
         ),
         .target(
@@ -106,7 +103,8 @@ let project = Project(
                 base: [
                     "DEVELOPMENT_TEAM": "YV58Q28W8Z",
                     "CODE_SIGN_ENTITLEMENTS": "ongi-swiftui/ongi-swiftui.entitlements",
-                    "OTHER_LDFLAGS": "-ObjC"
+                    "OTHER_LDFLAGS": "-ObjC",
+                    "DEBUG_INFORMATION_FORMAT": "dwarf-with-dsym"
                 ]
             )
         ),
