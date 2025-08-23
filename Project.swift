@@ -25,7 +25,8 @@ let project = Project(
                 .external(name: "Kingfisher"),
                 .external(name: "SocketIO"),
                 .external(name: "SnapKit"),
-                .external(name: "FirebaseAnalytics")
+                .external(name: "FirebaseAnalytics"),
+                .sdk(name: "JavaScriptCore", type: .framework)
             ]
         ),
         .target(

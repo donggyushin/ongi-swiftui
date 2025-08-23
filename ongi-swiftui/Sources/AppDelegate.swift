@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FirebaseCore
 
 class AppDelegate: NSObject, UIApplicationDelegate {
   func application(_ application: UIApplication,
@@ -18,7 +19,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     }
     
     // Firebase 초기화는 GoogleUtilities 링킹 문제 해결 후 추가 예정
-    // FirebaseApp.configure()
+//     FirebaseApp.configure()
       
     return true
   }

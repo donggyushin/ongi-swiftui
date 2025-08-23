@@ -7,14 +7,7 @@ import PackageDescription
     let packageSettings = PackageSettings(
         // Customize the product types for specific package product
         // Default is .staticFramework
-        productTypes: [
-            "FirebaseAnalytics": .staticFramework,
-            "FirebaseAuth": .staticFramework,
-            "FirebaseFirestore": .staticFramework,
-            "FirebaseCrashlytics": .staticFramework,
-            "FirebaseCore": .staticFramework,
-            "GoogleUtilities": .staticFramework,
-        ]
+        productTypes: [:]
     )
 #endif
 

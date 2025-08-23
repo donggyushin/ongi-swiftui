@@ -10,6 +10,7 @@ struct OngiSwiftuiApp: App {
     init() {
         // Setup dependency injection container
         Container.setupApp()
+        
     }
     
     var body: some Scene {
