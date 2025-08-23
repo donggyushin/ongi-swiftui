@@ -24,7 +24,8 @@ let project = Project(
                 .external(name: "Factory"),
                 .external(name: "Kingfisher"),
                 .external(name: "SocketIO"),
-                .external(name: "SnapKit")
+                .external(name: "SnapKit"),
+                .external(name: "Firebase"),
             ]
         ),
         .target(
@@ -75,7 +76,7 @@ let project = Project(
                     "CFBundleURLTypes": [
                         [
                             "CFBundleURLName": "io.tuist.ongi-swiftui",
-                            "CFBundleURLSchemes": ["ongi"]
+                            "CFBundleURLSchemes": ["ongi"],
                         ]
                     ],
                     "UISupportedInterfaceOrientations": ["UIInterfaceOrientationPortrait"],
@@ -84,8 +85,10 @@ let project = Project(
                         "UIImageName": "",
                     ],
                     "NSPhotoLibraryUsageDescription": "프로필 사진을 선택하기 위해 사진 라이브러리에 접근합니다.",
-                    "NSLocationWhenInUseUsageDescription": "위치 정보를 허용하시면 회원님과 가까운 거리에 있는 사용자들을 우선적으로 추천해드릴 수 있습니다. 더 가까운 곳에서 새로운 만남을 시작해보세요!",
-                    "NSLocationAlwaysAndWhenInUseUsageDescription": "위치 정보를 허용하시면 회원님과 가까운 거리에 있는 사용자들을 우선적으로 추천해드릴 수 있습니다. 더 가까운 곳에서 새로운 만남을 시작해보세요!"
+                    "NSLocationWhenInUseUsageDescription":
+                        "위치 정보를 허용하시면 회원님과 가까운 거리에 있는 사용자들을 우선적으로 추천해드릴 수 있습니다. 더 가까운 곳에서 새로운 만남을 시작해보세요!",
+                    "NSLocationAlwaysAndWhenInUseUsageDescription":
+                        "위치 정보를 허용하시면 회원님과 가까운 거리에 있는 사용자들을 우선적으로 추천해드릴 수 있습니다. 더 가까운 곳에서 새로운 만남을 시작해보세요!",
                 ]
             ),
             sources: ["ongi-swiftui/Sources/**"],
@@ -94,15 +97,23 @@ let project = Project(
                 .target(name: "Domain"),
                 .target(name: "ThirdParty"),
                 .target(name: "DataSource"),
-                .target(name: "Presentation")
+                .target(name: "Presentation"),
             ],
             settings: .settings(
                 base: [
                     "DEVELOPMENT_TEAM": "YV58Q28W8Z"
                 ],
                 configurations: [
-                    .debug(name: "Debug", settings: ["CODE_SIGN_ENTITLEMENTS": "ongi-swiftui/ongi-swiftui.entitlements"]),
-                    .release(name: "Release", settings: ["CODE_SIGN_ENTITLEMENTS": "ongi-swiftui/ongi-swiftui.entitlements"])
+                    .debug(
+                        name: "Debug",
+                        settings: [
+                            "CODE_SIGN_ENTITLEMENTS": "ongi-swiftui/ongi-swiftui.entitlements"
+                        ]),
+                    .release(
+                        name: "Release",
+                        settings: [
+                            "CODE_SIGN_ENTITLEMENTS": "ongi-swiftui/ongi-swiftui.entitlements"
+                        ]),
                 ]
             )
         ),
