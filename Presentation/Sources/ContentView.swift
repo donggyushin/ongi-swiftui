@@ -36,7 +36,6 @@ public struct ContentView: View {
                             )
                         case .zoomableImage(let url):
                             ZoomableImage(url: url)
-                                .ignoresSafeArea()
                                 .navigationBarBackButtonHidden()
                                 .navigationTransition(
                                     .zoom(
@@ -44,6 +43,7 @@ public struct ContentView: View {
                                         in: heroNamespace
                                     )
                                 )
+                                .ignoresSafeArea()
                         case .profileDetailStack(let id):
                             ProfileDetailView(
                                 model: .init(profileId: id),
