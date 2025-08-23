@@ -68,6 +68,8 @@ final class ChatViewModel: ObservableObject {
         
         messages.append(contentsOf: messagePresentations)
         pagination = result.1
+        
+        try await Task.sleep(for: .seconds(1))
     }
     
     @MainActor
