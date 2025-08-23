@@ -216,7 +216,7 @@ public struct ProfileDetailView: View {
             if index % 2 == 0 {
                 // 짝수 인덱스 = 사진
                 let photoIndex = index / 2
-                photoView(url: model.photoURLs[photoIndex])
+                photoView(url: model.photoURLs[photoIndex], photoIndex: photoIndex)
             } else {
                 // 홀수 인덱스 = Q&A
                 let qnaIndex = index / 2
@@ -229,7 +229,7 @@ public struct ProfileDetailView: View {
             if model.photoURLs.count > model.qnas.count {
                 // 사진이 더 많은 경우
                 let photoIndex = minCount + remainingIndex
-                photoView(url: model.photoURLs[photoIndex])
+                photoView(url: model.photoURLs[photoIndex], photoIndex: photoIndex)
             } else {
                 // Q&A가 더 많은 경우
                 let qnaIndex = minCount + remainingIndex
@@ -238,16 +238,40 @@ public struct ProfileDetailView: View {
         }
     }
     
-    private func photoView(url: URL) -> some View {
-        KFImage(url)
-            .resizable()
-            .scaledToFit()
-            .clipShape(RoundedRectangle(cornerRadius: 12))
-            .clipped()
-            .matchedTransitionSource(id: url, in: heroNamespace)
-            .onTapGesture {
-                navigationManager?.append(.zoomableImage(url))
+    private func photoView(url: URL, photoIndex: Int) -> some View {
+        HStack {
+            if photoIndex % 2 == 0 {
+                // 짝수 인덱스 = 왼쪽 정렬
+                KFImage(url)
+                    .resizable()
+                    .scaledToFit()
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .clipped()
+                    .matchedTransitionSource(id: url, in: heroNamespace)
+                    .onTapGesture {
+                        navigationManager?.append(.zoomableImage(url))
+                    }
+                    .frame(height: 350)
+                    .frame(maxWidth: UIScreen.main.bounds.width * 0.75)
+                
+                Spacer()
+            } else {
+                // 홀수 인덱스 = 오른쪽 정렬
+                Spacer()
+                
+                KFImage(url)
+                    .resizable()
+                    .scaledToFit()
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .clipped()
+                    .matchedTransitionSource(id: url, in: heroNamespace)
+                    .onTapGesture {
+                        navigationManager?.append(.zoomableImage(url))
+                    }
+                    .frame(height: 350)
+                    .frame(maxWidth: UIScreen.main.bounds.width * 0.75)
             }
+        }
     }
     
     private func qnaView(qna: QnAEntity) -> some View {
