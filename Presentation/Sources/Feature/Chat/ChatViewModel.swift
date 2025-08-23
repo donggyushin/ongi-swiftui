@@ -39,8 +39,13 @@ final class ChatViewModel: ObservableObject {
     }
     
     deinit {
+        cleanup()
+    }
+    
+    func cleanup() {
         realTimeChatUseCase.leaveChat()
         realTimeChatUseCase.dismiss()
+        cancellables.removeAll()
     }
     
     @MainActor
@@ -93,10 +98,6 @@ final class ChatViewModel: ObservableObject {
             }
             .store(in: &cancellables)
         
-        var participants: [ProfileEntitiy] {
-            self.participants
-        }
-        
         realTimeChatUseCase
             .listenForConnection()
             .filter { $0 }
@@ -108,7 +109,11 @@ final class ChatViewModel: ObservableObject {
         
         realTimeChatUseCase
             .listenMessage()
-            .compactMap { message in MessagePresentation(message: message, participants: participants) }
+            .compactMap { [weak self] message in 
+                // ❌ 수정: weak self로 참조 캡처
+                guard let self = self else { return nil }
+                return MessagePresentation(message: message, participants: self.participants) 
+            }
             .receive(on: DispatchQueue.main)
             .sink { [weak self] messagePresentation in
                 self?.messages.insert(messagePresentation, at: 0)
