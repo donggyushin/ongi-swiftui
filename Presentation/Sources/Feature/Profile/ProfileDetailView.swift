@@ -15,24 +15,25 @@ public struct ProfileDetailView: View {
     let heroNamespace: Namespace.ID
     @StateObject var model: ProfileDetailViewModel
     @State private var showingEditOptions = false
+    @State private var isAnimating = false
     
-    private var lastLoginText: String {
+    private var lastLoginInfo: (text: String, color: Color, icon: String) {
         let daysAgo = model.lastLoginDaysAgo
         switch daysAgo {
         case 0:
-            return "오늘 접속"
+            return ("지금 온라인", .green, "circle.fill")
         case 1:
-            return "어제 접속"
+            return ("어제 접속", .yellow, "clock.fill")
         case 2...7:
-            return "\(daysAgo)일 전 접속"
+            return ("\(daysAgo)일 전 접속", .orange, "clock")
         case 8...30:
-            return "\(daysAgo)일 전 접속"
+            return ("\(daysAgo)일 전 접속", .red.opacity(0.8), "clock")
         case 31...365:
             let months = daysAgo / 30
-            return "\(months)개월 전 접속"
+            return ("\(months)개월 전 접속", .gray, "moon.fill")
         default:
             let years = daysAgo / 365
-            return "\(years)년 전 접속"
+            return ("\(years)년 전 접속", .gray.opacity(0.6), "moon.fill")
         }
     }
     
@@ -114,9 +115,54 @@ public struct ProfileDetailView: View {
                     }
                     
                     if !model.isMe {
-                        Text(lastLoginText)
-                            .pretendardCaption()
-                            .foregroundStyle(.secondary)
+                        HStack {
+                            HStack(spacing: 6) {
+                                Image(systemName: lastLoginInfo.icon)
+                                    .font(.caption2)
+                                    .foregroundColor(lastLoginInfo.color)
+                                
+                                Text(lastLoginInfo.text)
+                                    .pretendardCaption(.medium)
+                                    .foregroundColor(lastLoginInfo.color)
+                                
+                                if model.lastLoginDaysAgo == 0 {
+                                    // Pulsing animation for online users
+                                    Circle()
+                                        .fill(lastLoginInfo.color)
+                                        .frame(width: 4, height: 4)
+                                        .scaleEffect(isAnimating ? 1.3 : 1.0)
+                                        .opacity(isAnimating ? 0.5 : 1.0)
+                                        .animation(.easeInOut(duration: 1).repeatForever(autoreverses: true), value: isAnimating)
+                                        .onAppear {
+                                            isAnimating = true
+                                        }
+                                }
+                            }
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
+                            .background(
+                                Capsule()
+                                    .fill(Color.black.opacity(0.3))
+                                    .overlay(
+                                        Capsule()
+                                            .stroke(lastLoginInfo.color.opacity(0.3), lineWidth: 0.5)
+                                    )
+                            )
+                            
+                            if let myLocation = model.me?.location,
+                               let userLocation = model.location {
+                                HStack {
+                                    Image(systemName: "location.fill")
+                                        .font(.caption2)
+                                        .foregroundColor(.white.opacity(0.7))
+                                    Text("약 \(myLocation.formattedDistance(to: userLocation)) 떨어짐")
+                                        .pretendardCaption(.regular)
+                                        .foregroundColor(.white.opacity(0.8))
+                                    Spacer()
+                                }
+                            }
+                            
+                        }
                     }
                 }
                 

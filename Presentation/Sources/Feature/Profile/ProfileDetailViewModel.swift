@@ -33,6 +33,7 @@ public final class ProfileDetailViewModel: ObservableObject {
     @Published var photoURLs: [URL] = []
     @Published var qnas: [QnAEntity] = []
     @Published var lastTokenAuthAt: Date?
+    @Published var location: LocationEntity?
     
     @Published var loading = false
     
@@ -77,6 +78,7 @@ public final class ProfileDetailViewModel: ObservableObject {
         photoURLs = profile.images.map { $0.url }
         qnas = profile.qnas
         lastTokenAuthAt = profile.lastTokenAuthAt
+        location = profile.location
     }
     
     @MainActor
