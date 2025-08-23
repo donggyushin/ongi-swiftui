@@ -165,16 +165,10 @@ struct MessageRow: View {
     var body: some View {
         HStack(alignment: .top, spacing: 8) {
             if !isMyMessage {
-                AsyncImage(url: message.writer.profileImage?.url) { image in
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                } placeholder: {
-                    Circle()
-                        .fill(Color.gray.opacity(0.3))
-                }
-                .frame(width: 40, height: 40)
-                .clipShape(Circle())
+                CircleProfileImage(url: message.writer.profileImage?.url)
+                    .onTapGesture {
+                        navigationManager?.append(.profileDetailStack(message.writer.id))
+                    }
             } else {
                 Spacer()
             }
