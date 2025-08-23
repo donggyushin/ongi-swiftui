@@ -53,7 +53,6 @@ final class ChatViewModel: ObservableObject {
     @MainActor
     func sendMessage() async throws {
         guard !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
-        guard let me = me else { return }
         
         let messageText = text
         text = ""
