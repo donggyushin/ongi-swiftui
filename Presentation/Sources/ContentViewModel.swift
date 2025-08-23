@@ -19,6 +19,8 @@ public final class ContentViewModel: ObservableObject {
     let authUseCase: AuthUseCase
     let loginViewModel: LoginViewModel
     
+    let locationManager = LocationManager()
+    
     @Published var loading = true
     
     @Published var me: ProfileEntitiy?
@@ -45,6 +47,10 @@ public final class ContentViewModel: ObservableObject {
         defer { loading = false }
         me = try await profileUseCase.getMe()
         onboarding = me?.isCompleted != true
+        
+        if me?.isCompleted == true {
+            locationManager.requestLocation()
+        }
     }
     
     private func bind() {
@@ -63,6 +69,14 @@ public final class ContentViewModel: ObservableObject {
                 Task {
                     try await self?.getMe()
                 }
+            }
+            .store(in: &cancellables)
+        
+        locationManager
+            .$location
+            .compactMap { $0 }
+            .sink { location in
+                print(location)
             }
             .store(in: &cancellables)
     }

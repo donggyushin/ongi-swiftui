@@ -80,7 +80,9 @@ let project = Project(
                         "UIColorName": "",
                         "UIImageName": "",
                     ],
-                    "NSPhotoLibraryUsageDescription": "프로필 사진을 선택하기 위해 사진 라이브러리에 접근합니다."
+                    "NSPhotoLibraryUsageDescription": "프로필 사진을 선택하기 위해 사진 라이브러리에 접근합니다.",
+                    "NSLocationWhenInUseUsageDescription": "위치 정보를 허용하시면 회원님과 가까운 거리에 있는 사용자들을 우선적으로 추천해드릴 수 있습니다. 더 가까운 곳에서 새로운 만남을 시작해보세요!",
+                    "NSLocationAlwaysAndWhenInUseUsageDescription": "위치 정보를 허용하시면 회원님과 가까운 거리에 있는 사용자들을 우선적으로 추천해드릴 수 있습니다. 더 가까운 곳에서 새로운 만남을 시작해보세요!"
                 ]
             ),
             sources: ["ongi-swiftui/Sources/**"],
