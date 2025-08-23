@@ -112,8 +112,9 @@ final class ChatViewModel: ObservableObject {
             .compactMap { [weak self] message in 
                 // ❌ 수정: weak self로 참조 캡처
                 guard let self = self else { return nil }
-                return MessagePresentation(message: message, participants: self.participants) 
+                return MessagePresentation(message: message, participants: self.participants)
             }
+            .removeDuplicates()
             .receive(on: DispatchQueue.main)
             .sink { [weak self] messagePresentation in
                 self?.messages.insert(messagePresentation, at: 0)

@@ -8,7 +8,12 @@
 import Domain
 import Foundation
 
-struct MessagePresentation {
+struct MessagePresentation: Equatable {
+    
+    static func == (lhs: MessagePresentation, rhs: MessagePresentation) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
     let id: String
     let writer: ProfileEntitiy
     let text: String
