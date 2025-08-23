@@ -5,6 +5,8 @@
 //  Created by 신동규 on 8/22/25.
 //
 
+import Foundation
+
 public final class ChatUseCase {
     let chatRepository: PChatRepository
     
@@ -26,5 +28,9 @@ public final class ChatUseCase {
     
     public func sendMessage(chatId: String, text: String) async throws -> MessageEntity {
         return try await chatRepository.sendMessage(chatId: chatId, text: text)
+    }
+    
+    public func updateReadInfo(chatId: String) async throws {
+        try await chatRepository.updateReadInfo(chatId: chatId, date: Date())
     }
 }

@@ -23,6 +23,8 @@ final class ChatViewModel: ObservableObject {
     @Injected(\.chatUseCase) private var chatUseCase
     @Injected(\.contentViewModel) private var contentViewModel
     
+    private var cancellables = Set<AnyCancellable>()
+    
     init(chatId: String) {
         self.chatId = chatId
         
@@ -65,5 +67,14 @@ final class ChatViewModel: ObservableObject {
             .$me
             .receive(on: DispatchQueue.main)
             .assign(to: &$me)
+        
+        $messages
+            .sink { [weak self] _ in
+                Task {
+                    guard let self else { return }
+                    try await self.chatUseCase.updateReadInfo(chatId: self.chatId)
+                }
+            }
+            .store(in: &cancellables)
     }
 }

@@ -6,6 +6,7 @@
 //
 
 import Domain
+import Foundation
 
 public final class ChatRepository: PChatRepository {
     let chatRemoteDataStore = ChatRemoteDataSource()
@@ -26,5 +27,9 @@ public final class ChatRepository: PChatRepository {
     
     public func sendMessage(chatId: String, text: String) async throws -> MessageEntity {
         return try await chatRemoteDataStore.sendMessage(chatId: chatId, text: text)
+    }
+    
+    public func updateReadInfo(chatId: String, date: Date) async throws {
+        try await chatRemoteDataStore.updateReadInfo(chatId: chatId, date: date)
     }
 }

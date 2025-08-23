@@ -37,4 +37,8 @@ final class MockChatRepository: PChatRepository {
         let pagination = PaginationEntity(limit: limit, hasMore: false, nextCursor: chat.messages.last?.id)
         return (chat, pagination)
     }
+    
+    func updateReadInfo(chatId: String, date: Date) async throws {
+        
+    }
 }

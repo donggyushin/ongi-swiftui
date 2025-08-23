@@ -67,7 +67,6 @@ final class ChatRemoteDataSource {
         }
     }
     
-    // TODO: 구현필요
     func sendMessage(chatId: String, text: String) async throws -> MessageEntity {
         
         let url = "\(ongiExpressUrl)chats/\(chatId)/messages"
@@ -88,5 +87,14 @@ final class ChatRemoteDataSource {
         } else {
             throw AppError.networkError(.invalidResponse)
         }
+    }
+    
+    func updateReadInfo(chatId: String, date: Date) async throws {
+        let url = "\(ongiExpressUrl)chats/\(chatId)/read-info"
+        let body: [String: Any] = [
+            "dateInfoUserViewedRecently": dateFormatter.string(from: date)
+        ]
+        
+        let _: APIResponse<Empty> = try await networkManager.request(url: url, method: .put, parameters: body)
     }
 }
