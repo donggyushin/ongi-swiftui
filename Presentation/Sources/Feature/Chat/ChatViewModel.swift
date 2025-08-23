@@ -20,13 +20,19 @@ final class ChatViewModel: ObservableObject {
     
     var pagination: PaginationEntity?
     
+    private var participants: [ProfileEntitiy] = []
+    
     @Injected(\.chatUseCase) private var chatUseCase
     @Injected(\.contentViewModel) private var contentViewModel
+    
+    // 실시간 채팅 UseCase는 런타임에 생성
+    private let realTimeChatUseCase: RealTimeChatUseCase
     
     private var cancellables = Set<AnyCancellable>()
     
     init(chatId: String) {
         self.chatId = chatId
+        self.realTimeChatUseCase = .init(chatId: chatId, realTimeChatRepository: Container.shared.realTimeChatRepository())
         
         bind()
     }
@@ -42,7 +48,7 @@ final class ChatViewModel: ObservableObject {
         
         let result = try await chatUseCase.getChat(chatId: chatId, cursor: pagination?.nextCursor)
         let chat = result.0
-        let participants = chat.participants
+        participants = chat.participants
         
         let messagePresentations = chat.messages.compactMap { message in
             MessagePresentation(message: message, participants: participants)
@@ -59,7 +65,10 @@ final class ChatViewModel: ObservableObject {
         let messageText = text
         text = ""
         
-        _ = try await chatUseCase.sendMessage(chatId: chatId, text: messageText)
+        // 기존 API 호출
+        let message = try await chatUseCase.sendMessage(chatId: chatId, text: messageText)
+        // 실시간으로도 전송
+        realTimeChatUseCase.sendMessage(message: message)
     }
     
     private func bind() {
@@ -74,6 +83,19 @@ final class ChatViewModel: ObservableObject {
                     guard let self else { return }
                     try await self.chatUseCase.updateReadInfo(chatId: self.chatId)
                 }
+            }
+            .store(in: &cancellables)
+        
+        var participants: [ProfileEntitiy] {
+            self.participants
+        }
+        
+        realTimeChatUseCase
+            .listenMessage()
+            .compactMap { message in MessagePresentation(message: message, participants: participants) }
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] messagePresentation in
+                self?.messages.insert(messagePresentation, at: 0)
             }
             .store(in: &cancellables)
     }
