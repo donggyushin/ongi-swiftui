@@ -101,6 +101,7 @@ final class ChatViewModel: ObservableObject {
             .assign(to: &$me)
         
         $messages
+            .delay(for: 0.5, scheduler: DispatchQueue.main)
             .sink { [weak self] _ in
                 Task {
                     guard let self else { return }
@@ -129,7 +130,7 @@ final class ChatViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] messagePresentation in
                 self?.messages.insert(messagePresentation, at: 0)
-                Task {
+                Task { @MainActor in
                     try await Task.sleep(for: .seconds(0.2))
                     self?.scrollToMessageSubject.send(nil)
                 }
