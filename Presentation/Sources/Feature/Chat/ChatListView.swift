@@ -27,8 +27,8 @@ struct ChatListView: View {
         .refreshable {
             await model.refresh()
         }
-        .task {
-            if model.chats.isEmpty {
+        .onAppear {
+            Task {
                 await model.fetchChats()
             }
         }
