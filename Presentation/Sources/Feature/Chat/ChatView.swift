@@ -57,6 +57,18 @@ struct ChatView: View {
                         }
                     }
                 }
+                .onChange(of: inputFocus) { a, b in
+                    if a == false && b == true {
+                        Task {
+                            try await Task.sleep(for: .milliseconds(1000))
+                            if let lastMessage = model.messages.first {
+                                withAnimation {
+                                    proxy.scrollTo(lastMessage.id, anchor: .bottom)
+                                }
+                            }
+                        }
+                    }
+                }
             }
             
             MessageInputView(
