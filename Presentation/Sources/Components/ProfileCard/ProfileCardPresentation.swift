@@ -22,6 +22,7 @@ public struct ProfileCardPresentation {
     let blur: Bool
     let isLikedByMe: Bool
     let lastTokenAuthAt: Date
+    let location: LocationEntity?
     
     var lastLoginDaysAgo: Int {
         let calendar = Calendar.current
@@ -43,6 +44,7 @@ public struct ProfileCardPresentation {
         blur = domain.isNew
         isLikedByMe = domain.isLikedByMe
         lastTokenAuthAt = domain.lastTokenAuthAt
+        location = domain.location 
     }
     
 }

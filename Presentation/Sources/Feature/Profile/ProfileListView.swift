@@ -138,6 +138,7 @@ public struct ProfileListView: View {
                     presentation: ProfileCardPresentation(profile),
                     isMe: false
                 )
+                .setMyLocation(model.me?.location)
                 .frame(width: UIScreen.main.bounds.width - 40)
                 .matchedTransitionSource(id: profile.id, in: heroNamespace)
                 .overlay(

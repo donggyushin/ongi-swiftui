@@ -13,6 +13,12 @@ public struct ProfileCard: View {
     
     let presentation: ProfileCardPresentation
     let isMe: Bool
+    var myLocation: LocationEntity?
+    public func setMyLocation(_ location: LocationEntity?) -> Self {
+        var copy = self
+        copy.myLocation = location
+        return copy 
+    }
     
     private var lastLoginText: String {
         let daysAgo = presentation.lastLoginDaysAgo
