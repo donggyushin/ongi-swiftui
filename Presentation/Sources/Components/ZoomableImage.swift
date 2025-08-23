@@ -6,126 +6,166 @@
 //
 
 import SwiftUI
+import UIKit
 import Kingfisher
 
-public struct ZoomableImage: View {
+// MARK: - UIKit ZoomableImageViewController
+public class ZoomableImageViewController: UIViewController, UIScrollViewDelegate {
+    
+    private let scrollView = UIScrollView()
+    private let imageView = UIImageView()
+    private let url: URL
+    
+    init(url: URL) {
+        self.url = url
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override public func viewDidLoad() {
+        super.viewDidLoad()
+        
+        setupScrollView()
+        setupImageView()
+        setupGestures()
+        loadImage()
+    }
+    
+    private func setupScrollView() {
+        scrollView.delegate = self
+        scrollView.minimumZoomScale = 1.0
+        scrollView.maximumZoomScale = 3.0
+        scrollView.bouncesZoom = true
+        scrollView.showsVerticalScrollIndicator = false
+        scrollView.showsHorizontalScrollIndicator = false
+        
+        view.addSubview(scrollView)
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
+    
+    private func setupImageView() {
+        imageView.contentMode = .scaleAspectFit
+        imageView.clipsToBounds = true
+        
+        scrollView.addSubview(imageView)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            imageView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            imageView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            imageView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            imageView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            imageView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            imageView.heightAnchor.constraint(equalTo: scrollView.heightAnchor)
+        ])
+    }
+    
+    private func setupGestures() {
+        let doubleTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(_:)))
+        doubleTapRecognizer.numberOfTapsRequired = 2
+        scrollView.addGestureRecognizer(doubleTapRecognizer)
+    }
+    
+    private func loadImage() {
+        imageView.kf.setImage(with: url) { [weak self] result in
+            switch result {
+            case .success(let value):
+                DispatchQueue.main.async {
+                    self?.updateContentSize(for: value.image)
+                }
+            case .failure:
+                break
+            }
+        }
+    }
+    
+    private func updateContentSize(for image: UIImage) {
+        let imageSize = image.size
+        let scrollViewSize = scrollView.bounds.size
+        
+        // 이미지 비율을 유지하면서 스크롤뷰에 맞는 크기 계산
+        let widthRatio = scrollViewSize.width / imageSize.width
+        let heightRatio = scrollViewSize.height / imageSize.height
+        let minRatio = min(widthRatio, heightRatio)
+        
+        let scaledImageSize = CGSize(
+            width: imageSize.width * minRatio,
+            height: imageSize.height * minRatio
+        )
+        
+        scrollView.contentSize = scaledImageSize
+        centerImage()
+    }
+    
+    private func centerImage() {
+        let offsetX = max((scrollView.bounds.width - scrollView.contentSize.width) * 0.5, 0)
+        let offsetY = max((scrollView.bounds.height - scrollView.contentSize.height) * 0.5, 0)
+        
+        imageView.center = CGPoint(
+            x: scrollView.contentSize.width * 0.5 + offsetX,
+            y: scrollView.contentSize.height * 0.5 + offsetY
+        )
+    }
+    
+    @objc private func handleDoubleTap(_ sender: UITapGestureRecognizer) {
+        if scrollView.zoomScale == scrollView.minimumZoomScale {
+            // 더블 탭 위치를 중심으로 확대
+            let location = sender.location(in: imageView)
+            let zoomRect = zoomRectForScale(scale: scrollView.maximumZoomScale / 2, center: location)
+            scrollView.zoom(to: zoomRect, animated: true)
+        } else {
+            // 최소 스케일로 리셋
+            scrollView.setZoomScale(scrollView.minimumZoomScale, animated: true)
+        }
+    }
+    
+    private func zoomRectForScale(scale: CGFloat, center: CGPoint) -> CGRect {
+        var zoomRect = CGRect.zero
+        zoomRect.size.height = imageView.frame.size.height / scale
+        zoomRect.size.width = imageView.frame.size.width / scale
+        zoomRect.origin.x = center.x - (zoomRect.size.width / 2.0)
+        zoomRect.origin.y = center.y - (zoomRect.size.height / 2.0)
+        return zoomRect
+    }
+    
+    // MARK: - UIScrollViewDelegate
+    
+    public func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        return imageView
+    }
+    
+    public func scrollViewDidZoom(_ scrollView: UIScrollView) {
+        centerImage()
+    }
+}
+
+// MARK: - SwiftUI Wrapper
+public struct ZoomableImage: UIViewControllerRepresentable {
     
     let url: URL
-    
-    @State private var scale: CGFloat = 1.0
-    @State private var offset: CGSize = .zero
-    @State private var lastOffset: CGSize = .zero
-    
-    @GestureState private var magnification: CGFloat = 1.0
-    @GestureState private var dragOffset: CGSize = .zero
-    
-    private let minScale: CGFloat = 1.0
-    private let maxScale: CGFloat = 4.0
     
     public init(url: URL) {
         self.url = url
     }
     
-    // 확대/축소 제스처
-    private var magnificationGesture: some Gesture {
-        MagnificationGesture()
-            .updating($magnification) { value, gestureState, _ in
-                gestureState = value
-            }
-            .onEnded { value in
-                
-                withAnimation(.easeOut(duration: 0.3)) {
-                    scale = minScale
-                    offset = .zero
-                    lastOffset = .zero
-                }
-            }
+    public func makeUIViewController(context: Context) -> ZoomableImageViewController {
+        return ZoomableImageViewController(url: url)
     }
     
-    // 드래그 제스처
-    private var dragGesture: some Gesture {
-        DragGesture()
-            .updating($dragOffset) { value, gestureState, _ in
-                // 확대된 상태에서만 드래그 허용
-                guard scale > minScale else { return }
-                gestureState = value.translation
-            }
-            .onEnded { value in
-                guard scale > minScale else { return }
-                
-                withAnimation(.easeOut(duration: 0.3)) {
-                    scale = minScale
-                    offset = .zero
-                    lastOffset = .zero
-                }
-            }
-    }
-    
-    // 더블 탭 제스처
-    private var doubleTapGesture: some Gesture {
-        TapGesture(count: 2)
-            .onEnded {
-                withAnimation(.easeOut(duration: 0.3)) {
-                    if scale > minScale {
-                        // 원본 크기로 리셋
-                        scale = minScale
-                        offset = .zero
-                        lastOffset = .zero
-                    } else {
-                        // 2배 확대
-                        scale = 2.0
-                    }
-                }
-            }
-    }
-    
-    public var body: some View {
-        GeometryReader { geometry in
-            KFImage(url)
-                .resizable()
-                .scaledToFill()
-                .scaleEffect(scale * magnification)
-                .offset(
-                    CGSize(
-                        width: offset.width + dragOffset.width,
-                        height: offset.height + dragOffset.height
-                    )
-                )
-                .gesture(
-                    SimultaneousGesture(
-                        magnificationGesture,
-                        dragGesture
-                    )
-                )
-                .onTapGesture(count: 2) {
-                    withAnimation(.easeOut(duration: 0.3)) {
-                        if scale > minScale {
-                            scale = minScale
-                            offset = .zero
-                            lastOffset = .zero
-                        } else {
-                            scale = 2.0
-                        }
-                    }
-                }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-        }
-        .clipped()
-        .ignoresSafeArea()
-    }
-    
-    // 오프셋 경계 제한 함수
-    private func limitOffset(_ proposedOffset: CGSize) -> CGSize {
-        let maxOffsetX = max(0, (UIScreen.main.bounds.width * (scale - 1)) / 2)
-        let maxOffsetY = max(0, (UIScreen.main.bounds.height * (scale - 1)) / 2)
-        
-        return CGSize(
-            width: min(max(proposedOffset.width, -maxOffsetX), maxOffsetX),
-            height: min(max(proposedOffset.height, -maxOffsetY), maxOffsetY)
-        )
+    public func updateUIViewController(_ uiViewController: ZoomableImageViewController, context: Context) {
+        // URL이 변경되면 새 이미지 로드
     }
 }
 
 #Preview {
     ZoomableImage(url: .init(string: "https://res.cloudinary.com/blog-naver-com-donggyu-00/image/upload/v1755952248/profile-images/profile_gallery_001179.faeab893b42e4690857666203dccc57f.1606_1755952246788.jpg")!)
+        .ignoresSafeArea()
 }
