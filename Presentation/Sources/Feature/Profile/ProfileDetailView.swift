@@ -252,12 +252,11 @@ public struct ProfileDetailView: View {
                         navigationManager?.append(.zoomableImage(url))
                     }
                     .frame(height: 350)
-                    .frame(maxWidth: UIScreen.main.bounds.width * 0.75)
                 
-                Spacer()
+                Spacer(minLength: 0)
             } else {
                 // 홀수 인덱스 = 오른쪽 정렬
-                Spacer()
+                Spacer(minLength: 0)
                 
                 KFImage(url)
                     .resizable()
@@ -269,7 +268,6 @@ public struct ProfileDetailView: View {
                         navigationManager?.append(.zoomableImage(url))
                     }
                     .frame(height: 350)
-                    .frame(maxWidth: UIScreen.main.bounds.width * 0.75)
             }
         }
     }
