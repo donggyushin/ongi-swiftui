@@ -5,6 +5,8 @@ import Factory
 @main
 struct OngiSwiftuiApp: App {
     
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    
     init() {
         // Setup dependency injection container
         Container.setupApp()
