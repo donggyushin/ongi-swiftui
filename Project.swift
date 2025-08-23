@@ -27,6 +27,8 @@ let project = Project(
                 .external(name: "SnapKit"),
                 .external(name: "FirebaseAuth"),
                 .external(name: "FirebaseFirestore"),
+                .external(name: "FirebaseAnalytics"),
+                .external(name: "FirebaseCrashlytics"),
             ]
         ),
         .target(
@@ -103,7 +105,8 @@ let project = Project(
             settings: .settings(
                 base: [
                     "DEVELOPMENT_TEAM": "YV58Q28W8Z",
-                    "CODE_SIGN_ENTITLEMENTS": "ongi-swiftui/ongi-swiftui.entitlements"
+                    "CODE_SIGN_ENTITLEMENTS": "ongi-swiftui/ongi-swiftui.entitlements",
+                    "OTHER_LDFLAGS": "-ObjC"
                 ]
             )
         ),
