@@ -49,6 +49,7 @@ struct ChatView: View {
         .task {
             try? await model.fetchMessages()
         }
+        .loading(model.loading)
     }
 }
 

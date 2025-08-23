@@ -13,6 +13,8 @@ import Combine
 final class ChatViewModel: ObservableObject {
     let chatId: String
     
+    @Published var me: ProfileEntitiy?
+    
     @Published var text: String = ""
     
     @Published var participants: [ProfileEntitiy] = []
@@ -22,9 +24,12 @@ final class ChatViewModel: ObservableObject {
     var pagination: PaginationEntity?
     
     @Injected(\.chatUseCase) private var chatUseCase
+    @Injected(\.contentViewModel) private var contentViewModel
     
     init(chatId: String) {
         self.chatId = chatId
+        
+        bind()
     }
     
     @MainActor
@@ -52,5 +57,12 @@ final class ChatViewModel: ObservableObject {
         
         let newMessage = try await chatUseCase.sendMessage(chatId: chatId, text: messageText)
         messages.insert(newMessage, at: 0)
+    }
+    
+    private func bind() {
+        contentViewModel
+            .$me
+            .receive(on: DispatchQueue.main)
+            .assign(to: &$me)
     }
 }
