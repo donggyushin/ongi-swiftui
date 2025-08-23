@@ -20,7 +20,8 @@ struct ChatView: View {
                         ForEach(model.messages.reversed(), id: \.id) { message in
                             MessageRow(
                                 message: message,
-                                participant: model.participants.first { $0.id == message.writerProfileId }
+                                participant: model.participants.first { $0.id == message.writerProfileId },
+                                isMyMessage: model.me?.id == message.writerProfileId
                             )
                         }
                     }
@@ -56,31 +57,38 @@ struct ChatView: View {
 struct MessageRow: View {
     let message: MessageEntity
     let participant: ProfileEntitiy?
+    let isMyMessage: Bool
     
     var body: some View {
         HStack(alignment: .top, spacing: 8) {
-            AsyncImage(url: participant?.profileImage?.url) { image in
-                image
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-            } placeholder: {
-                Circle()
-                    .fill(Color.gray.opacity(0.3))
+            if !isMyMessage {
+                AsyncImage(url: participant?.profileImage?.url) { image in
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                } placeholder: {
+                    Circle()
+                        .fill(Color.gray.opacity(0.3))
+                }
+                .frame(width: 40, height: 40)
+                .clipShape(Circle())
+            } else {
+                Spacer()
             }
-            .frame(width: 40, height: 40)
-            .clipShape(Circle())
             
-            VStack(alignment: .leading, spacing: 4) {
-                Text(participant?.nickname ?? "Unknown")
-                    .pretendardBody()
-                    .foregroundColor(.primary)
+            VStack(alignment: isMyMessage ? .trailing : .leading, spacing: 4) {
+                if !isMyMessage {
+                    Text(participant?.nickname ?? "Unknown")
+                        .pretendardBody()
+                        .foregroundColor(.primary)
+                }
                 
                 Text(message.text)
                     .pretendardBody()
-                    .foregroundColor(.primary)
+                    .foregroundColor(isMyMessage ? .white : .primary)
                     .padding(.horizontal, 12)
                     .padding(.vertical, 8)
-                    .background(Color(.systemGray6))
+                    .background(isMyMessage ? Color.blue : Color(.systemGray6))
                     .cornerRadius(16)
                 
                 Text(message.createdAt, style: .time)
@@ -88,7 +96,9 @@ struct MessageRow: View {
                     .foregroundColor(.secondary)
             }
             
-            Spacer()
+            if !isMyMessage {
+                Spacer()
+            }
         }
         .id(message.id)
     }
