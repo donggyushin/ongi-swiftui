@@ -25,7 +25,6 @@ let project = Project(
                 .external(name: "Kingfisher"),
                 .external(name: "SocketIO"),
                 .external(name: "SnapKit"),
-                .external(name: "FirebaseAuth"),
             ]
         ),
         .target(
@@ -94,10 +93,8 @@ let project = Project(
             sources: ["ongi-swiftui/Sources/**"],
             resources: ["ongi-swiftui/Resources/**"],
             dependencies: [
-                .target(name: "Domain"),
-                .target(name: "ThirdParty"),
-                .target(name: "DataSource"),
                 .target(name: "Presentation"),
+                .external(name: "FirebaseAuth"),
             ],
             settings: .settings(
                 base: [
