@@ -46,7 +46,7 @@ final class ChatViewModel: ObservableObject {
     
     func cleanup() {
         realTimeChatUseCase.leaveChat()
-        realTimeChatUseCase.dismiss()
+        realTimeChatUseCase.disconnect()
         cancellables.removeAll()
     }
     

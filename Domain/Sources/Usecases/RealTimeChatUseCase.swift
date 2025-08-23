@@ -25,7 +25,7 @@ public final class RealTimeChatUseCase {
         realTimeChatRepository.connect()
     }
     
-    public func dismiss() {
+    public func disconnect() {
         realTimeChatRepository.disconnect()
     }
     
