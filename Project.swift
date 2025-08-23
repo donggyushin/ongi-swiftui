@@ -103,7 +103,7 @@ let project = Project(
                 base: [
                     "DEVELOPMENT_TEAM": "YV58Q28W8Z",
                     "CODE_SIGN_ENTITLEMENTS": "ongi-swiftui/ongi-swiftui.entitlements",
-                    "OTHER_LDFLAGS": "-ObjC",
+                    "OTHER_LDFLAGS": ["-ObjC", "-l\"c++\"", "-framework", "\"StoreKit\"", "-framework", "\"Security\"", "-framework", "\"GSS\"", "-framework", "\"LocalAuthentication\""],
                     "DEBUG_INFORMATION_FORMAT": "dwarf-with-dsym"
                 ]
             )
