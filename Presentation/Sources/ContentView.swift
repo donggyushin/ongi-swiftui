@@ -34,6 +34,15 @@ public struct ContentView: View {
                                     in: heroNamespace
                                 )
                             )
+                        case .zoomableImage(let url):
+                            ZoomableImage(url: url)
+                                .navigationBarBackButtonHidden()
+                                .navigationTransition(
+                                    .zoom(
+                                        sourceID: url,
+                                        in: heroNamespace
+                                    )
+                                )
                         case .profileDetailStack(let id):
                             ProfileDetailView(
                                 model: .init(profileId: id),

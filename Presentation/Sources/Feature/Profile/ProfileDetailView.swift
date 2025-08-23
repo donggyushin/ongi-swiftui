@@ -70,9 +70,18 @@ public struct ProfileDetailView: View {
     
     private var headerSection: some View {
         VStack(spacing: 12) {
-            UserBackgroundImage(url: model.photoURLOfTheMainGate, blur: false)
-                .clipShape(RoundedRectangle(cornerRadius: 12))
-                .frame(height: 400)
+            
+            if let url = model.photoURLOfTheMainGate {
+                KFImage(url)
+                    .resizable()
+                    .scaledToFit()
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .clipped()
+                    .matchedTransitionSource(id: url, in: heroNamespace)
+                    .onTapGesture {
+                        navigationManager?.append(.zoomableImage(url))
+                    }
+            }
             
             HStack {
                 CircleProfileImage(url: model.profilePhotoURL, size: 60)
@@ -232,10 +241,13 @@ public struct ProfileDetailView: View {
     private func photoView(url: URL) -> some View {
         KFImage(url)
             .resizable()
-            .aspectRatio(contentMode: .fill)
-            .frame(height: 250)
+            .scaledToFit()
             .clipShape(RoundedRectangle(cornerRadius: 12))
             .clipped()
+            .matchedTransitionSource(id: url, in: heroNamespace)
+            .onTapGesture {
+                navigationManager?.append(.zoomableImage(url))
+            }
     }
     
     private func qnaView(qna: QnAEntity) -> some View {
