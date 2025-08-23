@@ -4,6 +4,16 @@ import Combine
 import ThirdParty
 import Domain
 
+public protocol PSocketRemoteDataSource {
+    func connect()
+    func disconnect()
+    func emit(event: String, data: String)
+    func emit(event: String, data: [String: Any])
+    func listen<T: Codable>(event: String, type: T.Type) -> AnyPublisher<T, Never>
+    func listenForConnection() -> AnyPublisher<Bool, Never>
+    var isConnected: Bool { get }
+}
+
 public class SocketRemoteDataSource: PSocketRemoteDataSource {
     private let manager: SocketManager
     private let socket: SocketIOClient

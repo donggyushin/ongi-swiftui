@@ -5,7 +5,7 @@
 //  Created by 신동규 on 8/22/25.
 //
 
-struct MessageResponseDTO: Decodable {
+struct MessageResponseDTO: Codable {
     let id: String
     let writerProfileId: String
     let text: String

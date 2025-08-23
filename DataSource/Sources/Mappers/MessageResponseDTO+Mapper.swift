@@ -21,4 +21,24 @@ extension MessageResponseDTO {
             updatedAt: updatedAt
         )
     }
+    
+    static func generate(from message: MessageEntity) -> MessageResponseDTO {
+        return .init(
+            id: message.id,
+            writerProfileId: message.writerProfileId,
+            text: message.text,
+            createdAt: dateFormatter.string(from: message.createdAt),
+            updatedAt: dateFormatter.string(from: message.updatedAt)
+        )
+    }
+    
+    func toJSON() -> [String: Any] {
+        return [
+            "id": id,
+            "writerProfileId": writerProfileId,
+            "text": text,
+            "createdAt": createdAt,
+            "updatedAt": updatedAt
+        ]
+    }
 }

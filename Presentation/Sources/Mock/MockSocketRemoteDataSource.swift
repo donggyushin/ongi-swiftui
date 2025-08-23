@@ -8,6 +8,7 @@
 import Foundation
 import Combine
 import Domain
+import DataSource
 
 public class MockSocketRemoteDataSource: PSocketRemoteDataSource {
     private let connectionSubject = CurrentValueSubject<Bool, Never>(false)
