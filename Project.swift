@@ -23,7 +23,8 @@ let project = Project(
                 .external(name: "Alamofire"),
                 .external(name: "Factory"),
                 .external(name: "Kingfisher"),
-                .external(name: "SocketIO")
+                .external(name: "SocketIO"),
+                .external(name: "SnapKit")
             ]
         ),
         .target(
