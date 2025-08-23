@@ -84,7 +84,16 @@ public struct ProfileDetailView: View {
             }
             
             HStack {
-                CircleProfileImage(url: model.profilePhotoURL, size: 60)
+                if let url = model.profilePhotoURL {
+                    CircleProfileImage(url: url, size: 60)
+                        .matchedTransitionSource(id: url, in: heroNamespace)
+                        .onTapGesture {
+                            navigationManager?.append(.zoomableImage(url))
+                        }
+                } else {
+                    CircleProfileImage(url: model.profilePhotoURL, size: 60)
+                }
+                
                 
                 VStack(alignment: .leading, spacing: 4) {
                     HStack {
