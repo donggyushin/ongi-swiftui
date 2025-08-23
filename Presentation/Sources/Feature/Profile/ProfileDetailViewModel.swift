@@ -62,7 +62,9 @@ public final class ProfileDetailViewModel: ObservableObject {
         var profile = try await profileUseCase.search(profileId: profileId)
         
         if profile.images.isEmpty == false {
-            photoURLOfTheMainGate = profile.images.removeFirst().url
+            withAnimation {
+                photoURLOfTheMainGate = profile.images.removeFirst().url
+            }
         }
         
         profilePhotoURL = profile.profileImage?.url
