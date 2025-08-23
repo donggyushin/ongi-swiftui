@@ -66,6 +66,13 @@ extension Container {
         }
         .singleton
     }
+    
+    var realTimeChatRepository: Factory<PRealTimeChatRepository> {
+        self {
+            RealTimeChatRepository(socketRemoteDataSource: self.socketRemoteDataSource())
+        }
+        .singleton
+    }
 }
 
 // MARK: - Use Case Layer Dependencies

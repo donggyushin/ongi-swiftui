@@ -11,22 +11,15 @@ import Foundation
 
 public final class RealTimeChatRepository: PRealTimeChatRepository {
     
-    let socketRemoteDataSource: PSocketRemoteDataSource
-    
-    let messageSubject: PassthroughSubject<MessageEntity, Never> = .init()
-    
+    private let socketRemoteDataSource: PSocketRemoteDataSource
+    private let messageSubject: PassthroughSubject<MessageEntity, Never> = .init()
     private var cancellables: Set<AnyCancellable> = []
+    private var isListeningForMessages = false
     
     public init(
         socketRemoteDataSource: PSocketRemoteDataSource
     ) {
         self.socketRemoteDataSource = socketRemoteDataSource
-        
-        socketRemoteDataSource.connect()
-    }
-    
-    deinit {
-        socketRemoteDataSource.disconnect()
     }
     
     public func listenForConnection() -> AnyPublisher<Bool, Never> {
@@ -34,6 +27,9 @@ public final class RealTimeChatRepository: PRealTimeChatRepository {
     }
     
     public func joinChat(chatId: String) {
+        if !socketRemoteDataSource.isConnected {
+            socketRemoteDataSource.connect()
+        }
         socketRemoteDataSource.emit(event: "join-chat", data: chatId)
     }
     
@@ -52,7 +48,15 @@ public final class RealTimeChatRepository: PRealTimeChatRepository {
     }
     
     public func listenMessage() -> AnyPublisher<MessageEntity, Never> {
+        if !isListeningForMessages {
+            isListeningForMessages = true
+            setupMessageListener()
+        }
         
+        return messageSubject.eraseToAnyPublisher()
+    }
+    
+    private func setupMessageListener() {
         struct ListenDTO: Codable {
             let chatId: String
             let message: MessageResponseDTO
@@ -66,7 +70,5 @@ public final class RealTimeChatRepository: PRealTimeChatRepository {
                 }
             }
             .store(in: &cancellables)
-        
-        return messageSubject.eraseToAnyPublisher()
     }
 }

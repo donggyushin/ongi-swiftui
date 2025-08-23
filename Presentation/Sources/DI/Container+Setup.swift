@@ -26,6 +26,7 @@ extension Container {
         shared.verificationRepository.onPreview { MockVerificationRepository() }
         shared.connectionRepository.onPreview { MockConnectionRepository() }
         shared.chatRepository.onPreview { MockChatRepository() }
+        shared.realTimeChatRepository.onPreview { MockRealTimeChatRepository() }
         shared.socketRemoteDataSource.onPreview { MockSocketRemoteDataSource() }
     }
     #endif
@@ -58,6 +59,7 @@ extension Container {
         
         shared.jwtRepository.register { MockJWTRepository() }
         shared.profileRepository.register { MockProfileRepository() }
+        shared.realTimeChatRepository.register { MockRealTimeChatRepository() }
         shared.socketRemoteDataSource.register { MockSocketRemoteDataSource() }
     }
     
