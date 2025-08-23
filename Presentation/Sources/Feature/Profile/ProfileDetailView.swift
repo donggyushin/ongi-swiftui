@@ -73,15 +73,15 @@ public struct ProfileDetailView: View {
         VStack(spacing: 12) {
             
             if let url = model.photoURLOfTheMainGate {
-                KFImage(url)
-                    .resizable()
-                    .scaledToFit()
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
-                    .clipped()
-                    .matchedTransitionSource(id: url, in: heroNamespace)
-                    .onTapGesture {
-                        navigationManager?.append(.zoomableImage(url))
-                    }
+                Button {
+                    navigationManager?.append(.zoomableImage(url))
+                } label: {
+                    KFImage(url)
+                        .resizable()
+                        .scaledToFit()
+                        .matchedTransitionSource(id: url, in: heroNamespace)
+                }
+                .clipShape(RoundedRectangle(cornerRadius: 12))
             }
             
             HStack {
