@@ -66,4 +66,9 @@ final class ChatRemoteDataSource {
             throw AppError.networkError(.invalidResponse)
         }
     }
+    
+    // TODO: 구현필요
+    func sendMessage(chatId: String, text: String) async throws -> MessageEntity {
+        throw AppError.networkError(.invalidResponse)
+    }
 }

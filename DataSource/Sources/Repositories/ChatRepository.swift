@@ -23,4 +23,8 @@ public final class ChatRepository: PChatRepository {
     public func getChat(chatId: String, limit: Int, cursor: String?) async throws -> (ChatEntity, PaginationEntity) {
         return try await chatRemoteDataStore.getChat(chatId: chatId, limit: limit, cursor: cursor)
     }
+    
+    public func sendMessage(chatId: String, text: String) async throws -> MessageEntity {
+        return try await chatRemoteDataStore.sendMessage(chatId: chatId, text: text)
+    }
 }

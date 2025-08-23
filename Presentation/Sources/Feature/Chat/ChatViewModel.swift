@@ -42,4 +42,15 @@ final class ChatViewModel: ObservableObject {
         
         pagination = result.1
     }
+    
+    @MainActor
+    func sendMessage() async throws {
+        guard !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
+        
+        let messageText = text
+        text = ""
+        
+        let newMessage = try await chatUseCase.sendMessage(chatId: chatId, text: messageText)
+        messages.insert(newMessage, at: 0)
+    }
 }

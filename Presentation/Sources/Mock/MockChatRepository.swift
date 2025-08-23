@@ -9,6 +9,16 @@ import Domain
 import Foundation
 
 final class MockChatRepository: PChatRepository {
+    func sendMessage(chatId: String, text: String) async throws -> MessageEntity {
+        return .init(
+            id: chatId,
+            writerProfileId: UUID().uuidString,
+            text: text,
+            createdAt: Date(),
+            updatedAt: Date()
+        )
+    }
+    
     func getChats() async throws -> [ChatEntity] {
         // Generate 5-8 mock chats with realistic conversation data
         try await Task.sleep(for: .seconds(1))

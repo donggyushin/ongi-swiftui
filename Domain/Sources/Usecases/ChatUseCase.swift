@@ -23,4 +23,8 @@ public final class ChatUseCase {
     public func getChat(chatId: String, limit: Int = 20, cursor: String?) async throws -> (ChatEntity, PaginationEntity) {
         return try await chatRepository.getChat(chatId: chatId, limit: limit, cursor: cursor)
     }
+    
+    public func sendMessage(chatId: String, text: String) async throws -> MessageEntity {
+        return try await chatRepository.sendMessage(chatId: chatId, text: text)
+    }
 }
