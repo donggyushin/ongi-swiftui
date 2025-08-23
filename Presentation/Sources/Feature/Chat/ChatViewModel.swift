@@ -128,8 +128,11 @@ final class ChatViewModel: ObservableObject {
             .removeDuplicates()
             .receive(on: DispatchQueue.main)
             .sink { [weak self] messagePresentation in
-                self?.scrollToMessageSubject.send(nil)
                 self?.messages.insert(messagePresentation, at: 0)
+                Task {
+                    try await Task.sleep(for: .seconds(0.2))
+                    self?.scrollToMessageSubject.send(nil)
+                }
             }
             .store(in: &cancellables)
     }
