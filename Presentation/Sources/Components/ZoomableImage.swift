@@ -30,13 +30,12 @@ public class ZoomableImageViewController: UIViewController, UIScrollViewDelegate
         
         setupScrollView()
         setupImageView()
-        setupGestures()
         loadImage()
     }
     
     private func setupScrollView() {
         scrollView.delegate = self
-        scrollView.minimumZoomScale = 0.5
+        scrollView.minimumZoomScale = 1
         scrollView.maximumZoomScale = 3.0
         scrollView.bouncesZoom = true
         scrollView.showsVerticalScrollIndicator = false
@@ -68,88 +67,14 @@ public class ZoomableImageViewController: UIViewController, UIScrollViewDelegate
         ])
     }
     
-    private func setupGestures() {
-        let doubleTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(_:)))
-        doubleTapRecognizer.numberOfTapsRequired = 2
-        scrollView.addGestureRecognizer(doubleTapRecognizer)
-    }
-    
     private func loadImage() {
-        imageView.kf.setImage(with: url) { [weak self] result in
-            switch result {
-            case .success(let value):
-                DispatchQueue.main.async {
-                    self?.updateContentSize(for: value.image)
-                }
-            case .failure:
-                break
-            }
-        }
-    }
-    
-    private func updateContentSize(for image: UIImage) {
-        let imageSize = image.size
-        let scrollViewSize = scrollView.bounds.size
-        
-        // 이미지가 화면을 가득 채우도록 비율 계산 (scaleAspectFill)
-        let widthRatio = scrollViewSize.width / imageSize.width
-        let heightRatio = scrollViewSize.height / imageSize.height
-        let fillRatio = max(widthRatio, heightRatio) // aspectFill을 위해 max 사용
-        
-        let scaledImageSize = CGSize(
-            width: imageSize.width * fillRatio,
-            height: imageSize.height * fillRatio
-        )
-        
-        scrollView.contentSize = scaledImageSize
-        
-        // 화면을 가득 채우는 초기 줌 레벨 설정
-        let fillZoomScale = fillRatio
-        scrollView.zoomScale = fillZoomScale
-        scrollView.minimumZoomScale = min(fillZoomScale, 0.5)
-        
-        centerImage()
-    }
-    
-    private func centerImage() {
-        let offsetX = max((scrollView.bounds.width - scrollView.contentSize.width) * 0.5, 0)
-        let offsetY = max((scrollView.bounds.height - scrollView.contentSize.height) * 0.5, 0)
-        
-        imageView.center = CGPoint(
-            x: scrollView.contentSize.width * 0.5 + offsetX,
-            y: scrollView.contentSize.height * 0.5 + offsetY
-        )
-    }
-    
-    @objc private func handleDoubleTap(_ sender: UITapGestureRecognizer) {
-        if scrollView.zoomScale == scrollView.minimumZoomScale {
-            // 더블 탭 위치를 중심으로 확대
-            let location = sender.location(in: imageView)
-            let zoomRect = zoomRectForScale(scale: scrollView.maximumZoomScale / 2, center: location)
-            scrollView.zoom(to: zoomRect, animated: true)
-        } else {
-            // 최소 스케일로 리셋
-            scrollView.setZoomScale(scrollView.minimumZoomScale, animated: true)
-        }
-    }
-    
-    private func zoomRectForScale(scale: CGFloat, center: CGPoint) -> CGRect {
-        var zoomRect = CGRect.zero
-        zoomRect.size.height = imageView.frame.size.height / scale
-        zoomRect.size.width = imageView.frame.size.width / scale
-        zoomRect.origin.x = center.x - (zoomRect.size.width / 2.0)
-        zoomRect.origin.y = center.y - (zoomRect.size.height / 2.0)
-        return zoomRect
+        imageView.kf.setImage(with: url)
     }
     
     // MARK: - UIScrollViewDelegate
     
     public func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return imageView
-    }
-    
-    public func scrollViewDidZoom(_ scrollView: UIScrollView) {
-        centerImage()
     }
 }
 
