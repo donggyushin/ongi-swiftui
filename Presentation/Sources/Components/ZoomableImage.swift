@@ -91,17 +91,23 @@ public class ZoomableImageViewController: UIViewController, UIScrollViewDelegate
         let imageSize = image.size
         let scrollViewSize = scrollView.bounds.size
         
-        // 이미지 비율을 유지하면서 스크롤뷰에 맞는 크기 계산
+        // 이미지가 화면을 가득 채우도록 비율 계산 (scaleAspectFill)
         let widthRatio = scrollViewSize.width / imageSize.width
         let heightRatio = scrollViewSize.height / imageSize.height
-        let minRatio = min(widthRatio, heightRatio)
+        let fillRatio = max(widthRatio, heightRatio) // aspectFill을 위해 max 사용
         
         let scaledImageSize = CGSize(
-            width: imageSize.width * minRatio,
-            height: imageSize.height * minRatio
+            width: imageSize.width * fillRatio,
+            height: imageSize.height * fillRatio
         )
         
         scrollView.contentSize = scaledImageSize
+        
+        // 화면을 가득 채우는 초기 줌 레벨 설정
+        let fillZoomScale = fillRatio
+        scrollView.zoomScale = fillZoomScale
+        scrollView.minimumZoomScale = min(fillZoomScale, 0.5)
+        
         centerImage()
     }
     
