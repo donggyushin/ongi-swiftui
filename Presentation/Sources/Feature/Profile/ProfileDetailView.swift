@@ -115,7 +115,8 @@ public struct ProfileDetailView: View {
                                 .foregroundStyle(.secondary)
                             
                             if let myLocation = model.me?.location,
-                               let userLocation = model.location {
+                               let userLocation = model.location,
+                               model.isMe == false {
                                 HStack {
                                     Image(systemName: "location.fill")
                                         .font(.caption2)

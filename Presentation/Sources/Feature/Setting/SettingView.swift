@@ -56,16 +56,17 @@ struct SettingView: View {
     
     @ViewBuilder
     private func profileSection(_ me: ProfileEntitiy) -> some View {
-        SimpleProfile(
-            profileImage: me.profileImage?.url,
-            nickname: me.nickname,
-            isLikedByMe: false,
-            blur: false,
-            isVerified: me.email?.isEmpty == false,
-            mbti: me.mbti?.text
-        )
-        .onTapGesture {
+        Button {
             navigationManager?.append(.profileDetailStack(me.id))
+        } label: {
+            SimpleProfile(
+                profileImage: me.profileImage?.url,
+                nickname: me.nickname,
+                isLikedByMe: false,
+                blur: false,
+                isVerified: me.email?.isEmpty == false,
+                mbti: me.mbti?.text
+            )
         }
     }
     
