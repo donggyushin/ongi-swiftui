@@ -15,7 +15,7 @@ let project = Project(
         .target(
             name: "ThirdParty",
             destinations: .iOS,
-            product: .framework,
+            product: .staticFramework,
             bundleId: "io.tuist.ongi-swiftui.ThirdParty",
             deploymentTargets: .iOS("18.0"),
             sources: ["ThirdParty/Sources/**"],
@@ -25,8 +25,7 @@ let project = Project(
                 .external(name: "Kingfisher"),
                 .external(name: "SocketIO"),
                 .external(name: "SnapKit"),
-                .external(name: "FirebaseAnalytics"),
-                .sdk(name: "JavaScriptCore", type: .framework)
+                .external(name: "FirebaseAuth"),
             ]
         ),
         .target(
@@ -104,8 +103,12 @@ let project = Project(
                 base: [
                     "DEVELOPMENT_TEAM": "YV58Q28W8Z",
                     "CODE_SIGN_ENTITLEMENTS": "ongi-swiftui/ongi-swiftui.entitlements",
-                    "OTHER_LDFLAGS": ["-ObjC", "-l\"c++\"", "-framework", "\"StoreKit\"", "-framework", "\"Security\"", "-framework", "\"GSS\"", "-framework", "\"LocalAuthentication\""],
-                    "DEBUG_INFORMATION_FORMAT": "dwarf-with-dsym"
+                    "OTHER_LDFLAGS": [
+                        "-ObjC", "-l\"c++\"", "-framework", "\"StoreKit\"", "-framework",
+                        "\"Security\"", "-framework", "\"GSS\"", "-framework",
+                        "\"LocalAuthentication\"",
+                    ],
+                    "DEBUG_INFORMATION_FORMAT": "dwarf-with-dsym",
                 ]
             )
         ),

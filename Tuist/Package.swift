@@ -19,6 +19,6 @@ let package = Package(
         .package(url: "https://github.com/onevcat/Kingfisher", from: "7.10.0"),
         .package(url: "https://github.com/socketio/socket.io-client-swift", from: "16.1.0"),
         .package(url: "https://github.com/SnapKit/SnapKit", from: "5.6.0"),
-        .package(url: "https://github.com/firebase/firebase-ios-sdk", from: "10.23.0")
+        .package(url: "https://github.com/firebase/firebase-ios-sdk", from: "12.1.0")
     ]
 )

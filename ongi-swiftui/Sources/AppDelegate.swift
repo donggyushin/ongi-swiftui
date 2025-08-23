@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import FirebaseCore
+import Firebase
 
 class AppDelegate: NSObject, UIApplicationDelegate {
   func application(_ application: UIApplication,
@@ -17,10 +17,10 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     } else {
       print("❌ GoogleService-Info.plist not found in bundle")
     }
-    
+
     // Firebase 초기화는 GoogleUtilities 링킹 문제 해결 후 추가 예정
-//     FirebaseApp.configure()
-      
+    FirebaseApp.configure()
+
     return true
   }
 }
