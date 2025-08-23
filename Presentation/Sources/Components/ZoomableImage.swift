@@ -23,13 +23,13 @@ class ZoomableImageViewController: UIViewController, UIScrollViewDelegate {
         scrollView.alwaysBounceHorizontal = false
         
         scrollView.showsVerticalScrollIndicator = false
-        scrollView.showsHorizontalScrollIndicator = false 
+        scrollView.showsHorizontalScrollIndicator = false
         
         scrollView.minimumZoomScale = 1.0
         scrollView.maximumZoomScale = 2.0
         scrollView.delegate = self
         
-        imageView.contentMode = .scaleAspectFill
+        imageView.contentMode = .scaleAspectFit
         
         setupLayout()
     }
