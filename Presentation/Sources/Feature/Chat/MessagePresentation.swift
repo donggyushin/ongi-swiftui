@@ -20,10 +20,20 @@ struct MessagePresentation: Equatable {
     let createdAt: Date
     let updatedAt: Date
     
-    init?(message: MessageEntity, participants: [ProfileEntitiy]) {
-        guard let writer = participants.first(where: { $0.id == message.writerProfileId }) else {
-            return nil
-        }
+    init(message: MessageEntity, participants: [ProfileEntitiy]) {
+        let writer: ProfileEntitiy = participants.first(
+            where: {
+                $0.id == message.writerProfileId
+            }) ?? .init(
+                id: "",
+                nickname: "알 수 없음",
+                images: [],
+                qnas: [],
+                isNew: false,
+                isLikedByMe: false,
+                createdAt: Date(),
+                updatedAt: Date()
+            )
         
         self.id = message.id
         self.writer = writer
