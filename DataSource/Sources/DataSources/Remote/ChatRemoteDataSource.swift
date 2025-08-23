@@ -69,6 +69,24 @@ final class ChatRemoteDataSource {
     
     // TODO: 구현필요
     func sendMessage(chatId: String, text: String) async throws -> MessageEntity {
-        throw AppError.networkError(.invalidResponse)
+        
+        let url = "\(ongiExpressUrl)chats/\(chatId)/messages"
+        let body: [String: Any] = [
+            "text": text
+        ]
+        
+        struct DataResponse: Decodable {
+            let message: MessageResponseDTO
+        }
+        
+        let response: APIResponse<DataResponse> = try await networkManager.request(url: url, method: .post, parameters: body)
+        
+        if let message = response.data?.message.toDomainEntity() {
+            return message
+        } else if let message = response.message {
+            throw AppError.custom(message)
+        } else {
+            throw AppError.networkError(.invalidResponse)
+        }
     }
 }
