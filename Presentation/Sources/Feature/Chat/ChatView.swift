@@ -18,6 +18,7 @@ extension Date {
 struct ChatView: View {
     
     @StateObject var model: ChatViewModel
+    @FocusState var inputFocus
     
     var body: some View {
         VStack(spacing: 0) {
@@ -66,6 +67,7 @@ struct ChatView: View {
                     }
                 }
             )
+            .focused($inputFocus)
         }
         .navigationBarTitleDisplayMode(.inline)
         .task {
