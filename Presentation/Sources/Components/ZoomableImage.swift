@@ -22,6 +22,9 @@ class ZoomableImageViewController: UIViewController, UIScrollViewDelegate {
         scrollView.alwaysBounceVertical = false
         scrollView.alwaysBounceHorizontal = false
         
+        scrollView.showsVerticalScrollIndicator = false
+        scrollView.showsHorizontalScrollIndicator = false 
+        
         scrollView.minimumZoomScale = 1.0
         scrollView.maximumZoomScale = 2.0
         scrollView.delegate = self
@@ -50,18 +53,28 @@ class ZoomableImageViewController: UIViewController, UIScrollViewDelegate {
         }
     }
     
-    func setImage(_ source: Source?) {
-        imageView.kf.setImage(with: source)
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    func setImage(_ url: URL?) {
+        imageView.kf.setImage(with: url)
     }
 
     @available(iOS 2.0, *)
     public func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return self.imageView
+    }
+}
+
+struct ZoomableImageViewControllerRepresentable: UIViewControllerRepresentable {
+    
+    let source: URL?
+    
+    func makeUIViewController(context: Context) -> ZoomableImageViewController {
+        let controller = ZoomableImageViewController()
+        controller.setImage(source)
+        return controller
+    }
+    
+    func updateUIViewController(_ uiViewController: ZoomableImageViewController, context: Context) {
+        uiViewController.setImage(source)
     }
 }
 
@@ -74,9 +87,14 @@ public struct ZoomableImage: View {
     }
     
     public var body: some View {
-        KFImage(url)
-            .resizable()
-            .scaledToFit()
+//        KFImage(url)
+//            .resizable()
+//            .scaledToFit()
+        
+        
+        ZoomableImageViewControllerRepresentable(source: url)
+            .ignoresSafeArea()
+        
     }
 }
 
