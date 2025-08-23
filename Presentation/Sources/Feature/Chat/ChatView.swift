@@ -9,6 +9,12 @@ import SwiftUI
 import Domain
 import Factory
 
+extension Date {
+    func isSameDay(as date: Date) -> Bool {
+        Calendar.current.isDate(self, inSameDayAs: date)
+    }
+}
+
 struct ChatView: View {
     
     @StateObject var model: ChatViewModel
@@ -18,7 +24,13 @@ struct ChatView: View {
             ScrollViewReader { proxy in
                 ScrollView {
                     LazyVStack(spacing: 8) {
-                        ForEach(model.messages.reversed(), id: \.id) { message in
+                        ForEach(Array(model.messages.reversed().enumerated()), id: \.element.id) { index, message in
+                            let shouldShowDateDivider = shouldShowDateDivider(at: index, in: model.messages.reversed())
+                            
+                            if shouldShowDateDivider {
+                                DateDivider(date: message.createdAt)
+                            }
+                            
                             MessageRow(
                                 message: message,
                                 isMyMessage: model.me?.id == message.writer.id
@@ -51,6 +63,40 @@ struct ChatView: View {
             try? await model.fetchMessages()
         }
         .loading(model.loading)
+    }
+    
+    private func shouldShowDateDivider(at index: Int, in messages: [MessagePresentation]) -> Bool {
+        if index == 0 {
+            return true
+        }
+        
+        let currentMessage = messages[index]
+        let previousMessage = messages[index - 1]
+        
+        return !currentMessage.createdAt.isSameDay(as: previousMessage.createdAt)
+    }
+}
+
+struct DateDivider: View {
+    let date: Date
+    
+    var body: some View {
+        HStack {
+            Rectangle()
+                .fill(Color(.systemGray4))
+                .frame(height: 0.5)
+            
+            Text(date, style: .date)
+                .pretendardCaption()
+                .foregroundColor(.secondary)
+                .padding(.horizontal, 12)
+                .background(Color(.systemBackground))
+            
+            Rectangle()
+                .fill(Color(.systemGray4))
+                .frame(height: 0.5)
+        }
+        .padding(.vertical, 8)
     }
 }
 
