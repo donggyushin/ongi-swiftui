@@ -12,6 +12,6 @@ struct ChatView: View {
     @StateObject var model: ChatViewModel
     
     var body: some View {
-        Text("채팅방. 만들어야 함 ㅠ")
+        Text("ChatView")
     }
 }

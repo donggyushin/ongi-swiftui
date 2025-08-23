@@ -27,6 +27,10 @@ final class ChatViewModel: ObservableObject {
     
     @MainActor
     func fetchMessages() async throws {
+        if pagination?.hasMore == false {
+            return
+        }
+        
         loading = true
         defer { loading = false }
         
