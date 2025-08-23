@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Domain
+import Factory
 
 struct ChatView: View {
     
@@ -128,7 +129,25 @@ struct MessageInputView: View {
     }
 }
 
+#if DEBUG
+private struct ChatViewPreview: View {
+    
+    let contentViewModel = Container.shared.contentViewModel()
+    
+    let vm = ChatViewModel(chatId: "")
+    
+    var body: some View {
+        ChatView(model: vm)
+            .task {
+                try? await Task.sleep(for: .seconds(3))
+                guard let me = vm.messages.first?.writer else { return }
+                contentViewModel.me = me
+            }
+    }
+}
+
 #Preview {
-    ChatView(model: .init(chatId: "chatId"))
+    ChatViewPreview()
         .preferredColorScheme(.dark)
 }
+#endif

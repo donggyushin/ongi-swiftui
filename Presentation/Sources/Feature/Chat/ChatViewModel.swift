@@ -14,11 +14,8 @@ final class ChatViewModel: ObservableObject {
     let chatId: String
     
     @Published var me: ProfileEntitiy?
-    
     @Published var text: String = ""
-    
     @Published var messages: [MessagePresentation] = []
-    
     @Published var loading = false
     
     var pagination: PaginationEntity?
