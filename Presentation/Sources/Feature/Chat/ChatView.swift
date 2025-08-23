@@ -74,6 +74,9 @@ struct ChatView: View {
             try? await model.fetchMessages()
         }
         .loading(model.loading)
+        .onTapGesture {
+            inputFocus = false
+        }
     }
     
     private func shouldShowDateDivider(at index: Int, in messages: [MessagePresentation]) -> Bool {

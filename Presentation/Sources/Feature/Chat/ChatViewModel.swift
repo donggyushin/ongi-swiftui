@@ -58,11 +58,7 @@ final class ChatViewModel: ObservableObject {
         let messageText = text
         text = ""
         
-        let newMessageEntity = try await chatUseCase.sendMessage(chatId: chatId, text: messageText)
-        
-        if let newMessagePresentation = MessagePresentation(message: newMessageEntity, participants: [me]) {
-            messages.insert(newMessagePresentation, at: 0)
-        }
+        _ = try await chatUseCase.sendMessage(chatId: chatId, text: messageText)
     }
     
     private func bind() {
