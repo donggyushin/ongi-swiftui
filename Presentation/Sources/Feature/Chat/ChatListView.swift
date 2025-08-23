@@ -59,9 +59,6 @@ struct ChatListView: View {
                 ForEach(model.chats, id: \.id) { chat in
                     ChatListItemView(chat: chat)
                         .setMyId(model.myId)
-                        .onTapGesture {
-                            navigationManager?.append(.chat(chat.id))
-                        }
                     
                     if chat.id != model.chats.last?.id {
                         Divider()

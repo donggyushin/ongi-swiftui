@@ -107,8 +107,7 @@ struct ChatListItemView: View {
         .padding(.vertical, 12)
         .background(Color(.systemBackground))
         .onTapGesture {
-            // Navigate to chat detail
-            // TODO: Implement navigation to chat detail view
+            navigationManager?.append(.chat(chat.id))
         }
     }
     
