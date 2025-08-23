@@ -142,7 +142,8 @@ public class MockDataGenerator {
             isNew: Bool.random(),
             isLikedByMe: Bool.random(),
             createdAt: generateRandomDate(withinDays: 30),
-            updatedAt: generateRandomDate(withinDays: 7)
+            updatedAt: generateRandomDate(withinDays: 7),
+            lastTokenAuthAt: generateRandomDate(withinDays: 7)
         )
     }
     
@@ -232,7 +233,8 @@ public class MockDataGenerator {
             isNew: isNew ?? profile.isNew,
             isLikedByMe: isLikedByMe ?? profile.isLikedByMe,
             createdAt: profile.createdAt,
-            updatedAt: profile.updatedAt
+            updatedAt: profile.updatedAt,
+            lastTokenAuthAt: profile.lastTokenAuthAt
         )
     }
     
@@ -275,7 +277,8 @@ extension MockDataGenerator {
             isNew: isNew,
             isLikedByMe: isLikedByMe,
             createdAt: generateRandomDate(withinDays: 30),
-            updatedAt: generateRandomDate(withinDays: 7)
+            updatedAt: generateRandomDate(withinDays: 7),
+            lastTokenAuthAt: generateRandomDate(withinDays: 7)
         )
     }
     

@@ -80,7 +80,8 @@ final class MockProfileRepository: PProfileRepository {
             isNew: false,
             isLikedByMe: false,
             createdAt: Self.randomDate(within: 60),
-            updatedAt: Self.randomDate(within: 7)
+            updatedAt: Self.randomDate(within: 7),
+            lastTokenAuthAt: Self.randomDate(within: 7)
         )
     }
     
@@ -108,7 +109,8 @@ final class MockProfileRepository: PProfileRepository {
             isNew: true,
             isLikedByMe: false,
             createdAt: Self.randomDate(within: 3),
-            updatedAt: Self.randomDate(within: 1)
+            updatedAt: Self.randomDate(within: 1),
+            lastTokenAuthAt: Self.randomDate(within: 3)
         )
     }
     
@@ -135,7 +137,8 @@ final class MockProfileRepository: PProfileRepository {
             isNew: false,
             isLikedByMe: true,
             createdAt: Self.randomDate(within: 14),
-            updatedAt: Self.randomDate(within: 2)
+            updatedAt: Self.randomDate(within: 2),
+            lastTokenAuthAt: Self.randomDate(within: 5)
         )
     }
     
@@ -163,7 +166,8 @@ final class MockProfileRepository: PProfileRepository {
             isNew: true,
             isLikedByMe: false,
             createdAt: Self.randomDate(within: 7),
-            updatedAt: Self.randomDate(within: 1)
+            updatedAt: Self.randomDate(within: 1),
+            lastTokenAuthAt: Self.randomDate(within: 3)
         )
     }
     
@@ -215,7 +219,8 @@ final class MockProfileRepository: PProfileRepository {
             isNew: isNew,
             isLikedByMe: Bool.random(),
             createdAt: Self.randomDate(within: 30),
-            updatedAt: Self.randomDate(within: 7)
+            updatedAt: Self.randomDate(within: 7),
+            lastTokenAuthAt: Self.randomDate(within: 14)
         )
     }
     
@@ -273,7 +278,8 @@ final class MockProfileRepository: PProfileRepository {
                 isNew: updatedProfile.isNew,
                 isLikedByMe: updatedProfile.isLikedByMe,
                 createdAt: updatedProfile.createdAt,
-                updatedAt: Date()
+                updatedAt: Date(),
+                lastTokenAuthAt: Date()
             )
             return updatedProfile
         } else {
@@ -315,7 +321,8 @@ final class MockProfileRepository: PProfileRepository {
             isNew: updatedProfile.isNew,
             isLikedByMe: updatedProfile.isLikedByMe,
             createdAt: updatedProfile.createdAt,
-            updatedAt: Date()
+            updatedAt: Date(),
+            lastTokenAuthAt: updatedProfile.lastTokenAuthAt
         )
         
         return updatedProfile
@@ -341,7 +348,8 @@ final class MockProfileRepository: PProfileRepository {
             isNew: updatedProfile.isNew,
             isLikedByMe: updatedProfile.isLikedByMe,
             createdAt: updatedProfile.createdAt,
-            updatedAt: Date()
+            updatedAt: Date(),
+            lastTokenAuthAt: updatedProfile.lastTokenAuthAt
         )
         
         return updatedProfile
@@ -376,7 +384,8 @@ final class MockProfileRepository: PProfileRepository {
             isNew: updatedProfile.isNew,
             isLikedByMe: updatedProfile.isLikedByMe,
             createdAt: updatedProfile.createdAt,
-            updatedAt: Date()
+            updatedAt: Date(),
+            lastTokenAuthAt: updatedProfile.lastTokenAuthAt
         )
         
         return updatedProfile
@@ -404,7 +413,8 @@ final class MockProfileRepository: PProfileRepository {
             isNew: updatedProfile.isNew,
             isLikedByMe: updatedProfile.isLikedByMe,
             createdAt: updatedProfile.createdAt,
-            updatedAt: Date()
+            updatedAt: Date(),
+            lastTokenAuthAt: updatedProfile.lastTokenAuthAt
         )
         
         return updatedProfile
@@ -445,7 +455,8 @@ final class MockProfileRepository: PProfileRepository {
             isNew: updatedProfile.isNew,
             isLikedByMe: updatedProfile.isLikedByMe,
             createdAt: updatedProfile.createdAt,
-            updatedAt: Date()
+            updatedAt: Date(),
+            lastTokenAuthAt: updatedProfile.lastTokenAuthAt
         )
         
         return updatedProfile
@@ -471,7 +482,8 @@ final class MockProfileRepository: PProfileRepository {
             isNew: updatedProfile.isNew,
             isLikedByMe: updatedProfile.isLikedByMe,
             createdAt: updatedProfile.createdAt,
-            updatedAt: Date()
+            updatedAt: Date(),
+            lastTokenAuthAt: updatedProfile.lastTokenAuthAt
         )
         
         return updatedProfile
@@ -501,7 +513,8 @@ final class MockProfileRepository: PProfileRepository {
             isNew: updatedProfile.isNew,
             isLikedByMe: updatedProfile.isLikedByMe,
             createdAt: updatedProfile.createdAt,
-            updatedAt: Date()
+            updatedAt: Date(),
+            lastTokenAuthAt: updatedProfile.lastTokenAuthAt
         )
         
         return updatedProfile
@@ -542,7 +555,8 @@ final class MockProfileRepository: PProfileRepository {
             isNew: updatedProfile.isNew,
             isLikedByMe: updatedProfile.isLikedByMe,
             createdAt: updatedProfile.createdAt,
-            updatedAt: Date()
+            updatedAt: Date(),
+            lastTokenAuthAt: updatedProfile.lastTokenAuthAt
         )
         
         return updatedProfile
@@ -570,7 +584,8 @@ final class MockProfileRepository: PProfileRepository {
             isNew: updatedProfile.isNew,
             isLikedByMe: updatedProfile.isLikedByMe,
             createdAt: updatedProfile.createdAt,
-            updatedAt: Date()
+            updatedAt: Date(),
+            lastTokenAuthAt: updatedProfile.lastTokenAuthAt
         )
         
         return updatedProfile
@@ -613,7 +628,8 @@ final class MockProfileRepository: PProfileRepository {
             isNew: updatedProfile.isNew,
             isLikedByMe: updatedProfile.isLikedByMe,
             createdAt: updatedProfile.createdAt,
-            updatedAt: Date()
+            updatedAt: Date(),
+            lastTokenAuthAt: updatedProfile.lastTokenAuthAt
         )
         
         return updatedProfile

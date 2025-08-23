@@ -32,7 +32,8 @@ struct MessagePresentation: Equatable {
                 isNew: false,
                 isLikedByMe: false,
                 createdAt: Date(),
-                updatedAt: Date()
+                updatedAt: Date(),
+                lastTokenAuthAt: Date()
             )
         
         self.id = message.id

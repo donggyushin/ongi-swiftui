@@ -14,6 +14,26 @@ public struct ProfileCard: View {
     let presentation: ProfileCardPresentation
     let isMe: Bool
     
+    private var lastLoginText: String {
+        let daysAgo = presentation.lastLoginDaysAgo
+        switch daysAgo {
+        case 0:
+            return "오늘 접속"
+        case 1:
+            return "어제 접속"
+        case 2...7:
+            return "\(daysAgo)일 전 접속"
+        case 8...30:
+            return "\(daysAgo)일 전 접속"
+        case 31...365:
+            let months = daysAgo / 30
+            return "\(months)개월 전 접속"
+        default:
+            let years = daysAgo / 365
+            return "\(years)년 전 접속"
+        }
+    }
+    
     public var body: some View {
         ZStack(alignment: .topLeading) {
             // Background Image
@@ -46,8 +66,18 @@ public struct ProfileCard: View {
                 
                 Spacer()
                 
-                // Bottom section with physical info
+                // Bottom section with physical info and last login
                 VStack(alignment: .leading, spacing: 8) {
+                    // Last login info (only show when not me)
+                    if !isMe {
+                        HStack {
+                            Text(lastLoginText)
+                                .pretendardCaption(.regular)
+                                .foregroundColor(.white.opacity(0.8))
+                            Spacer()
+                        }
+                    }
+                    
                     if let height = presentation.height,
                        let weight = presentation.weight {
                         HStack(spacing: 16) {

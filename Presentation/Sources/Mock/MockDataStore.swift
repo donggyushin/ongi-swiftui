@@ -283,7 +283,8 @@ public class MockDataStore: ObservableObject {
             isNew: profile.isNew,
             isLikedByMe: isLikedByMe,
             createdAt: profile.createdAt,
-            updatedAt: profile.updatedAt
+            updatedAt: profile.updatedAt,
+            lastTokenAuthAt: profile.lastTokenAuthAt
         )
     }
     

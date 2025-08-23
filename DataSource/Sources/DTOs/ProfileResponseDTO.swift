@@ -17,4 +17,5 @@ struct ProfileResponseDTO: Codable {
     let isLikedByMe: Bool?
     let createdAt: String
     let updatedAt: String
+    let lastTokenAuthAt: String?
 }

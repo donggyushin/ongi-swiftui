@@ -21,6 +21,14 @@ public struct ProfileCardPresentation {
     let bodyType: BodyType?
     let blur: Bool
     let isLikedByMe: Bool
+    let lastTokenAuthAt: Date
+    
+    var lastLoginDaysAgo: Int {
+        let calendar = Calendar.current
+        let now = Date()
+        let components = calendar.dateComponents([.day], from: lastTokenAuthAt, to: now)
+        return components.day ?? 0
+    }
     
     public init(_ domain: ProfileEntitiy) {
         id = domain.id
@@ -34,6 +42,7 @@ public struct ProfileCardPresentation {
         bodyType = domain.bodyType
         blur = domain.isNew
         isLikedByMe = domain.isLikedByMe
+        lastTokenAuthAt = domain.lastTokenAuthAt
     }
     
 }

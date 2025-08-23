@@ -9,6 +9,8 @@ extension ProfileResponseDTO {
             return nil
         }
         
+        guard let lastTokenAuthAt = dateFormatter.date(from: lastTokenAuthAt ?? self.createdAt) else { return nil }
+        
         let profileImageEntity = self.profileImage?.toDomainEntity()
         let imageEntities = self.images.toDomainEntities()
         let qnaEntities = self.qnas.toDomainEntities()
@@ -78,7 +80,8 @@ extension ProfileResponseDTO {
             isNew: isNew ?? false,
             isLikedByMe: isLikedByMe ?? false,
             createdAt: createdAt,
-            updatedAt: updatedAt
+            updatedAt: updatedAt,
+            lastTokenAuthAt: lastTokenAuthAt
         )
     }
 }
