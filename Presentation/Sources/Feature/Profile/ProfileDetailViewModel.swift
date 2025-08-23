@@ -32,8 +32,17 @@ public final class ProfileDetailViewModel: ObservableObject {
     
     @Published var photoURLs: [URL] = []
     @Published var qnas: [QnAEntity] = []
+    @Published var lastTokenAuthAt: Date?
     
     @Published var loading = false
+    
+    var lastLoginDaysAgo: Int {
+        guard let lastTokenAuthAt = lastTokenAuthAt else { return 0 }
+        let calendar = Calendar.current
+        let now = Date()
+        let components = calendar.dateComponents([.day], from: lastTokenAuthAt, to: now)
+        return components.day ?? 0
+    }
     
     @Injected(\.profileUseCase) private var profileUseCase
     @Injected(\.connectionUseCase) private var connectionUseCase
@@ -67,6 +76,7 @@ public final class ProfileDetailViewModel: ObservableObject {
         isLikedByMe = profile.isLikedByMe
         photoURLs = profile.images.map { $0.url }
         qnas = profile.qnas
+        lastTokenAuthAt = profile.lastTokenAuthAt
     }
     
     @MainActor

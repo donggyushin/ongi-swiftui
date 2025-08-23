@@ -15,6 +15,26 @@ public struct ProfileDetailView: View {
     @StateObject var model: ProfileDetailViewModel
     @State private var showingEditOptions = false
     
+    private var lastLoginText: String {
+        let daysAgo = model.lastLoginDaysAgo
+        switch daysAgo {
+        case 0:
+            return "오늘 접속"
+        case 1:
+            return "어제 접속"
+        case 2...7:
+            return "\(daysAgo)일 전 접속"
+        case 8...30:
+            return "\(daysAgo)일 전 접속"
+        case 31...365:
+            let months = daysAgo / 30
+            return "\(months)개월 전 접속"
+        default:
+            let years = daysAgo / 365
+            return "\(years)년 전 접속"
+        }
+    }
+    
     public init(model: ProfileDetailViewModel) {
         self._model = .init(wrappedValue: model)
     }
@@ -69,6 +89,12 @@ public struct ProfileDetailView: View {
                     
                     if let mbti = model.mbti {
                         Text(mbti.text)
+                            .pretendardCaption()
+                            .foregroundStyle(.secondary)
+                    }
+                    
+                    if !model.isMe {
+                        Text(lastLoginText)
                             .pretendardCaption()
                             .foregroundStyle(.secondary)
                     }
@@ -228,7 +254,7 @@ public struct ProfileDetailView: View {
 }
 
 #Preview {
-    ProfileDetailView(model: .init(profileId: "!me"))
+    ProfileDetailView(model: .init(profileId: "user_001"))
         .onAppear {
             Task {
                 try await Container.shared.contentViewModel().getMe()
