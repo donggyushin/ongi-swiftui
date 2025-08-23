@@ -279,6 +279,7 @@ public class MockDataStore: ObservableObject {
             height: profile.height,
             weight: profile.weight,
             bodyType: profile.bodyType,
+            location: profile.location,
             introduction: profile.introduction,
             isNew: profile.isNew,
             isLikedByMe: isLikedByMe,

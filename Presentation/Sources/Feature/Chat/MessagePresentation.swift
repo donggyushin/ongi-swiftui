@@ -29,6 +29,7 @@ struct MessagePresentation: Equatable {
                 nickname: "알 수 없음",
                 images: [],
                 qnas: [],
+                location: nil,
                 isNew: false,
                 isLikedByMe: false,
                 createdAt: Date(),

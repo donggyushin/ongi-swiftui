@@ -138,6 +138,7 @@ public class MockDataGenerator {
             height: height,
             weight: weight,
             bodyType: bodyType,
+            location: generateRandomLocation(),
             introduction: introductionTemplates.randomElement()!,
             isNew: Bool.random(),
             isLikedByMe: Bool.random(),
@@ -181,6 +182,23 @@ public class MockDataGenerator {
         let now = Date()
         let randomInterval = TimeInterval.random(in: 0...(TimeInterval(days * 24 * 60 * 60)))
         return now.addingTimeInterval(-randomInterval)
+    }
+    
+    public func generateRandomLocation() -> LocationEntity? {
+        // Randomly include location (80% chance)
+        guard Bool.random() && Float.random(in: 0...1) > 0.2 else { return nil }
+        
+        // Random location in Seoul area
+        let latitude = Float.random(in: 37.4...37.7)
+        let longitude = Float.random(in: 126.8...127.2)
+        
+        return LocationEntity(
+            id: "loc_\(UUID().uuidString.prefix(8))",
+            latitude: latitude,
+            longitude: longitude,
+            createdAt: generateRandomDate(withinDays: 30),
+            updatedAt: generateRandomDate(withinDays: 7)
+        )
     }
     
     // MARK: - Batch Generation
@@ -229,6 +247,7 @@ public class MockDataGenerator {
             height: profile.height,
             weight: profile.weight,
             bodyType: profile.bodyType,
+            location: profile.location,
             introduction: profile.introduction,
             isNew: isNew ?? profile.isNew,
             isLikedByMe: isLikedByMe ?? profile.isLikedByMe,
@@ -273,6 +292,7 @@ extension MockDataGenerator {
             height: gender == .male ? CGFloat.random(in: 170...185) : CGFloat.random(in: 155...170),
             weight: gender == .male ? CGFloat.random(in: 65...80) : CGFloat.random(in: 45...60),
             bodyType: BodyType.allCases.randomElement()!,
+            location: generateRandomLocation(),
             introduction: introductionTemplates.randomElement()!,
             isNew: isNew,
             isLikedByMe: isLikedByMe,
