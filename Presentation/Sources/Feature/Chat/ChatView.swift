@@ -20,8 +20,7 @@ struct ChatView: View {
                         ForEach(model.messages.reversed(), id: \.id) { message in
                             MessageRow(
                                 message: message,
-                                participant: model.participants.first { $0.id == message.writerProfileId },
-                                isMyMessage: model.me?.id == message.writerProfileId
+                                isMyMessage: model.me?.id == message.writer.id
                             )
                         }
                     }
@@ -55,14 +54,13 @@ struct ChatView: View {
 }
 
 struct MessageRow: View {
-    let message: MessageEntity
-    let participant: ProfileEntitiy?
+    let message: MessagePresentation
     let isMyMessage: Bool
     
     var body: some View {
         HStack(alignment: .top, spacing: 8) {
             if !isMyMessage {
-                AsyncImage(url: participant?.profileImage?.url) { image in
+                AsyncImage(url: message.writer.profileImage?.url) { image in
                     image
                         .resizable()
                         .aspectRatio(contentMode: .fill)
@@ -78,7 +76,7 @@ struct MessageRow: View {
             
             VStack(alignment: isMyMessage ? .trailing : .leading, spacing: 4) {
                 if !isMyMessage {
-                    Text(participant?.nickname ?? "Unknown")
+                    Text(message.writer.nickname)
                         .pretendardBody()
                         .foregroundColor(.primary)
                 }

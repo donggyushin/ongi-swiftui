@@ -17,8 +17,8 @@ final class ChatViewModel: ObservableObject {
     
     @Published var text: String = ""
     
-    @Published var participants: [ProfileEntitiy] = []
-    @Published var messages: [MessageEntity] = []
+    @Published var messages: [MessagePresentation] = []
+    
     @Published var loading = false
     
     var pagination: PaginationEntity?
@@ -42,21 +42,30 @@ final class ChatViewModel: ObservableObject {
         defer { loading = false }
         
         let result = try await chatUseCase.getChat(chatId: chatId, cursor: pagination?.nextCursor)
-        participants = result.0.participants
-        messages = result.0.messages
+        let chat = result.0
+        let participants = chat.participants
         
+        let messagePresentations = chat.messages.compactMap { message in
+            MessagePresentation(message: message, participants: participants)
+        }
+        
+        messages = messagePresentations
         pagination = result.1
     }
     
     @MainActor
     func sendMessage() async throws {
         guard !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
+        guard let me = me else { return }
         
         let messageText = text
         text = ""
         
-        let newMessage = try await chatUseCase.sendMessage(chatId: chatId, text: messageText)
-        messages.insert(newMessage, at: 0)
+        let newMessageEntity = try await chatUseCase.sendMessage(chatId: chatId, text: messageText)
+        
+        if let newMessagePresentation = MessagePresentation(message: newMessageEntity, participants: [me]) {
+            messages.insert(newMessagePresentation, at: 0)
+        }
     }
     
     private func bind() {
