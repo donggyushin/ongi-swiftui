@@ -31,7 +31,7 @@ struct OnboardingPhysicalGenderInfoView: View {
                     .pretendardTitle1()
                     .foregroundColor(.primary)
                 
-                Text("정확한 매칭을 위해\n신체 정보를 입력해주세요")
+                Text("정확한 매칭을 위해\n신체 정보 및 성별을 입력해주세요")
                     .pretendardBody()
                     .foregroundColor(.secondary)
                     .multilineTextAlignment(.center)
@@ -40,9 +40,20 @@ struct OnboardingPhysicalGenderInfoView: View {
             VStack(spacing: 32) {
                 // Gender Selection
                 VStack(alignment: .leading, spacing: 12) {
-                    Text("성별")
-                        .pretendardBody()
-                        .foregroundColor(.primary)
+                    HStack {
+                        Text("성별")
+                            .pretendardBody()
+                            .foregroundColor(.primary)
+                        
+                        Spacer()
+                        
+                        HStack(spacing: 4) {
+                            Image(systemName: "exclamationmark.circle")
+                            Text("성별은 한 번만 업데이트 가능합니다")
+                        }
+                        .foregroundStyle(.red)
+                        .pretendardCaption()
+                    }
                     
                     HStack(spacing: 12) {
                         GenderButton(
@@ -59,6 +70,7 @@ struct OnboardingPhysicalGenderInfoView: View {
                             model.selectedGender = .female
                         }
                     }
+                    .disabled(!model.canUpdateGender)
                 }
                 
                 // Height Input

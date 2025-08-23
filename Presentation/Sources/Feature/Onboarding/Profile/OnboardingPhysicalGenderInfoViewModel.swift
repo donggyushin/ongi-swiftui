@@ -17,6 +17,8 @@ final class OnboardingPhysicalGenderInfoViewModel: ObservableObject {
     @Published var weight: String = ""
     @Published var loading: Bool = false
     
+    @Published var canUpdateGender = false
+    
     @Injected(\.profileUseCase) private var profileUseCase
     @Injected(\.contentViewModel) private var contentViewModel
     
@@ -46,6 +48,7 @@ final class OnboardingPhysicalGenderInfoViewModel: ObservableObject {
         selectedGender = me.gender
         height = me.height == nil ? "" : "\(me.height!)"
         weight = me.weight == nil ? "" : "\(me.weight!)"
+        canUpdateGender = me.gender == nil
     }
     
     @MainActor
