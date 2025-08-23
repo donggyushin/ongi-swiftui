@@ -35,10 +35,17 @@ final class ChatViewModel: ObservableObject {
         self.realTimeChatUseCase = .init(chatId: chatId, realTimeChatRepository: Container.shared.realTimeChatRepository())
         
         bind()
+        realTimeChatUseCase.connect()
+    }
+    
+    deinit {
+        realTimeChatUseCase.leaveChat()
+        realTimeChatUseCase.dismiss()
     }
     
     @MainActor
     func fetchMessages() async throws {
+        guard loading == false else { return }
         if pagination?.hasMore == false {
             return
         }
@@ -54,7 +61,7 @@ final class ChatViewModel: ObservableObject {
             MessagePresentation(message: message, participants: participants)
         }
         
-        messages = messagePresentations
+        messages.append(contentsOf: messagePresentations)
         pagination = result.1
     }
     
@@ -89,6 +96,15 @@ final class ChatViewModel: ObservableObject {
         var participants: [ProfileEntitiy] {
             self.participants
         }
+        
+        realTimeChatUseCase
+            .listenForConnection()
+            .filter { $0 }
+            .first()
+            .sink { [weak self] _ in
+                self?.realTimeChatUseCase.joinChat()
+            }
+            .store(in: &cancellables)
         
         realTimeChatUseCase
             .listenMessage()

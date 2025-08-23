@@ -74,7 +74,6 @@ public final class RealTimeChatRepository: PRealTimeChatRepository {
     
     private func setupMessageListener() {
         struct ListenDTO: Codable {
-            let chatId: String
             let message: MessageResponseDTO
         }
         

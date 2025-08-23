@@ -15,12 +15,30 @@ public final class RealTimeChatUseCase {
     public init(chatId: String, realTimeChatRepository: PRealTimeChatRepository) {
         self.chatId = chatId
         self.realTimeChatRepository = realTimeChatRepository
-        
-        realTimeChatRepository.joinChat(chatId: chatId)
     }
     
     deinit {
+        leaveChat()
+    }
+    
+    public func connect() {
+        realTimeChatRepository.connect()
+    }
+    
+    public func dismiss() {
+        realTimeChatRepository.disconnect()
+    }
+    
+    public func joinChat() {
+        realTimeChatRepository.joinChat(chatId: chatId)
+    }
+    
+    public func leaveChat() {
         realTimeChatRepository.leaveChat(chatId: chatId)
+    }
+    
+    public func listenForConnection() -> AnyPublisher<Bool, Never> {
+        realTimeChatRepository.listenForConnection()
     }
     
     public func sendMessage(message: MessageEntity) {

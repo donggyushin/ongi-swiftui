@@ -27,21 +27,21 @@ public class SocketRemoteDataSource: PSocketRemoteDataSource {
     
     private func setupSocketEvents() {
         socket.on(clientEvent: .connect) { [weak self] data, ack in
-            print("Socket connected")
+            print("[Socket] Socket connected")
             self?.connectionSubject.send(true)
         }
         
         socket.on(clientEvent: .disconnect) { [weak self] data, ack in
-            print("Socket disconnected")
+            print("[Socket] Socket disconnected")
             self?.connectionSubject.send(false)
         }
         
         socket.on(clientEvent: .error) { data, ack in
-            print("Socket error: \(data)")
+            print("[Socket] Socket error: \(data)")
         }
         
         socket.on(clientEvent: .reconnect) { [weak self] data, ack in
-            print("Socket reconnected")
+            print("[Socket] Socket reconnected")
             self?.connectionSubject.send(true)
         }
     }
@@ -72,7 +72,7 @@ public class SocketRemoteDataSource: PSocketRemoteDataSource {
                     let decodedData = try JSONDecoder().decode(T.self, from: jsonData)
                     promise(.success(decodedData))
                 } catch {
-                    print("Failed to decode socket data for event \(event): \(error)")
+                    print("[Socket] Failed to decode socket data for event \(event): \(error)")
                 }
             }
         }
