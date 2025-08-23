@@ -9,6 +9,8 @@ import Foundation
 import Combine
 
 public protocol PRealTimeChatRepository {
+    func connect()
+    func disconnect()
     func listenForConnection() -> AnyPublisher<Bool, Never>
     func joinChat(chatId: String)
     func leaveChat(chatId: String)

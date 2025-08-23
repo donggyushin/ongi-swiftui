@@ -22,14 +22,30 @@ public final class RealTimeChatRepository: PRealTimeChatRepository {
         self.socketRemoteDataSource = socketRemoteDataSource
     }
     
+    deinit {
+        // Repository 해제 시 개별 구독만 정리
+        // Socket 연결은 다른 Repository들이 사용할 수 있으므로 건드리지 않음
+        cancellables.removeAll()
+    }
+    
+    public func connect() {
+        if !socketRemoteDataSource.isConnected {
+            socketRemoteDataSource.connect()
+        }
+    }
+    
+    public func disconnect() {
+        // Repository별로 구독만 정리, Socket 연결은 유지
+        cancellables.removeAll()
+        isListeningForMessages = false
+    }
+    
     public func listenForConnection() -> AnyPublisher<Bool, Never> {
         socketRemoteDataSource.listenForConnection()
     }
     
     public func joinChat(chatId: String) {
-        if !socketRemoteDataSource.isConnected {
-            socketRemoteDataSource.connect()
-        }
+        connect()
         socketRemoteDataSource.emit(event: "join-chat", data: chatId)
     }
     

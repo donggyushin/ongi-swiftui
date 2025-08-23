@@ -10,10 +10,20 @@ import Combine
 import Domain
 
 public class MockRealTimeChatRepository: PRealTimeChatRepository {
-    private let connectionSubject = CurrentValueSubject<Bool, Never>(true)
+    private let connectionSubject = CurrentValueSubject<Bool, Never>(false)
     private let messageSubject = PassthroughSubject<MessageEntity, Never>()
     
     public init() {}
+    
+    public func connect() {
+        connectionSubject.send(true)
+        print("[Mock] Connected to real-time chat")
+    }
+    
+    public func disconnect() {
+        connectionSubject.send(false)
+        print("[Mock] Disconnected from real-time chat")
+    }
     
     public func listenForConnection() -> AnyPublisher<Bool, Never> {
         return connectionSubject.eraseToAnyPublisher()

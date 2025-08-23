@@ -12,7 +12,7 @@ extension Container {
     // MARK: Socket DataSource
     var socketRemoteDataSource: Factory<PSocketRemoteDataSource> {
         self {
-            SocketRemoteDataSource(url: URL(string: "https://ongi-express-production.up.railway.app/")!)
+            SocketRemoteDataSource(url: URL(string: ongiExpressUrl)!)
         }
         .singleton
     }
@@ -71,7 +71,9 @@ extension Container {
         self {
             RealTimeChatRepository(socketRemoteDataSource: self.socketRemoteDataSource())
         }
-        .singleton
+        .unique
+        // Repository는 싱글턴이 아님 - 필요할 때마다 새 인스턴스 생성
+        // Socket 연결은 내부적으로 싱글턴 SocketRemoteDataSource를 공유
     }
 }
 
