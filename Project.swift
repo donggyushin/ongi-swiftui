@@ -22,7 +22,8 @@ let project = Project(
             dependencies: [
                 .external(name: "Alamofire"),
                 .external(name: "Factory"),
-                .external(name: "Kingfisher")
+                .external(name: "Kingfisher"),
+                .external(name: "SocketIO")
             ]
         ),
         .target(

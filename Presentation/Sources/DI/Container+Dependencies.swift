@@ -1,12 +1,21 @@
 import Factory
 import Domain
 import DataSource
+import Foundation
 
 // MARK: - Dependency Container Extensions
 // Following Factory's Composition Root pattern, this is where all dependencies are wired together
 
 // MARK: - DataSource Layer Dependencies
 extension Container {
+    
+    // MARK: Socket DataSource
+    var socketRemoteDataSource: Factory<PSocketRemoteDataSource> {
+        self {
+            SocketRemoteDataSource(url: URL(string: "https://ongi-express-production.up.railway.app/")!)
+        }
+        .singleton
+    }
     
     // MARK: Repositories
     var jwtRepository: Factory<PJWTRepository> {

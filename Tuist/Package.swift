@@ -17,6 +17,7 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/Alamofire/Alamofire", from: "5.8.0"),
         .package(url: "https://github.com/hmlongco/Factory", from: "2.3.0"),
-        .package(url: "https://github.com/onevcat/Kingfisher", from: "7.10.0")
+        .package(url: "https://github.com/onevcat/Kingfisher", from: "7.10.0"),
+        .package(url: "https://github.com/socketio/socket.io-client-swift", from: "16.1.0")
     ]
 )

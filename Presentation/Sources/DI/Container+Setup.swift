@@ -26,6 +26,7 @@ extension Container {
         shared.verificationRepository.onPreview { MockVerificationRepository() }
         shared.connectionRepository.onPreview { MockConnectionRepository() }
         shared.chatRepository.onPreview { MockChatRepository() }
+        shared.socketRemoteDataSource.onPreview { MockSocketRemoteDataSource() }
     }
     #endif
     
@@ -57,6 +58,7 @@ extension Container {
         
         shared.jwtRepository.register { MockJWTRepository() }
         shared.profileRepository.register { MockProfileRepository() }
+        shared.socketRemoteDataSource.register { MockSocketRemoteDataSource() }
     }
     
     /// Reset all dependencies - useful for testing
