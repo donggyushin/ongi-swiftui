@@ -36,7 +36,7 @@ public class ZoomableImageViewController: UIViewController, UIScrollViewDelegate
     
     private func setupScrollView() {
         scrollView.delegate = self
-        scrollView.minimumZoomScale = 1.0
+        scrollView.minimumZoomScale = 0.5
         scrollView.maximumZoomScale = 3.0
         scrollView.bouncesZoom = true
         scrollView.showsVerticalScrollIndicator = false
@@ -53,7 +53,7 @@ public class ZoomableImageViewController: UIViewController, UIScrollViewDelegate
     }
     
     private func setupImageView() {
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         
         scrollView.addSubview(imageView)
