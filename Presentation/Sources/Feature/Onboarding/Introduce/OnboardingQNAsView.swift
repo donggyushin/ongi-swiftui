@@ -133,10 +133,13 @@ struct QnAItemView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             VStack(alignment: .leading, spacing: 8) {
-                Text("Q. \(qna.question)")
-                    .pretendardTitle3()
-                    .foregroundColor(.primary)
-                    .lineLimit(1)
+                HStack {
+                    Text("Q. \(qna.question)")
+                        .pretendardTitle3()
+                        .foregroundColor(.primary)
+                        .lineLimit(1)
+                    Spacer()
+                }
                 
                 Text("A. \(qna.answer)")
                     .pretendardBody()
