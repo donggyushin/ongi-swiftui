@@ -109,60 +109,59 @@ public struct ProfileDetailView: View {
                     }
                     
                     if let mbti = model.mbti {
-                        Text(mbti.text)
-                            .pretendardCaption()
-                            .foregroundStyle(.secondary)
-                    }
-                    
-                    if !model.isMe {
-                        HStack {
-                            HStack(spacing: 6) {
-                                Image(systemName: lastLoginInfo.icon)
-                                    .font(.caption2)
-                                    .foregroundColor(lastLoginInfo.color)
-                                
-                                Text(lastLoginInfo.text)
-                                    .pretendardCaption(.medium)
-                                    .foregroundColor(lastLoginInfo.color)
-                                
-                                if model.lastLoginDaysAgo == 0 {
-                                    // Pulsing animation for online users
-                                    Circle()
-                                        .fill(lastLoginInfo.color)
-                                        .frame(width: 4, height: 4)
-                                        .scaleEffect(isAnimating ? 1.3 : 1.0)
-                                        .opacity(isAnimating ? 0.5 : 1.0)
-                                        .animation(.easeInOut(duration: 1).repeatForever(autoreverses: true), value: isAnimating)
-                                        .onAppear {
-                                            isAnimating = true
-                                        }
-                                }
-                            }
-                            .padding(.horizontal, 8)
-                            .padding(.vertical, 4)
-                            .background(
-                                Capsule()
-                                    .fill(Color.black.opacity(0.3))
-                                    .overlay(
-                                        Capsule()
-                                            .stroke(lastLoginInfo.color.opacity(0.3), lineWidth: 0.5)
-                                    )
-                            )
+                        HStack(spacing: 8) {
+                            Text(mbti.text)
+                                .pretendardCaption()
+                                .foregroundStyle(.secondary)
                             
                             if let myLocation = model.me?.location,
                                let userLocation = model.location {
                                 HStack {
                                     Image(systemName: "location.fill")
                                         .font(.caption2)
-                                        .foregroundColor(.white.opacity(0.7))
+                                        .foregroundStyle(.primary.opacity(0.7))
                                     Text("약 \(myLocation.formattedDistance(to: userLocation)) 떨어짐")
                                         .pretendardCaption(.regular)
-                                        .foregroundColor(.white.opacity(0.8))
+                                        .foregroundStyle(.primary.opacity(0.8))
                                     Spacer()
                                 }
                             }
-                            
                         }
+                    }
+                    
+                    if !model.isMe {
+                        HStack(spacing: 6) {
+                            Image(systemName: lastLoginInfo.icon)
+                                .font(.caption2)
+                                .foregroundColor(lastLoginInfo.color)
+                            
+                            Text(lastLoginInfo.text)
+                                .pretendardCaption(.medium)
+                                .foregroundColor(lastLoginInfo.color)
+                            
+                            if model.lastLoginDaysAgo == 0 {
+                                // Pulsing animation for online users
+                                Circle()
+                                    .fill(lastLoginInfo.color)
+                                    .frame(width: 4, height: 4)
+                                    .scaleEffect(isAnimating ? 1.3 : 1.0)
+                                    .opacity(isAnimating ? 0.5 : 1.0)
+                                    .animation(.easeInOut(duration: 1).repeatForever(autoreverses: true), value: isAnimating)
+                                    .onAppear {
+                                        isAnimating = true
+                                    }
+                            }
+                        }
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 4)
+                        .background(
+                            Capsule()
+                                .fill(Color.gray.opacity(0.5))
+                                .overlay(
+                                    Capsule()
+                                        .stroke(lastLoginInfo.color.opacity(0.3), lineWidth: 0.5)
+                                )
+                        )
                     }
                 }
                 
