@@ -22,7 +22,7 @@ public final class ChatUseCase {
         return try await chatRepository.generateChat(profileId: profileId)
     }
     
-    public func getChat(chatId: String, limit: Int = 20, cursor: String?) async throws -> (ChatEntity, PaginationEntity) {
+    public func getChat(chatId: String, limit: Int = 100, cursor: String?) async throws -> (ChatEntity, PaginationEntity) {
         return try await chatRepository.getChat(chatId: chatId, limit: limit, cursor: cursor)
     }
     

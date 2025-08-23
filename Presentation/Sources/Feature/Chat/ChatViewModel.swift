@@ -25,6 +25,8 @@ final class ChatViewModel: ObservableObject {
     @Injected(\.chatUseCase) private var chatUseCase
     @Injected(\.contentViewModel) private var contentViewModel
     
+    let scrollToMessageSubject = PassthroughSubject<String?, Never>()
+    
     // 실시간 채팅 UseCase는 런타임에 생성
     private let realTimeChatUseCase: RealTimeChatUseCase
     
@@ -51,12 +53,15 @@ final class ChatViewModel: ObservableObject {
     @MainActor
     func fetchMessages() async throws {
         guard loading == false else { return }
+        
         if pagination?.hasMore == false {
             return
         }
         
         loading = true
         defer { loading = false }
+        
+        let previousLastMessageId = self.messages.last?.id
         
         let result = try await chatUseCase.getChat(chatId: chatId, cursor: pagination?.nextCursor)
         let chat = result.0
@@ -69,7 +74,11 @@ final class ChatViewModel: ObservableObject {
         messages.append(contentsOf: messagePresentations)
         pagination = result.1
         
-        try await Task.sleep(for: .seconds(1))
+        try await Task.sleep(for: .seconds(0.2))
+        
+        scrollToMessageSubject.send(previousLastMessageId)
+        
+        try await Task.sleep(for: .seconds(0.2))
     }
     
     @MainActor
@@ -111,7 +120,7 @@ final class ChatViewModel: ObservableObject {
         
         realTimeChatUseCase
             .listenMessage()
-            .compactMap { [weak self] message in 
+            .compactMap { [weak self] message -> MessagePresentation? in
                 // ❌ 수정: weak self로 참조 캡처
                 guard let self = self else { return nil }
                 return MessagePresentation(message: message, participants: self.participants)
@@ -119,6 +128,7 @@ final class ChatViewModel: ObservableObject {
             .removeDuplicates()
             .receive(on: DispatchQueue.main)
             .sink { [weak self] messagePresentation in
+                self?.scrollToMessageSubject.send(nil)
                 self?.messages.insert(messagePresentation, at: 0)
             }
             .store(in: &cancellables)

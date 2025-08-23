@@ -8,6 +8,7 @@
 import SwiftUI
 import Domain
 import Factory
+import Combine
 
 extension Date {
     func isSameDay(as date: Date) -> Bool {
@@ -50,8 +51,12 @@ struct ChatView: View {
                     .padding(.horizontal, 16)
                     .padding(.vertical, 8)
                 }
-                .onChange(of: model.messages.count) { _, _ in
-                    if let lastMessage = model.messages.first {
+                .onReceive(model.scrollToMessageSubject) { messageId in
+                    if let messageId {
+                        withAnimation {
+                            proxy.scrollTo(messageId, anchor: .top)
+                        }
+                    } else if let lastMessage = model.messages.first {
                         withAnimation {
                             proxy.scrollTo(lastMessage.id, anchor: .bottom)
                         }
@@ -60,7 +65,7 @@ struct ChatView: View {
                 .onChange(of: inputFocus) { a, b in
                     if a == false && b == true {
                         Task {
-                            try await Task.sleep(for: .milliseconds(1000))
+                            try await Task.sleep(for: .milliseconds(500))
                             if let lastMessage = model.messages.first {
                                 withAnimation {
                                     proxy.scrollTo(lastMessage.id, anchor: .bottom)
