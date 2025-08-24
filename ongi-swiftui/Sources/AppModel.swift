@@ -30,22 +30,23 @@ final class AppModel: ObservableObject {
             .sink { [weak self] _ in
                 guard let self else { return }
                 Task {
-                    try await UNUserNotificationCenter.current().requestAuthorization()
+                    try await self.configPushToken()
                 }
-                
-                Messaging.messaging().token { token, error in
-                    if let token = token {
-                        Task {
-                            do {
-                                try await self.profileUseCase.updateFCM(fcmToken: token)
-                            } catch {
-                                print("dg: \(error)")
-                            }
-                        }
-                    }
-                }
-                
             }
             .store(in: &cancellables)
+    }
+    
+    private func configPushToken() async throws {
+        let copy = self
+        let _ = try await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound])
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            Messaging.messaging().token { token, error in
+                if let token = token {
+                    Task {
+                        try await copy.profileUseCase.updateFCM(fcmToken: token)
+                    }
+                }
+            }
+        }
     }
 }
