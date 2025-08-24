@@ -30,20 +30,34 @@ final class AppModel: ObservableObject {
             .sink { [weak self] _ in
                 guard let self else { return }
                 Task {
-                    try await UNUserNotificationCenter.current().requestAuthorization()
+                    do {
+                        print("dg: 1")
+                        try await UNUserNotificationCenter.current().requestAuthorization()
+                        print("dg: 2")
+                    } catch {
+                        print("dg: \(error)")
+                    }
+                    
                 }
                 
                 Messaging.messaging().token { token, error in
+                    print("dg: 3")
                     if let error = error {
-                        print("Error fetching FCM registration token: \(error)")
+                        print("dg: Error fetching FCM registration token: \(error)")
                     } else if let token = token {
-                        print("FCM registration token: \(token)")
+                        print("dg: FCM registration token: \(token)")
                         // 서버에 토큰 전송
                         Task {
-                            try await self.profileUseCase.updateFCM(fcmToken: token)
+                            do {
+                                try await self.profileUseCase.updateFCM(fcmToken: token)
+                            } catch {
+                                print("dg: \(error)")
+                            }
+                            
                         }
                     }
                 }
+                
             }
             .store(in: &cancellables)
     }
