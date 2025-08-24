@@ -95,6 +95,7 @@ let project = Project(
             dependencies: [
                 .target(name: "Presentation"),
                 .external(name: "FirebaseAuth"),
+                .external(name: "FirebaseMessaging"),
             ],
             settings: .settings(
                 base: [

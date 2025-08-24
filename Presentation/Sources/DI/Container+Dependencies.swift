@@ -80,7 +80,7 @@ extension Container {
 // MARK: - Use Case Layer Dependencies
 extension Container {
     
-    var profileUseCase: Factory<ProfileUseCase> {
+    public var profileUseCase: Factory<ProfileUseCase> {
         self {
             ProfileUseCase(
                 jwtRepository: self.jwtRepository(),

@@ -277,4 +277,14 @@ final class ProfileRemoteDataSource {
             throw AppError.networkError(.invalidResponse)
         }
     }
+    
+    func updateFCM(fcmToken: String) async throws {
+        let parameter: [String: Any] = [
+            "fcmToken": fcmToken
+        ]
+        
+        let url = "\(ongiExpressUrl)profiles/me/fcm-token"
+        
+        let _: APIResponse<Empty> = try await networkManager.request(url: url, method: .post, parameters: parameter)
+    }
 }

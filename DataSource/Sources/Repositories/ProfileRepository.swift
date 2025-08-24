@@ -69,4 +69,8 @@ public final class ProfileRepository: PProfileRepository {
     public func search(profileId: String) async throws -> ProfileEntitiy {
         try await profileRemoteDataSource.search(profileId: profileId)
     }
+    
+    public func updateFCM(fcmToken: String) async throws {
+        try await profileRemoteDataSource.updateFCM(fcmToken: fcmToken)
+    }
 }

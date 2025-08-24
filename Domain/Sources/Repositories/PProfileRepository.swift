@@ -21,4 +21,5 @@ public protocol PProfileRepository {
     func deleteQNA(qnaId: String) async throws -> ProfileEntitiy
     func updateQNA(qnaId: String, answer: String) async throws -> ProfileEntitiy
     func search(profileId: String) async throws -> ProfileEntitiy
+    func updateFCM(fcmToken: String) async throws
 }

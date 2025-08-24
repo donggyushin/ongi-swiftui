@@ -707,4 +707,8 @@ final class MockProfileRepository: PProfileRepository {
     func getNewProfiles() -> [ProfileEntitiy] {
         return dataStore.getNewProfiles(for: "me")
     }
+    
+    func updateFCM(fcmToken: String) async throws {
+        
+    }
 }

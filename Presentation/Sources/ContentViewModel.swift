@@ -24,7 +24,7 @@ public final class ContentViewModel: ObservableObject {
     @Published var loading = true
     
     @Published var me: ProfileEntitiy?
-    @Published var isLogin = false
+    @Published public var isLogin = false
     @Published var onboarding = false
     
     @Published var authenticationFailDialog = false

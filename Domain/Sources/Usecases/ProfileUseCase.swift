@@ -67,4 +67,8 @@ public final class ProfileUseCase {
         
         return try await profileRepository.search(profileId: profileId)
     }
+    
+    public func updateFCM(fcmToken: String) async throws {
+        try await profileRepository.updateFCM(fcmToken: fcmToken)
+    }
 }
