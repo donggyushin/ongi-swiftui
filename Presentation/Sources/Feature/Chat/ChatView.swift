@@ -53,9 +53,7 @@ struct ChatView: View {
                 }
                 .onReceive(model.scrollToMessageSubject) { messageId in
                     if let messageId {
-                        withAnimation {
-                            proxy.scrollTo(messageId, anchor: .top)
-                        }
+                        proxy.scrollTo(messageId, anchor: .top)
                     } else if let lastMessage = model.messages.first {
                         withAnimation {
                             proxy.scrollTo(lastMessage.id, anchor: .bottom)
