@@ -19,4 +19,5 @@ struct ProfileResponseDTO: Codable {
     let updatedAt: String
     let lastTokenAuthAt: String?
     let location: LocationResponseDTO?
+    let reportStatus: ReportStatusDTO?
 }

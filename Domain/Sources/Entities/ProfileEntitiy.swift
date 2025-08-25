@@ -16,6 +16,7 @@ public struct ProfileEntitiy {
     public var introduction: String?
     public var isNew: Bool
     public var isLikedByMe: Bool
+    public var reportStatus: ReportStatus?
     public let createdAt: Date
     public let updatedAt: Date
     public let lastTokenAuthAt: Date

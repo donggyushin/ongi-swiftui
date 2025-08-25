@@ -64,7 +64,7 @@ extension ProfileResponseDTO {
             bodyTypeEntity = nil
         }
         
-        return ProfileEntitiy(
+        var entity = ProfileEntitiy(
             id: self.id,
             nickname: self.nickname,
             email: self.email,
@@ -84,5 +84,9 @@ extension ProfileResponseDTO {
             updatedAt: updatedAt,
             lastTokenAuthAt: lastTokenAuthAt
         )
+        
+        entity.reportStatus = self.reportStatus?.toDomainEntity()
+        
+        return entity
     }
 }
