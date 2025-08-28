@@ -27,6 +27,7 @@ extension Container {
         shared.connectionRepository.onPreview { MockConnectionRepository() }
         shared.chatRepository.onPreview { MockChatRepository() }
         shared.socketRemoteDataSource.onPreview { MockSocketRemoteDataSource() }
+        shared.reportRepository.onPreview { MockReportRepository() }
     }
     #endif
     

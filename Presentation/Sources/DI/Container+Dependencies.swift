@@ -75,6 +75,13 @@ extension Container {
         // Repository는 싱글턴이 아님 - 필요할 때마다 새 인스턴스 생성
         // Socket 연결은 내부적으로 싱글턴 SocketRemoteDataSource를 공유
     }
+    
+    var reportRepository: Factory<PReportRepository> {
+        self {
+            ReportRepository()
+        }
+        .singleton
+    }
 }
 
 // MARK: - Use Case Layer Dependencies
@@ -122,6 +129,13 @@ extension Container {
     var chatUseCase: Factory<ChatUseCase> {
         self {
             ChatUseCase(chatRepository: self.chatRepository())
+        }
+        .singleton
+    }
+    
+    var reportUseCase: Factory<ReportUseCase> {
+        self {
+            ReportUseCase(reportRepository: self.reportRepository())
         }
         .singleton
     }
