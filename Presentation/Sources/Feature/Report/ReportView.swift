@@ -12,6 +12,8 @@ struct ReportView: View {
     @StateObject var model: ReportViewModel
     @FocusState private var isTextFieldFocused: Bool
     
+    @State private var presentFailReportDialog = false
+    
     init(model: ReportViewModel) {
         _model = .init(wrappedValue: model)
     }
@@ -43,6 +45,8 @@ struct ReportView: View {
                         .focused($isTextFieldFocused)
                         .padding(.horizontal, 12)
                         .padding(.vertical, 12)
+                        .background(Color.clear)
+                        .scrollContentBackground(.hidden)
                         .onChange(of: model.content) { _, _ in
                             updateButtonState()
                         }
@@ -78,7 +82,7 @@ struct ReportView: View {
                         try await model.report()
                         navigationManager?.pop()
                     } catch {
-                        // TODO: Handle error
+                        presentFailReportDialog = true
                     }
                 }
             } label: {
@@ -98,6 +102,8 @@ struct ReportView: View {
                 .pretendardBody()
             }
         }
+        .loading(model.loading)
+        .dialog(message: "신고에 실패하였습니다. 이미 신고한 유저일 수 있습니다.", isPresented: $presentFailReportDialog)
     }
     
     private func updateButtonState() {
