@@ -287,4 +287,15 @@ final class ProfileRemoteDataSource {
         
         let _: APIResponse<Empty> = try await networkManager.request(url: url, method: .post, parameters: parameter)
     }
+    
+    func updateLocation(latitude: Double, longitude: Double) async throws {
+        let parameters: [String: Any] = [
+            "latitude": latitude,
+            "longitude": longitude
+        ]
+        
+        let url = "\(ongiExpressUrl)profiles/me/location"
+        
+        let _: APIResponse<Empty> = try await networkManager.request(url: url, method: .post, parameters: parameters)
+    }
 }

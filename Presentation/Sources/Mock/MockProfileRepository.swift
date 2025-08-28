@@ -711,4 +711,8 @@ final class MockProfileRepository: PProfileRepository {
     func updateFCM(fcmToken: String) async throws {
         
     }
+    
+    func updateLocation(latitude: Double, longitude: Double) async throws {
+        
+    }
 }

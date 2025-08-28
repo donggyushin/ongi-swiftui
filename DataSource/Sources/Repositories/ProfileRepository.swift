@@ -73,4 +73,8 @@ public final class ProfileRepository: PProfileRepository {
     public func updateFCM(fcmToken: String) async throws {
         try await profileRemoteDataSource.updateFCM(fcmToken: fcmToken)
     }
+    
+    public func updateLocation(latitude: Double, longitude: Double) async throws {
+        try await profileRemoteDataSource.updateLocation(latitude: latitude, longitude: longitude)
+    }
 }

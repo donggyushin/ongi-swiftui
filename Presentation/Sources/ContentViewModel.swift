@@ -11,12 +11,13 @@ import Foundation
 import Factory
 import SwiftUI
 import DataSource
+import CoreLocation
 
 public final class ContentViewModel: ObservableObject {
     
-    let container: Container
-    let profileUseCase: ProfileUseCase
-    let authUseCase: AuthUseCase
+    @Injected(\.profileUseCase) private var profileUseCase
+    @Injected(\.authUseCase) private var authUseCase
+    
     let loginViewModel: LoginViewModel
     
     let locationManager = LocationManager()
@@ -32,9 +33,6 @@ public final class ContentViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     
     public init() {
-        self.container = Container.shared
-        self.profileUseCase = container.profileUseCase()
-        self.authUseCase = container.authUseCase()
         self.loginViewModel = .init()
         
         bind()
@@ -74,11 +72,17 @@ public final class ContentViewModel: ObservableObject {
         
         locationManager
             .$location
-            .compactMap { $0 }
-            .sink { location in
-                print(location)
+            .compactMap { $0?.coordinate  }
+            .sink { coordinate in
+                Task {
+                    try await self.updateLocation(coordinate: coordinate)
+                }
             }
             .store(in: &cancellables)
+    }
+    
+    private func updateLocation(coordinate: CLLocationCoordinate2D) async throws {
+        try await profileUseCase.updateLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
     }
     
     private func setupLogoutNotification() {

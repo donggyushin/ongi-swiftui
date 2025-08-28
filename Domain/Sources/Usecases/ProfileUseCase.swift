@@ -71,4 +71,8 @@ public final class ProfileUseCase {
     public func updateFCM(fcmToken: String) async throws {
         try await profileRepository.updateFCM(fcmToken: fcmToken)
     }
+    
+    public func updateLocation(latitude: Double, longitude: Double) async throws {
+        try await profileRepository.updateLocation(latitude: latitude, longitude: longitude)
+    }
 }

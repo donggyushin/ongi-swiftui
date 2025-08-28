@@ -22,4 +22,5 @@ public protocol PProfileRepository {
     func updateQNA(qnaId: String, answer: String) async throws -> ProfileEntitiy
     func search(profileId: String) async throws -> ProfileEntitiy
     func updateFCM(fcmToken: String) async throws
+    func updateLocation(latitude: Double, longitude: Double) async throws
 }
