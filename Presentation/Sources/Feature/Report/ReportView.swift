@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ReportView: View {
     
+    @Environment(\.dismiss) private var dismiss
     @StateObject var model: ReportViewModel
     @FocusState private var isTextFieldFocused: Bool
     
@@ -19,87 +20,89 @@ struct ReportView: View {
     }
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 24) {
-            VStack(alignment: .leading, spacing: 8) {
-                Text("신고 사유를 작성해주세요")
-                    .pretendardTitle3()
-                    .foregroundColor(.primary)
-                
-                Text("부적절한 내용이나 행동에 대해 구체적으로 작성해주세요")
-                    .pretendardCallout()
-                    .foregroundColor(.secondary)
-            }
-            
-            VStack(alignment: .trailing, spacing: 12) {
-                ZStack(alignment: .topLeading) {
-                    if model.content.isEmpty && !isTextFieldFocused {
-                        Text("신고 내용을 입력해주세요...")
-                            .pretendardBody()
-                            .foregroundColor(.secondary)
-                            .padding(.horizontal, 16)
-                            .padding(.vertical, 16)
-                    }
+        NavigationView {
+            VStack(alignment: .leading, spacing: 24) {
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("신고 사유를 작성해주세요")
+                        .pretendardTitle3()
+                        .foregroundColor(.primary)
                     
-                    TextEditor(text: $model.content)
-                        .pretendardBody()
-                        .focused($isTextFieldFocused)
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 12)
-                        .background(Color.clear)
-                        .scrollContentBackground(.hidden)
-                        .onChange(of: model.content) { _, _ in
-                            updateButtonState()
-                        }
-                }
-                .frame(minHeight: 120)
-                .background(
-                    RoundedRectangle(cornerRadius: 12)
-                        .fill(Color(.systemGray6))
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 12)
-                                .stroke(isTextFieldFocused ? Color.accentColor : Color.clear, lineWidth: 2)
-                        )
-                )
-                
-                HStack {
-                    Text("\(model.minTextLength)자 이상 \(model.maxTextLength)자 이하")
-                        .pretendardCaption()
+                    Text("부적절한 내용이나 행동에 대해 구체적으로 작성해주세요")
+                        .pretendardCallout()
                         .foregroundColor(.secondary)
-                    
-                    Spacer()
-                    
-                    Text("\(model.content.count)/\(model.maxTextLength)")
-                        .pretendardCaption()
-                        .foregroundColor(model.content.count > model.maxTextLength ? .red : .secondary)
                 }
-            }
-            
-            Spacer()
-            
-            Button {
-                Task {
-                    do {
-                        try await model.report()
-                        navigationManager?.pop()
-                    } catch {
-                        presentFailReportDialog = true
+                
+                VStack(alignment: .trailing, spacing: 12) {
+                    ZStack(alignment: .topLeading) {
+                        if model.content.isEmpty && !isTextFieldFocused {
+                            Text("신고 내용을 입력해주세요...")
+                                .pretendardBody()
+                                .foregroundColor(.secondary)
+                                .padding(.horizontal, 16)
+                                .padding(.vertical, 16)
+                        }
+                        
+                        TextEditor(text: $model.content)
+                            .pretendardBody()
+                            .focused($isTextFieldFocused)
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 12)
+                            .background(Color.clear)
+                            .scrollContentBackground(.hidden)
+                            .onChange(of: model.content) { _, _ in
+                                updateButtonState()
+                            }
+                    }
+                    .frame(minHeight: 120)
+                    .background(
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(Color(.systemGray6))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .stroke(isTextFieldFocused ? Color.accentColor : Color.clear, lineWidth: 2)
+                            )
+                    )
+                    
+                    HStack {
+                        Text("\(model.minTextLength)자 이상 \(model.maxTextLength)자 이하")
+                            .pretendardCaption()
+                            .foregroundColor(.secondary)
+                        
+                        Spacer()
+                        
+                        Text("\(model.content.count)/\(model.maxTextLength)")
+                            .pretendardCaption()
+                            .foregroundColor(model.content.count > model.maxTextLength ? .red : .secondary)
                     }
                 }
-            } label: {
-                AppButton(text: "신고하기", disabled: !model.buttonEnabled || model.loading)
-            }
-            .disabled(!model.buttonEnabled || model.loading)
-        }
-        .padding(.horizontal, 20)
-        .padding(.vertical, 16)
-        .navigationTitle("신고하기")
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button("취소") {
-                    navigationManager?.pop()
+                
+                Spacer()
+                
+                Button {
+                    Task {
+                        do {
+                            try await model.report()
+                            dismiss()
+                        } catch {
+                            presentFailReportDialog = true
+                        }
+                    }
+                } label: {
+                    AppButton(text: "신고하기", disabled: !model.buttonEnabled || model.loading)
                 }
-                .pretendardBody()
+                .disabled(!model.buttonEnabled || model.loading)
+            }
+            .padding(.horizontal, 20)
+            .padding(.vertical, 16)
+            .navigationTitle("신고하기")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("취소") {
+                        dismiss()
+                    }
+                    .pretendardBody()
+                }
             }
         }
         .loading(model.loading)
@@ -113,8 +116,6 @@ struct ReportView: View {
 }
 
 #Preview {
-    NavigationView {
-        ReportView(model: .init(targetUserId: ""))
-    }
+    ReportView(model: .init(targetUserId: ""))
     .preferredColorScheme(.dark)
 }
