@@ -17,6 +17,8 @@ public struct ProfileDetailView: View {
     @State private var showingEditOptions = false
     @State private var isAnimating = false
     
+    @State private var presentReportView = false
+    
     private var lastLoginInfo: (text: String, color: Color, icon: String) {
         let daysAgo = model.lastLoginDaysAgo
         switch daysAgo {
@@ -67,6 +69,9 @@ public struct ProfileDetailView: View {
             ProfileEditOptionsSheet(isPresent: $showingEditOptions)
         }
         .loading(model.loading)
+        .sheet(isPresented: $presentReportView) {
+            ReportView(model: .init(targetUserId: model.profileId))
+        }
     }
     
     private var headerSection: some View {
@@ -180,21 +185,34 @@ public struct ProfileDetailView: View {
                             .clipShape(Circle())
                     }
                 } else {
-                    Button {
-                        Task {
-                            try await model.like()
+                    HStack(spacing: 8) {
+                        Button {
+                            presentReportView = true
+                        } label: {
+                            Image(systemName: "exclamationmark.triangle")
+                                .font(.system(size: 18, weight: .medium))
+                                .foregroundStyle(.red)
+                                .frame(width: 44, height: 44)
+                                .background(Color(.systemGray6))
+                                .clipShape(Circle())
                         }
-                    } label: {
-                        Image(systemName: model.isLikedByMe ? "heart.fill" : "heart")
-                            .font(.system(size: 20, weight: .medium))
-                            .foregroundStyle(model.isLikedByMe ? .red : .primary)
-                            .frame(width: 44, height: 44)
-                            .background(Color(.systemGray6))
-                            .clipShape(Circle())
-                            .scaleEffect(model.isLikedByMe ? 1.1 : 1.0)
+                        
+                        Button {
+                            Task {
+                                try await model.like()
+                            }
+                        } label: {
+                            Image(systemName: model.isLikedByMe ? "heart.fill" : "heart")
+                                .font(.system(size: 20, weight: .medium))
+                                .foregroundStyle(model.isLikedByMe ? .red : .primary)
+                                .frame(width: 44, height: 44)
+                                .background(Color(.systemGray6))
+                                .clipShape(Circle())
+                                .scaleEffect(model.isLikedByMe ? 1.1 : 1.0)
+                        }
+                        .animation(.spring(response: 0.4, dampingFraction: 0.6, blendDuration: 0), value: model.isLikedByMe)
+                        .sensoryFeedback(.impact(flexibility: .soft, intensity: 0.7), trigger: model.isLikedByMe)
                     }
-                    .animation(.spring(response: 0.4, dampingFraction: 0.6, blendDuration: 0), value: model.isLikedByMe)
-                    .sensoryFeedback(.impact(flexibility: .soft, intensity: 0.7), trigger: model.isLikedByMe)
                 }
             }
         }
