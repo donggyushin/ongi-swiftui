@@ -25,5 +25,10 @@ final class URLSchemeManager {
             let profileId = pathComponents[2]
             navigationManager?.append(.profileDetail(profileId))
         }
+        
+        // ongi://profiles/like 형태의 URL 파싱
+        if urlScheme.absoluteString == "ongi://profiles/like" {
+            navigationManager?.append(.profileListLikeMe)
+        }
     }
 }
