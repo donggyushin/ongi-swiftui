@@ -82,6 +82,13 @@ extension Container {
         }
         .singleton
     }
+    
+    var notificationsRepository: Factory<PNotificationsRepository> {
+        self {
+            NotificationsRepository()
+        }
+        .singleton
+    }
 }
 
 // MARK: - Use Case Layer Dependencies
