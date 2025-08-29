@@ -7,6 +7,18 @@
 
 import Foundation
 
+public struct NotificationsEntity {
+    public let notifications: [NotificationEntity]
+    public let nextCursor: String?
+    public let hasMore: Bool
+    
+    public init(notifications: [NotificationEntity], nextCursor: String?, hasMore: Bool) {
+        self.notifications = notifications
+        self.nextCursor = nextCursor
+        self.hasMore = hasMore
+    }
+}
+
 public struct NotificationEntity {
     public let id: String
     public let recipientId: String
