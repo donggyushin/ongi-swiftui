@@ -9,6 +9,11 @@ import Foundation
 import Domain
 
 public final class NotificationsRepository: PNotificationsRepository {
+    
+    public func read(notificationId: String) async throws {
+        try await notificationsRemoteDataSource.read(notificationId: notificationId)
+    }
+    
     public func unreadCount() async throws -> Int {
         try await notificationsRemoteDataSource.unreadCount()
     }

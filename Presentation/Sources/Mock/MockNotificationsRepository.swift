@@ -9,6 +9,9 @@ import Foundation
 import Domain
 
 final class MockNotificationsRepository: PNotificationsRepository {
+    
+    func read(notificationId: String) async throws { }
+    
     func unreadCount() async throws -> Int {
         return 3
     }

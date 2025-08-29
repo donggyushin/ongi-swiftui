@@ -21,4 +21,8 @@ public final class NotificationsUseCase {
     public func unreadCount() async throws -> Int {
         try await notificationsRepository.unreadCount()
     }
+    
+    public func read(notificationId: String) async throws {
+        try await notificationsRepository.read(notificationId: notificationId)
+    }
 }

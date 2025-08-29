@@ -48,4 +48,10 @@ final class NotificationsRemoteDataSource {
         let response: APIResponse<Response> = try await networkManager.request(url: url)
         return response.data?.count ?? 0
     }
+    
+    func read(notificationId: String) async throws {
+        let url = "\(ongiExpressUrl)notifications/\(notificationId)/read"
+        
+        let _: APIResponse<Empty> = try await networkManager.request(url: url, method: .patch)
+    }
 }
