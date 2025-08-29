@@ -30,5 +30,11 @@ final class URLSchemeManager {
         if urlScheme.absoluteString == "ongi://profiles/like" {
             navigationManager?.append(.profileListLikeMe)
         }
+        
+        // ongi://chats/:chatId 형태의 URL 파싱
+        if pathComponents.count >= 3 && pathComponents[1] == "chats" {
+            let chatId = pathComponents[2]
+            navigationManager?.append(.chat(chatId))
+        }
     }
 }
