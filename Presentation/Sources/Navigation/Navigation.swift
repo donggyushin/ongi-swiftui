@@ -16,4 +16,13 @@ public enum Navigation: Hashable {
     case chat(String)
     case zoomableImage(URL)
     case notifications
+    
+    public var chatId: String? {
+        switch self {
+        case .chat(let id):
+            return id
+        default:
+            return nil
+        }
+    }
 }

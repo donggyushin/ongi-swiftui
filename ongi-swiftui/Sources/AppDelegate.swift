@@ -9,6 +9,7 @@ import SwiftUI
 import Firebase
 import FirebaseMessaging
 import UserNotifications
+import Presentation
 
 class AppDelegate: NSObject, UIApplicationDelegate {
   func application(_ application: UIApplication,
@@ -45,10 +46,14 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         
         let userInfo = notification.request.content.userInfo
         
-        // 메시지 타입인 경우 배너와 소리 없이 처리
+        // 메시지 타입인 경우 현재 채팅 화면과 비교
         if let type = userInfo["type"] as? String, type == "message", let chatId = userInfo["chatId"] as? String {
-            // TODO: 현재 채팅중인 chatId 와 일치하는 경우에는 배너 및 소리 뜨지 않게 수정
-            completionHandler([.badge])
+            // 현재 채팅중인 chatId와 일치하는 경우 배너 및 소리 없음
+            if let currentChatId = navigationManager?.currentChatId, currentChatId == chatId {
+                completionHandler([])
+            } else {
+                completionHandler([.banner, .badge, .sound])
+            }
         } else {
             completionHandler([.banner, .badge, .sound])
         }

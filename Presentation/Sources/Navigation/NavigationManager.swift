@@ -17,6 +17,10 @@ public final class NavigationManager {
         self._navigationPath = navigationPath
     }
     
+    public var currentChatId: String? {
+        return navigationPath.last?.chatId
+    }
+    
     public func append(_ navigation: Navigation) {
         self.navigationPath.append(navigation)
     }
