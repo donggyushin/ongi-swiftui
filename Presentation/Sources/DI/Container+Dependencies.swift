@@ -146,6 +146,13 @@ extension Container {
         }
         .singleton
     }
+    
+    var notificationsUseCase: Factory<NotificationsUseCase> {
+        self {
+            NotificationsUseCase(notificationsRepository: self.notificationsRepository())
+        }
+        .singleton
+    }
 }
 
 extension Container {
