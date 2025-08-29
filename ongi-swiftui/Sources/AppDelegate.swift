@@ -39,11 +39,20 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 // MARK: - UNUserNotificationCenterDelegate
 extension AppDelegate: UNUserNotificationCenterDelegate {
   // 앱이 foreground에 있을 때 알림 처리
-  func userNotificationCenter(_ center: UNUserNotificationCenter,
-                            willPresent notification: UNNotification,
-                            withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-    completionHandler([.banner, .badge, .sound])
-  }
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                willPresent notification: UNNotification,
+                                withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        
+        let userInfo = notification.request.content.userInfo
+        
+        // 메시지 타입인 경우 배너와 소리 없이 처리
+        if let type = userInfo["type"] as? String, type == "message", let chatId = userInfo["chatId"] as? String {
+            // TODO: 현재 채팅중인 chatId 와 일치하는 경우에는 배너 및 소리 뜨지 않게 수정
+            completionHandler([.badge])
+        } else {
+            completionHandler([.banner, .badge, .sound])
+        }
+    }
   
   // 사용자가 알림을 탭했을 때
   func userNotificationCenter(_ center: UNUserNotificationCenter,
