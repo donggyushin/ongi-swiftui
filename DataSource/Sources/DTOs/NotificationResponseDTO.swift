@@ -8,28 +8,17 @@
 import Foundation
 import Domain
 
-public struct NotificationResponseDTO: Codable {
-    public let id: String
-    public let recipientId: String
-    public let type: String
-    public let title: String
-    public let message: String
-    public let isRead: Bool
-    public let data: Data?
-    public let createdAt: String
-    public let updatedAt: String
-    
-    public init(id: String, recipientId: String, type: String, title: String, message: String, isRead: Bool, data: Data?, createdAt: String, updatedAt: String) {
-        self.id = id
-        self.recipientId = recipientId
-        self.type = type
-        self.title = title
-        self.message = message
-        self.isRead = isRead
-        self.data = data
-        self.createdAt = createdAt
-        self.updatedAt = updatedAt
-    }
+struct NotificationResponseDTO: Codable {
+    let id: String
+    let recipientId: String
+    let type: String
+    let title: String
+    let message: String
+    let isRead: Bool
+    let data: Data?
+    let urlScheme: String?
+    let createdAt: String
+    let updatedAt: String
 }
 
 extension NotificationResponseDTO {
@@ -45,6 +34,7 @@ extension NotificationResponseDTO {
             message: message,
             isRead: isRead,
             data: data?.toDomain(),
+            urlScheme: .init(string: urlScheme ?? ""),
             createdAt: createdDate,
             updatedAt: updatedDate
         )

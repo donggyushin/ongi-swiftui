@@ -27,10 +27,11 @@ public struct NotificationEntity {
     public let message: String
     public let isRead: Bool
     public let data: Data?
+    public let urlScheme: URL?
     public let createdAt: Date
     public let updatedAt: Date
     
-    public init(id: String, recipientId: String, type: String, title: String, message: String, isRead: Bool, data: Data?, createdAt: Date, updatedAt: Date) {
+    public init(id: String, recipientId: String, type: String, title: String, message: String, isRead: Bool, data: Data?, urlScheme: URL?, createdAt: Date, updatedAt: Date) {
         self.id = id
         self.recipientId = recipientId
         self.type = type
@@ -38,6 +39,7 @@ public struct NotificationEntity {
         self.message = message
         self.isRead = isRead
         self.data = data
+        self.urlScheme = urlScheme
         self.createdAt = createdAt
         self.updatedAt = updatedAt
     }
