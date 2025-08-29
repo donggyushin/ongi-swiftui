@@ -77,6 +77,17 @@ struct SettingView: View {
     
     private var menuItemsSection: some View {
         VStack(spacing: 12) {
+            // Notifications Button
+            menuItem(
+                icon: "bell.fill",
+                iconColor: .orange,
+                title: "알림",
+                subtitle: "알림 내역을 확인하세요",
+                hasNotificationBadge: model.hasUnreadNotifications
+            ) {
+                // TODO: Add navigation to notification page
+            }
+            
             // Chat List Button
             menuItem(
                 icon: "message.fill",
@@ -118,6 +129,7 @@ struct SettingView: View {
         iconColor: Color,
         title: String,
         subtitle: String,
+        hasNotificationBadge: Bool = false,
         action: @escaping () -> Void
     ) -> some View {
         Button(action: action) {
@@ -130,6 +142,13 @@ struct SettingView: View {
                     Image(systemName: icon)
                         .font(.system(size: 20, weight: .medium))
                         .foregroundColor(iconColor)
+                    
+                    if hasNotificationBadge {
+                        Circle()
+                            .fill(Color.red)
+                            .frame(width: 12, height: 12)
+                            .offset(x: 16, y: -16)
+                    }
                 }
                 
                 VStack(alignment: .leading, spacing: 2) {
