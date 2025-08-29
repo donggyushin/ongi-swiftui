@@ -57,6 +57,8 @@ public struct ContentView: View {
                             ChatListView(model: .init())
                         case .chat(let chatId):
                             ChatView(model: .init(chatId: chatId))
+                        case .notifications:
+                            NotificationsListView(model: .init())
                         }
                     }
                 }

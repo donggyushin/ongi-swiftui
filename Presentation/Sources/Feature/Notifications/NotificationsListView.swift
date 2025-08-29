@@ -56,7 +56,6 @@ public struct NotificationsListView: View {
                 try await model.fetchNotifications()
             }
         }
-        .loading(model.loading)
     }
     
     private var loadingView: some View {

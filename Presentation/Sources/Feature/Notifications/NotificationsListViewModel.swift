@@ -17,6 +17,8 @@ public final class NotificationsListViewModel: ObservableObject {
     
     @Injected(\.notificationsUseCase) private var notificationsUseCase
     
+    public init() { }
+    
     @MainActor
     func fetchNotifications() async throws {
         guard notifications.hasMore == true else { return }

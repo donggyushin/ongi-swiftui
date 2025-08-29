@@ -15,4 +15,5 @@ public enum Navigation: Hashable {
     case chatList
     case chat(String)
     case zoomableImage(URL)
+    case notifications
 }
