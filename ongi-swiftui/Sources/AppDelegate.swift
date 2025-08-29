@@ -49,6 +49,20 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
   func userNotificationCenter(_ center: UNUserNotificationCenter,
                             didReceive response: UNNotificationResponse,
                             withCompletionHandler completionHandler: @escaping () -> Void) {
+    
+    let userInfo = response.notification.request.content.userInfo
+    
+    if let urlScheme = userInfo["url_scheme"] as? String {
+      print("URL Scheme: \(urlScheme)")
+      
+      // URL 스킴으로 딥링크 처리
+      if let url = URL(string: urlScheme) {
+        DispatchQueue.main.async {
+          UIApplication.shared.open(url)
+        }
+      }
+    }
+    
     completionHandler()
   }
 }
