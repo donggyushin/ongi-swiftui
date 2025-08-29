@@ -10,6 +10,10 @@ import Domain
 
 public final class NotificationsRepository: PNotificationsRepository {
     
+    public func readAll() async throws {
+        try await notificationsRemoteDataSource.readAll()
+    }
+    
     public func read(notificationId: String) async throws {
         try await notificationsRemoteDataSource.read(notificationId: notificationId)
     }

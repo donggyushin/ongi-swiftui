@@ -25,4 +25,8 @@ public final class NotificationsUseCase {
     public func read(notificationId: String) async throws {
         try await notificationsRepository.read(notificationId: notificationId)
     }
+    
+    public func readAll() async throws {
+        try await notificationsRepository.readAll()
+    }
 }

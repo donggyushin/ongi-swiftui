@@ -54,4 +54,9 @@ final class NotificationsRemoteDataSource {
         
         let _: APIResponse<Empty> = try await networkManager.request(url: url, method: .patch)
     }
+    
+    func readAll() async throws {
+        let url = "notifications/read-all"
+        let _: APIResponse<Empty> = try await networkManager.request(url: url, method: .patch)
+    }
 }
