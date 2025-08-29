@@ -70,7 +70,9 @@ public struct ProfileDetailView: View {
         }
         .loading(model.loading)
         .sheet(isPresented: $presentReportView) {
-            ReportView(model: .init(targetUserId: model.profileId))
+            NavigationView {
+                ReportView(model: .init(targetUserId: model.profileId))
+            }
         }
     }
     
