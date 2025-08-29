@@ -91,6 +91,28 @@ public struct ProfileListView: View {
                         .cornerRadius(12)
                 }
                 
+                // Notification button
+                Button {
+                    // TODO: Add navigation to notification page
+                } label: {
+                    ZStack {
+                        Image(systemName: "bell.fill")
+                            .font(.system(size: 20))
+                            .foregroundColor(.secondary)
+                            .frame(width: 32, height: 32)
+                            .background(Color.primary.opacity(0.1))
+                            .clipShape(Circle())
+                        
+                        if model.hasUnreadNotifications {
+                            Circle()
+                                .fill(Color.red)
+                                .frame(width: 8, height: 8)
+                                .offset(x: 10, y: -10)
+                        }
+                    }
+                }
+                .buttonStyle(.plain)
+                
                 // Settings button
                 Button {
                     navigationManager?.append(.setting)
