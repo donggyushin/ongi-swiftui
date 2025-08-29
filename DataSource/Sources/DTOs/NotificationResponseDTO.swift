@@ -34,7 +34,6 @@ public struct NotificationResponseDTO: Codable {
 
 extension NotificationResponseDTO {
     public func toEntity() -> NotificationEntity {
-        let dateFormatter = ISO8601DateFormatter()
         let createdDate = dateFormatter.date(from: createdAt) ?? Date()
         let updatedDate = dateFormatter.date(from: updatedAt) ?? Date()
         
