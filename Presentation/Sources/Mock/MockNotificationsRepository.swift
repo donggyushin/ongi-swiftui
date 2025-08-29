@@ -9,6 +9,10 @@ import Foundation
 import Domain
 
 final class MockNotificationsRepository: PNotificationsRepository {
+    func unreadCount() async throws -> Int {
+        return 3
+    }
+
     func getNotifications(limit: Int, cursorId: String?) async throws -> NotificationsEntity {
         let mockNotifications = (1...min(limit, 10)).map { index in
             NotificationEntity(

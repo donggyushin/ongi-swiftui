@@ -9,6 +9,10 @@ import Foundation
 import Domain
 
 public final class NotificationsRepository: PNotificationsRepository {
+    public func unreadCount() async throws -> Int {
+        try await notificationsRemoteDataSource.unreadCount()
+    }
+    
     public func getNotifications(limit: Int, cursorId: String?) async throws -> NotificationsEntity {
         try await notificationsRemoteDataSource.getNotifications(limit: limit, cursorId: cursorId)
     }

@@ -17,4 +17,8 @@ public final class NotificationsUseCase {
     public func getNotifications(cursorId: String?) async throws -> NotificationsEntity {
         try await notificationsRepository.getNotifications(limit: 50, cursorId: cursorId)
     }
+    
+    public func unreadCount() async throws -> Int {
+        try await notificationsRepository.unreadCount()
+    }
 }

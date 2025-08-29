@@ -39,4 +39,13 @@ final class NotificationsRemoteDataSource {
             throw AppError.networkError(.invalidResponse)
         }
     }
+    
+    func unreadCount() async throws -> Int {
+        let url = "\(ongiExpressUrl)notifications/unread/count"
+        struct Response: Decodable {
+            let count: Int
+        }
+        let response: APIResponse<Response> = try await networkManager.request(url: url)
+        return response.data?.count ?? 0
+    }
 }

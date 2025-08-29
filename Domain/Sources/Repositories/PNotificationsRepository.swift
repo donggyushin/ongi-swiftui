@@ -9,4 +9,5 @@ import Foundation
 
 public protocol PNotificationsRepository {
     func getNotifications(limit: Int, cursorId: String?) async throws -> NotificationsEntity
+    func unreadCount() async throws -> Int
 }
