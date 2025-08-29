@@ -85,7 +85,7 @@ struct SettingView: View {
                 subtitle: "알림 내역을 확인하세요",
                 hasNotificationBadge: model.hasUnreadNotifications
             ) {
-                // TODO: Add navigation to notification page
+                navigationManager?.append(.notifications)
             }
             
             // Chat List Button

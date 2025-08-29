@@ -93,7 +93,7 @@ public struct ProfileListView: View {
                 
                 // Notification button
                 Button {
-                    // TODO: Add navigation to notification page
+                    navigationManager?.append(.notifications)
                 } label: {
                     ZStack {
                         Image(systemName: "bell.fill")
