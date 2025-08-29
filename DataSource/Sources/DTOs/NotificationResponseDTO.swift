@@ -15,11 +15,11 @@ public struct NotificationResponseDTO: Codable {
     public let title: String
     public let message: String
     public let isRead: Bool
-    public let data: [String: String]?
+    public let data: Data?
     public let createdAt: String
     public let updatedAt: String
     
-    public init(id: String, recipientId: String, type: String, title: String, message: String, isRead: Bool, data: [String: String]?, createdAt: String, updatedAt: String) {
+    public init(id: String, recipientId: String, type: String, title: String, message: String, isRead: Bool, data: Data?, createdAt: String, updatedAt: String) {
         self.id = id
         self.recipientId = recipientId
         self.type = type
@@ -38,11 +38,6 @@ extension NotificationResponseDTO {
         let createdDate = dateFormatter.date(from: createdAt) ?? Date()
         let updatedDate = dateFormatter.date(from: updatedAt) ?? Date()
         
-        var entityData: [String: Any]?
-        if let data = data {
-            entityData = data
-        }
-        
         return NotificationEntity(
             id: id,
             recipientId: recipientId,
@@ -50,9 +45,27 @@ extension NotificationResponseDTO {
             title: title,
             message: message,
             isRead: isRead,
-            data: entityData,
+            data: data?.toDomain(),
             createdAt: createdDate,
             updatedAt: updatedDate
         )
+    }
+}
+
+extension NotificationResponseDTO {
+    public struct Data: Codable {
+        let type: String?
+        let likerNickname: String?
+        let likerProfileId: String?
+        let likerProfile: ProfileResponseDTO?
+        
+        func toDomain() -> NotificationEntity.Data? {
+            return .init(
+                type: type,
+                likerNickname: likerNickname,
+                likerProfileId: likerProfileId,
+                likerProfile: likerProfile?.toDomainEntity()
+            )
+        }
     }
 }

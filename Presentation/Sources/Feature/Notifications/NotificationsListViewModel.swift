@@ -26,8 +26,12 @@ public final class NotificationsListViewModel: ObservableObject {
         
         loading = true
         defer { loading = false }
+        do {
+            let notifications = try await notificationsUseCase.getNotifications(cursorId: notifications.notifications.last?.id)
+            self.notifications = notifications
+        } catch {
+            print(error)
+        }
         
-        let notifications = try await notificationsUseCase.getNotifications(cursorId: notifications.notifications.last?.id)
-        self.notifications = notifications
     }
 }

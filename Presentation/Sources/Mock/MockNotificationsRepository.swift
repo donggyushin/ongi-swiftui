@@ -27,7 +27,7 @@ final class MockNotificationsRepository: PNotificationsRepository {
                 title: "알림 제목 \(index)",
                 message: "이것은 \(index)번째 알림 메시지입니다.",
                 isRead: index % 3 == 0,
-                data: ["additionalInfo": "mock data \(index)"],
+                data: .init(type: "like", likerNickname: "아름다운다람쥐", likerProfileId: "cmeccsr2m0001qr0koyubedwr", likerProfile: MockDataGenerator.shared.generateRandomProfile()),
                 createdAt: Date().addingTimeInterval(-TimeInterval(index * 3600)),
                 updatedAt: Date().addingTimeInterval(-TimeInterval(index * 1800))
             )

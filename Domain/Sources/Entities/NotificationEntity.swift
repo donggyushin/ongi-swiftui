@@ -26,11 +26,11 @@ public struct NotificationEntity {
     public let title: String
     public let message: String
     public let isRead: Bool
-    public let data: [String: Any]?
+    public let data: Data?
     public let createdAt: Date
     public let updatedAt: Date
     
-    public init(id: String, recipientId: String, type: String, title: String, message: String, isRead: Bool, data: [String : Any]?, createdAt: Date, updatedAt: Date) {
+    public init(id: String, recipientId: String, type: String, title: String, message: String, isRead: Bool, data: Data?, createdAt: Date, updatedAt: Date) {
         self.id = id
         self.recipientId = recipientId
         self.type = type
@@ -40,5 +40,21 @@ public struct NotificationEntity {
         self.data = data
         self.createdAt = createdAt
         self.updatedAt = updatedAt
+    }
+}
+
+extension NotificationEntity {
+    public struct Data {
+        public let type: String?
+        public let likerNickname: String?
+        public let likerProfileId: String?
+        public let likerProfile: ProfileEntitiy?
+        
+        public init(type: String?, likerNickname: String?, likerProfileId: String?, likerProfile: ProfileEntitiy?) {
+            self.type = type
+            self.likerNickname = likerNickname
+            self.likerProfileId = likerProfileId
+            self.likerProfile = likerProfile
+        }
     }
 }
