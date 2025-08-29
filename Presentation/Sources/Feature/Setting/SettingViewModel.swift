@@ -14,11 +14,18 @@ final class SettingViewModel: ObservableObject {
     
     @Injected(\.contentViewModel) private var contentViewModel
     @Injected(\.authUseCase) private var authUseCase
+    @Injected(\.notificationsUseCase) private var notificationsUseCase
     
     @Published var me: ProfileEntitiy?
+    @Published var hasUnreadNotifications = false
     
     init() {
         bind()
+    }
+    
+    @MainActor
+    func updateHasUnreadNotifications() async throws {
+        hasUnreadNotifications = try await notificationsUseCase.unreadCount() > 0
     }
     
     @MainActor

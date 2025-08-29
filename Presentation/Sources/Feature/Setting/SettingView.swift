@@ -52,6 +52,11 @@ struct SettingView: View {
         .sheet(isPresented: $presentMailCompose) {
             MailComposeView(recipients: ["donggyu9410@gmail.com"], subject: "온기 앱 피드백", messageBody: "안녕하세요,\n\n온기 앱에 대한 피드백이나 문의사항을 적어주세요.\n\n")
         }
+        .onAppear {
+            Task {
+                try await model.updateHasUnreadNotifications()
+            }
+        }
     }
     
     @ViewBuilder
