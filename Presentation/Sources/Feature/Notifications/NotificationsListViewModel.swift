@@ -10,7 +10,7 @@ import Domain
 import Combine
 import Factory
 
-final class NotificationsListViewModel: ObservableObject {
+public final class NotificationsListViewModel: ObservableObject {
     
     @Published var loading = false
     @Published var notifications: NotificationsEntity = .init(notifications: [], nextCursor: nil, hasMore: true)
