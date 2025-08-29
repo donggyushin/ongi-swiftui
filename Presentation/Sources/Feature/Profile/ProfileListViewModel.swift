@@ -16,8 +16,11 @@ public final class ProfileListViewModel: ObservableObject {
     @Published var newProfilesIds: [String] = []
     @Published var profileIDsLikeMe: [String] = []
     @Published var loading = false
+    @Published var hasUnreadNotifications = false
     
+    @Injected(\.contentViewModel) private var contentViewModel
     @Injected(\.connectionUseCase) private var connectionUseCase
+    @Injected(\.notificationsUseCase) private var notificationsUseCase
     
     public init() {
         bind()
@@ -30,15 +33,17 @@ public final class ProfileListViewModel: ObservableObject {
         
         async let connectionResult = connectionUseCase.getConnection()
         async let profilesLikeMe = connectionUseCase.getProfilesLikeMe()
+        async let unreadNotificationsCount = notificationsUseCase.unreadCount()
         
         let result: ConnectionEntity = try await connectionResult
         let result2: [ProfileEntitiy] = try await profilesLikeMe
+        let result3 = try await unreadNotificationsCount
+        
         profiles = result.profiles
         newProfilesIds = result.newProfileIds
         profileIDsLikeMe = result2.map { $0.id }
+        hasUnreadNotifications = result3 > 0
     }
-    
-    @Injected(\.contentViewModel) private var contentViewModel
     
     private func bind() {
         contentViewModel
