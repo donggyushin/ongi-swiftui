@@ -37,6 +37,13 @@ struct ChatView: View {
                             
                             if message.messageType == .leaveChat {
                                 LeaveChatMessage(message: message)
+                                    .onAppear {
+                                        Task {
+                                            if message.id == model.messages.last?.id {
+                                                try await model.fetchMessages()
+                                            }
+                                        }
+                                    }
                             } else {
                                 MessageRow(
                                     message: message,
