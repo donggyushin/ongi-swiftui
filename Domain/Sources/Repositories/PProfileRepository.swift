@@ -20,6 +20,7 @@ public protocol PProfileRepository {
     func addQNA(question: String, answer: String) async throws -> ProfileEntitiy
     func deleteQNA(qnaId: String) async throws -> ProfileEntitiy
     func updateQNA(qnaId: String, answer: String) async throws -> ProfileEntitiy
+    func getQnA(qnaId: String) async throws -> QnAEntity
     func search(profileId: String) async throws -> ProfileEntitiy
     func updateFCM(fcmToken: String) async throws
     func updateLocation(latitude: Double, longitude: Double) async throws

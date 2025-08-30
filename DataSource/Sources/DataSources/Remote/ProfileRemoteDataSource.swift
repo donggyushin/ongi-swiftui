@@ -278,6 +278,20 @@ final class ProfileRemoteDataSource {
         }
     }
     
+    func getQnA(qnaId: String) async throws -> QnAEntity {
+        let url = "\(ongiExpressUrl)profiles/me/qna/\(qnaId)"
+        
+        let response: APIResponse<QnAResponseDTO> = try await networkManager.request(url: url)
+        
+        if let qna = response.data?.toDomainEntity() {
+            return qna
+        } else if let message = response.message {
+            throw AppError.custom(message)
+        } else {
+            throw AppError.networkError(.invalidResponse)
+        }
+    }
+    
     func updateFCM(fcmToken: String) async throws {
         let parameter: [String: Any] = [
             "fcmToken": fcmToken

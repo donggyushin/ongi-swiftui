@@ -600,6 +600,10 @@ final class MockProfileRepository: PProfileRepository {
         return updatedProfile
     }
     
+    func getQnA(qnaId: String) async throws -> QnAEntity {
+        MockDataGenerator.shared.generateRandomQnAs(count: 1)[0]
+    }
+    
     func deleteQNA(qnaId: String) async throws -> ProfileEntitiy {
         try await simulateNetworkDelay()
         

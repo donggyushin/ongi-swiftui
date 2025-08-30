@@ -32,4 +32,8 @@ public final class QNAUseCase {
     public func examples() async throws -> [QnAEntity] {
         try await qnaRepository.getExamples()
     }
+    
+    public func getQnA(qnaId: String) async throws -> QnAEntity {
+        try await profileRepository.getQnA(qnaId: qnaId)
+    }
 }
