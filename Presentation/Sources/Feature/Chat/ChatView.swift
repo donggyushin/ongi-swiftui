@@ -308,6 +308,7 @@ struct LeaveChatMessage: View {
         }
         .padding(.vertical, 4)
         .id(message.id)
+        
     }
 }
 
