@@ -13,6 +13,7 @@ public struct MessageEntity {
     public let text: String
     public let createdAt: Date
     public let updatedAt: Date
+    public var messageType: MessageType?
     
     public init(id: String, writerProfileId: String, text: String, createdAt: Date, updatedAt: Date) {
         self.id = id
@@ -20,5 +21,11 @@ public struct MessageEntity {
         self.text = text
         self.createdAt = createdAt
         self.updatedAt = updatedAt
+    }
+}
+
+extension MessageEntity {
+    public enum MessageType {
+        case leaveChat
     }
 }

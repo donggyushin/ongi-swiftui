@@ -13,13 +13,19 @@ extension MessageResponseDTO {
         guard let createdAt = dateFormatter.date(from: createdAt),
               let updatedAt = dateFormatter.date(from: updatedAt) else { return nil }
         
-        return .init(
+        var messageEntity = MessageEntity(
             id: id,
             writerProfileId: writerProfileId,
             text: text,
             createdAt: createdAt,
             updatedAt: updatedAt
         )
+        
+        if messageType == "LEAVE" {
+            messageEntity.messageType = .leaveChat
+        }
+        
+        return messageEntity
     }
     
     static func generate(from message: MessageEntity) -> MessageResponseDTO {
@@ -28,7 +34,8 @@ extension MessageResponseDTO {
             writerProfileId: message.writerProfileId,
             text: message.text,
             createdAt: dateFormatter.string(from: message.createdAt),
-            updatedAt: dateFormatter.string(from: message.updatedAt)
+            updatedAt: dateFormatter.string(from: message.updatedAt),
+            messageType: nil
         )
     }
     

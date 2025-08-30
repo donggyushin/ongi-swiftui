@@ -11,12 +11,5 @@ public struct MessageResponseDTO: Codable {
     public let text: String
     public let createdAt: String
     public let updatedAt: String
-    
-    public init(id: String, writerProfileId: String, text: String, createdAt: String, updatedAt: String) {
-        self.id = id
-        self.writerProfileId = writerProfileId
-        self.text = text
-        self.createdAt = createdAt
-        self.updatedAt = updatedAt
-    }
+    public let messageType: String?
 }
