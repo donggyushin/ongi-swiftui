@@ -5,6 +5,7 @@
 //  Created by 신동규 on 8/30/25.
 //
 
+import SwiftUI
 
 struct MessageRow: View {
     let message: MessagePresentation
