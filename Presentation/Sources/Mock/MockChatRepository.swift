@@ -41,4 +41,6 @@ final class MockChatRepository: PChatRepository {
     func updateReadInfo(chatId: String, date: Date) async throws {
         
     }
+    
+    func leaveChat(chatId: String) async throws { }
 }

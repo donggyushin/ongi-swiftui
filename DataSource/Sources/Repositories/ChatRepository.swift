@@ -32,4 +32,8 @@ public final class ChatRepository: PChatRepository {
     public func updateReadInfo(chatId: String, date: Date) async throws {
         try await chatRemoteDataStore.updateReadInfo(chatId: chatId, date: date)
     }
+    
+    public func leaveChat(chatId: String) async throws {
+        try await chatRemoteDataStore.leaveChat(chatId: chatId)
+    }
 }

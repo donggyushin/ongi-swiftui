@@ -33,4 +33,8 @@ public final class ChatUseCase {
     public func updateReadInfo(chatId: String) async throws {
         try await chatRepository.updateReadInfo(chatId: chatId, date: Date())
     }
+    
+    public func leaveChat(chatId: String) async throws {
+        try await chatRepository.leaveChat(chatId: chatId)
+    }
 }

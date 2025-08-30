@@ -13,4 +13,5 @@ public protocol PChatRepository {
     func getChat(chatId: String, limit: Int, cursor: String?) async throws -> (ChatEntity, PaginationEntity)
     func sendMessage(chatId: String, text: String) async throws -> MessageEntity
     func updateReadInfo(chatId: String, date: Date) async throws
+    func leaveChat(chatId: String) async throws
 }

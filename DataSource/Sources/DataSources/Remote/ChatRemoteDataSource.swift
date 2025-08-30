@@ -97,4 +97,9 @@ final class ChatRemoteDataSource {
         
         let _: APIResponse<Empty> = try await networkManager.request(url: url, method: .put, parameters: body)
     }
+    
+    func leaveChat(chatId: String) async throws {
+        let url = "\(ongiExpressUrl)chats/\(chatId)/leave"
+        let _: APIResponse<Empty> = try await networkManager.request(url: url, method: .delete)
+    }
 }
