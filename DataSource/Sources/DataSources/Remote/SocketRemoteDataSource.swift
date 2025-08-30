@@ -58,7 +58,7 @@ public class SocketRemoteDataSource: PSocketRemoteDataSource {
         socket.disconnect()
         
         // 모든 Subject들 완료 처리 및 정리
-        for (event, subject) in eventSubjects {
+        for (_, subject) in eventSubjects {
             if let subject = subject as? PassthroughSubject<Any, Never> {
                 subject.send(completion: .finished)
             }
