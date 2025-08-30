@@ -88,6 +88,7 @@ let project = Project(
                         "위치 정보를 허용하시면 회원님과 가까운 거리에 있는 사용자들을 우선적으로 추천해드릴 수 있습니다. 더 가까운 곳에서 새로운 만남을 시작해보세요!",
                     "NSLocationAlwaysAndWhenInUseUsageDescription":
                         "위치 정보를 허용하시면 회원님과 가까운 거리에 있는 사용자들을 우선적으로 추천해드릴 수 있습니다. 더 가까운 곳에서 새로운 만남을 시작해보세요!",
+                    "ITSAppUsesNonExemptEncryption": false,
                 ]
             ),
             sources: ["ongi-swiftui/Sources/**"],
