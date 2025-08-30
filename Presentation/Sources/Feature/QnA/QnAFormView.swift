@@ -14,13 +14,6 @@ public struct QnAFormView: View {
     @State var errorMessage: String?
     @Environment(\.dismiss) private var dismiss
     
-    var complete: ((QnAEntity) -> ())?
-    public func onComplete(_ action: ((QnAEntity) -> ())?) -> Self {
-        var copy = self
-        copy.complete = action
-        return copy
-    }
-    
     public init(model: QnAFormViewModel) {
         _model = .init(wrappedValue: model)
     }
@@ -52,8 +45,7 @@ public struct QnAFormView: View {
                 Button("저장") {
                     Task {
                         do {
-                            let qna = try await model.registerQnA()
-                            complete?(qna)
+                            try await model.registerQnA()
                             dismiss()
                         } catch AppError.custom(let message, code: _) {
                             withAnimation {
@@ -138,6 +130,7 @@ public struct QnAFormView: View {
                         )
                 )
                 .lineLimit(3...6)
+                .disabled(model.qnaId != nil)
         }
     }
     
@@ -174,6 +167,6 @@ public struct QnAFormView: View {
 
 #if DEBUG
 #Preview {
-    QnAFormView(model: .init())
+    QnAFormView(model: .init(qnaId: nil))
 }
 #endif

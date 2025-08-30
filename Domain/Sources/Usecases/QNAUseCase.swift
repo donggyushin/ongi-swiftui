@@ -25,6 +25,10 @@ public final class QNAUseCase {
         try await profileRepository.updateQNA(qnaId: entitiy.id, answer: entitiy.answer)
     }
     
+    public func update(qnaId: String, answer: String) async throws -> ProfileEntitiy {
+        try await profileRepository.updateQNA(qnaId: qnaId, answer: answer)
+    }
+    
     public func delete(qnaId: String) async throws -> ProfileEntitiy {
         try await profileRepository.deleteQNA(qnaId: qnaId)
     }

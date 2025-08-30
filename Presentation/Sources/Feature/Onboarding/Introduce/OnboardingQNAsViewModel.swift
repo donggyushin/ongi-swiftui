@@ -12,7 +12,6 @@ import Factory
 
 final class OnboardingQNAsViewModel: ObservableObject {
     @Published var qnas: [QnAEntity] = []
-    @Published var fetchingInitialData = true
     @Published var loading = false
     
     var isEnoughQNAs: Bool {
@@ -46,15 +45,6 @@ final class OnboardingQNAsViewModel: ObservableObject {
     
     @MainActor
     func fetchInitialData() async throws {
-        
-        guard qnas.isEmpty else { return }
-        
-        defer {
-            withAnimation {
-                fetchingInitialData = false
-            }
-        }
-        
         qnas = try await profileUseCase.getMe().qnas
     }
 }

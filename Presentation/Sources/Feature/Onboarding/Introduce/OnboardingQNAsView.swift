@@ -36,73 +36,65 @@ struct OnboardingQNAsView: View {
             }
             .padding(.top, 40)
             
-            if model.fetchingInitialData {
-                Spacer()
-                ProgressView()
-                Spacer()
-            } else {
-                ScrollView {
-                    LazyVStack(spacing: 16) {
-                        ForEach(Array(model.qnas.enumerated()), id: \.offset) { index, qna in
-                            QnAItemView(
-                                qna: qna,
-                                onDelete: {
-                                    deleteItemIndex = index
-                                    showDeleteDialog = true
-                                }
-                            )
-                        }
-                        
-                        if model.isEnoughQNAs == false {
-                            NavigationLink(destination: QnAFormView(model: .init()).onComplete({ qna in
-                                model.addNewQnA(qna)
-                            })) {
-                                VStack(alignment: .leading, spacing: 12) {
-                                    VStack(alignment: .leading, spacing: 8) {
-                                        HStack(spacing: 8) {
-                                            Text("새로운 Q&A 추가")
-                                                .pretendardTitle3()
-                                                .foregroundColor(.primary)
-                                            
-                                            Spacer()
-                                        }
+            ScrollView {
+                LazyVStack(spacing: 16) {
+                    ForEach(Array(model.qnas.enumerated()), id: \.offset) { index, qna in
+                        QnAItemView(
+                            qna: qna,
+                            onDelete: {
+                                deleteItemIndex = index
+                                showDeleteDialog = true
+                            }
+                        )
+                    }
+                    
+                    if model.isEnoughQNAs == false {
+                        NavigationLink(destination: QnAFormView(model: .init(qnaId: nil))) {
+                            VStack(alignment: .leading, spacing: 12) {
+                                VStack(alignment: .leading, spacing: 8) {
+                                    HStack(spacing: 8) {
+                                        Text("새로운 Q&A 추가")
+                                            .pretendardTitle3()
+                                            .foregroundColor(.primary)
                                         
-                                        Text("질문과 답변을 작성해보세요")
-                                            .pretendardBody()
-                                            .foregroundColor(.secondary)
+                                        Spacer()
                                     }
+                                    
+                                    Text("질문과 답변을 작성해보세요")
+                                        .pretendardBody()
+                                        .foregroundColor(.secondary)
                                 }
-                                .padding(16)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 12)
-                                        .fill(Color.gray.opacity(0.1))
-                                        .overlay(
-                                            RoundedRectangle(cornerRadius: 12)
-                                                .stroke(Color.gray.opacity(0.3), lineWidth: 1)
-                                        )
-                                )
-                                .overlay(alignment: .trailing) {
-                                    Image(systemName: "arrow.right")
-                                        .font(.title3)
-                                        .bold()
-                                        .padding(16)
-                                        .foregroundStyle(Color.secondary)
-                                }
+                            }
+                            .padding(16)
+                            .background(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .fill(Color.gray.opacity(0.1))
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 12)
+                                            .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+                                    )
+                            )
+                            .overlay(alignment: .trailing) {
+                                Image(systemName: "arrow.right")
+                                    .font(.title3)
+                                    .bold()
+                                    .padding(16)
+                                    .foregroundStyle(Color.secondary)
                             }
                         }
                     }
-                    .padding(.horizontal, 20)
                 }
-                
-                Button {
-                    complete?()
-                } label: {
-                    AppButton(text: "다음", disabled: model.qnas.isEmpty)
-                }
-                .buttonStyle(PlainButtonStyle())
                 .padding(.horizontal, 20)
-                .padding(.bottom, 34)
             }
+            
+            Button {
+                complete?()
+            } label: {
+                AppButton(text: "다음", disabled: model.qnas.isEmpty)
+            }
+            .buttonStyle(PlainButtonStyle())
+            .padding(.horizontal, 20)
+            .padding(.bottom, 34)
         }
         .modifier(BackgroundModifier())
         .loading(model.loading)
