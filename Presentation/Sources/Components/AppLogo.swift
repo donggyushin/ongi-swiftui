@@ -22,8 +22,7 @@ public struct AppLogo: View {
             )
             .overlay(
                 Text("온")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
+                    .pretendardTitle1()
                     .foregroundColor(.white)
             )
     }
