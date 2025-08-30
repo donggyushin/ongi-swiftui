@@ -72,7 +72,26 @@ struct SettingView: View {
                 isVerified: me.email?.isEmpty == false,
                 mbti: me.mbti?.text
             )
+            .padding(16)
+            .background(
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(
+                        LinearGradient(
+                            colors: [
+                                Color.accentColor.opacity(0.5),
+                                Color.purple.opacity(0.2)
+                            ],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(Color(.systemGray4), lineWidth: 0.5)
+                    )
+            )
         }
+        .buttonStyle(.plain)
     }
     
     private var menuItemsSection: some View {
@@ -215,5 +234,5 @@ struct SettingView: View {
                 }
             }
     }
-    .preferredColorScheme(.dark)
+//    .preferredColorScheme(.dark)
 }
