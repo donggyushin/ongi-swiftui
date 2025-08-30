@@ -24,17 +24,12 @@ final class URLSchemeManager {
         // ongi://profiles/like 형태의 URL 파싱
         if urlScheme.absoluteString == "ongi://profiles/like" {
             navigationManager?.append(.profileListLikeMe)
-            return
-        }
-        
-        // ongi://profiles/:profileId 형태의 URL 파싱
-        if host == "profiles" && !path.isEmpty {
+        } else if host == "profiles" && !path.isEmpty {
+            // ongi://profiles/:profileId 형태의 URL 파싱
             let profileId = String(path.dropFirst()) // "/" 제거
             navigationManager?.append(.profileDetail(profileId))
-        }
-        
-        // ongi://chats/:chatId 형태의 URL 파싱  
-        if host == "chats" && !path.isEmpty {
+        } else if host == "chats" && !path.isEmpty {
+            // ongi://chats/:chatId 형태의 URL 파싱
             let chatId = String(path.dropFirst()) // "/" 제거
             navigationManager?.append(.chat(chatId))
         }
