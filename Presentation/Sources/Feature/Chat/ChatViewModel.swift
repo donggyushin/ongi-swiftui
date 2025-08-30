@@ -18,6 +18,7 @@ final class ChatViewModel: ObservableObject {
     @Published var messages: [MessagePresentation] = []
     @Published var loading = false
     @Published var showLeaveChatDialog = false
+    @Published var showSidebar = false
     
     var pagination: PaginationEntity?
     
