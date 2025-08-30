@@ -150,7 +150,9 @@ public struct NotificationsListView: View {
         )
         .contentShape(Rectangle())
         .onTapGesture {
-            // TODO: Handle notification tap
+            Task {
+                try await model.tapNotification(notification)
+            }
         }
     }
     

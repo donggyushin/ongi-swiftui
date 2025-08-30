@@ -8,7 +8,7 @@
 import Foundation
 
 public struct NotificationsEntity {
-    public let notifications: [NotificationEntity]
+    public var notifications: [NotificationEntity]
     public let nextCursor: String?
     public let hasMore: Bool
     
@@ -25,7 +25,7 @@ public struct NotificationEntity {
     public let type: String
     public let title: String
     public let message: String
-    public let isRead: Bool
+    public var isRead: Bool
     public let data: Data?
     public let urlScheme: URL?
     public let createdAt: Date

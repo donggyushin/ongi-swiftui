@@ -20,12 +20,29 @@ public final class NotificationsListViewModel: ObservableObject {
     public init() { }
     
     @MainActor
-    func fetchNotifications() async throws {
-        guard notifications.hasMore == true else { return }
+    func tapNotification(_ notification: NotificationEntity) async throws {
         guard loading == false else { return }
-        
         loading = true
         defer { loading = false }
+        
+        if let url = notification.urlScheme {
+            await UIApplication.shared.open(url)
+        }
+        
+        try await notificationsUseCase.read(notificationId: notification.id)
+        
+        guard let index = notifications.notifications.firstIndex(where: { $0.id == notification.id }) else { return }
+        notifications.notifications[index].isRead = true 
+    }
+    
+    @MainActor
+    func fetchNotifications() async throws {
+        guard notifications.hasMore == true else { return }
+        
+        guard loading == false else { return }
+        loading = true
+        defer { loading = false }
+        
         do {
             let notifications = try await notificationsUseCase.getNotifications(cursorId: notifications.notifications.last?.id)
             self.notifications = notifications
