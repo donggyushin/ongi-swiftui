@@ -18,22 +18,24 @@ final class URLSchemeManager {
     func implement(_ urlScheme: URL) {
         guard urlScheme.scheme == "ongi" else { return }
         
-        let pathComponents = urlScheme.pathComponents
-        
-        // ongi://profiles/:profileId 형태의 URL 파싱
-        if pathComponents.count >= 3 && pathComponents[1] == "profiles" {
-            let profileId = pathComponents[2]
-            navigationManager?.append(.profileDetail(profileId))
-        }
+        guard let host = urlScheme.host else { return }
+        let path = urlScheme.path
         
         // ongi://profiles/like 형태의 URL 파싱
         if urlScheme.absoluteString == "ongi://profiles/like" {
             navigationManager?.append(.profileListLikeMe)
+            return
         }
         
-        // ongi://chats/:chatId 형태의 URL 파싱
-        if pathComponents.count >= 3 && pathComponents[1] == "chats" {
-            let chatId = pathComponents[2]
+        // ongi://profiles/:profileId 형태의 URL 파싱
+        if host == "profiles" && !path.isEmpty {
+            let profileId = String(path.dropFirst()) // "/" 제거
+            navigationManager?.append(.profileDetail(profileId))
+        }
+        
+        // ongi://chats/:chatId 형태의 URL 파싱  
+        if host == "chats" && !path.isEmpty {
+            let chatId = String(path.dropFirst()) // "/" 제거
             navigationManager?.append(.chat(chatId))
         }
     }

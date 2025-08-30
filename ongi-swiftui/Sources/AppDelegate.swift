@@ -65,7 +65,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                             withCompletionHandler completionHandler: @escaping () -> Void) {
     
     let userInfo = response.notification.request.content.userInfo
-    
+      
     if let urlScheme = userInfo["url_scheme"] as? String {
       print("URL Scheme: \(urlScheme)")
       
