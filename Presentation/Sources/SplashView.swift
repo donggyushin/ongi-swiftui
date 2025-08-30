@@ -23,9 +23,9 @@ struct SplashView: View {
         Rectangle()
             .fill(
                 LinearGradient(
-                    colors: [.accentColor, .yellow],
-                    startPoint: .top,
-                    endPoint: .bottom
+                    colors: [.accentColor, .purple],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
                 )
             )
             .ignoresSafeArea()
