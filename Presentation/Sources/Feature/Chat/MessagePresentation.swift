@@ -19,6 +19,7 @@ struct MessagePresentation: Equatable {
     let text: String
     let createdAt: Date
     let updatedAt: Date
+    let messageType: MessageEntity.MessageType?
     
     init(message: MessageEntity, participants: [ProfileEntitiy]) {
         let writer: ProfileEntitiy = participants.first(
@@ -42,6 +43,7 @@ struct MessagePresentation: Equatable {
         self.text = message.text
         self.createdAt = message.createdAt
         self.updatedAt = message.updatedAt
+        self.messageType = message.messageType
     }
 }
 

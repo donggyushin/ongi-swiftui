@@ -35,10 +35,14 @@ struct ChatView: View {
                                 DateDivider(date: message.createdAt)
                             }
                             
-                            MessageRow(
-                                message: message,
-                                isMyMessage: model.me?.id == message.writer.id
-                            )
+                            if message.messageType == .leaveChat {
+                                LeaveChatMessage(message: message)
+                            } else {
+                                MessageRow(
+                                    message: message,
+                                    isMyMessage: model.me?.id == message.writer.id
+                                )
+                            }
                             .onAppear {
                                 Task {
                                     if message.id == model.messages.last?.id {
@@ -276,6 +280,34 @@ struct MessageInputView: View {
         .padding(.horizontal, 16)
         .padding(.vertical, 8)
         .background(Color(.systemBackground))
+    }
+}
+
+struct LeaveChatMessage: View {
+    let message: MessagePresentation
+    
+    var body: some View {
+        HStack {
+            Spacer()
+            
+            HStack(spacing: 8) {
+                Image(systemName: "rectangle.portrait.and.arrow.right")
+                    .font(.caption2)
+                    .foregroundColor(.secondary)
+                
+                Text("\(message.writer.nickname)님이 채팅방을 나갔습니다")
+                    .pretendardCaption()
+                    .foregroundColor(.secondary)
+            }
+            .padding(.horizontal, 12)
+            .padding(.vertical, 6)
+            .background(Color(.systemGray5))
+            .cornerRadius(12)
+            
+            Spacer()
+        }
+        .padding(.vertical, 4)
+        .id(message.id)
     }
 }
 
