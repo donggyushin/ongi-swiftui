@@ -13,6 +13,7 @@ import Factory
 public final class NotificationsListViewModel: ObservableObject {
     
     @Published var loading = false
+    @Published var bigLoading = false
     @Published var notifications: NotificationsEntity = .init(notifications: [], nextCursor: nil, hasMore: true)
     
     @Injected(\.notificationsUseCase) private var notificationsUseCase
@@ -20,10 +21,23 @@ public final class NotificationsListViewModel: ObservableObject {
     public init() { }
     
     @MainActor
+    func readAll() async throws {
+        guard bigLoading == false else { return }
+        bigLoading = true
+        defer { bigLoading = false }
+        
+        try await notificationsUseCase.readAll()
+        
+        for index in notifications.notifications.indices {
+            notifications.notifications[index].isRead = true
+        }
+    }
+    
+    @MainActor
     func tapNotification(_ notification: NotificationEntity) async throws {
-        guard loading == false else { return }
-        loading = true
-        defer { loading = false }
+        guard bigLoading == false else { return }
+        bigLoading = true
+        defer { bigLoading = false }
         
         if let url = notification.urlScheme {
             await UIApplication.shared.open(url)

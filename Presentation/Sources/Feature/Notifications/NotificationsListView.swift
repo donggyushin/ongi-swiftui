@@ -50,12 +50,24 @@ public struct NotificationsListView: View {
         }
         .navigationTitle("알림")
         .navigationBarTitleDisplayMode(.large)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button("모두 읽음") {
+                    Task {
+                        try await model.readAll()
+                    }
+                }
+                .pretendardCallout(.medium)
+                .foregroundColor(.orange)
+            }
+        }
         .modifier(BackgroundModifier())
         .onAppear {
             Task {
                 try await model.fetchNotifications()
             }
         }
+        .loading(model.bigLoading)
     }
     
     private var loadingView: some View {
