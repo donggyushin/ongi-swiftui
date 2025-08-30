@@ -194,7 +194,7 @@ extension MockScenarioManager {
     }
 }
 
-public struct ScenarioTestResult {
+public struct ScenarioTestResult : Sendable{
     public var profileLoadTime: TimeInterval = 0
     public var connectionLoadTime: TimeInterval = 0
     public var profileLoadSuccess: Bool = false
