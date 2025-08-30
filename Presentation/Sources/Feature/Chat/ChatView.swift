@@ -85,6 +85,16 @@ struct ChatView: View {
             .focused($inputFocus)
         }
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button {
+                    model.showLeaveChatDialog = true
+                } label: {
+                    Image(systemName: "ellipsis")
+                        .foregroundColor(.primary)
+                }
+            }
+        }
         .task {
             try? await model.fetchMessages()
         }
@@ -92,6 +102,21 @@ struct ChatView: View {
         .onTapGesture {
             inputFocus = false
         }
+        .dialog(
+            title: "채팅방 나가기",
+            message: "정말로 채팅방을 나가시겠습니까?\n나가게 되면 대화 내용이 모두 삭제됩니다.",
+            primaryButtonText: "나가기",
+            secondaryButtonText: "취소",
+            primaryAction: {
+                Task {
+                    try await model.leaveChat()
+                }
+            },
+            secondaryAction: {
+                model.showLeaveChatDialog = false
+            },
+            isPresented: $model.showLeaveChatDialog
+        )
     }
     
     private func shouldShowDateDivider(at index: Int, in messages: [MessagePresentation]) -> Bool {

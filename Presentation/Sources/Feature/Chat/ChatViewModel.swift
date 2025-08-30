@@ -17,6 +17,7 @@ final class ChatViewModel: ObservableObject {
     @Published var text: String = ""
     @Published var messages: [MessagePresentation] = []
     @Published var loading = false
+    @Published var showLeaveChatDialog = false
     
     var pagination: PaginationEntity?
     
@@ -51,15 +52,25 @@ final class ChatViewModel: ObservableObject {
     }
     
     @MainActor
+    func leaveChat() async throws {
+        guard loading == false else { return }
+        loading = true
+        defer { loading = false }
+        
+        try await chatUseCase.leaveChat(chatId: chatId)
+        
+        navigationManager?.pop()
+    }
+    
+    @MainActor
     func fetchMessages() async throws {
         guard loading == false else { return }
+        loading = true
+        defer { loading = false }
         
         if pagination?.hasMore == false {
             return
         }
-        
-        loading = true
-        defer { loading = false }
         
         let previousLastMessageId = self.messages.last?.id
         
