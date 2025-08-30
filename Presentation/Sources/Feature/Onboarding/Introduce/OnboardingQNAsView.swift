@@ -39,13 +39,15 @@ struct OnboardingQNAsView: View {
             ScrollView {
                 LazyVStack(spacing: 16) {
                     ForEach(Array(model.qnas.enumerated()), id: \.offset) { index, qna in
-                        QnAItemView(
-                            qna: qna,
-                            onDelete: {
-                                deleteItemIndex = index
-                                showDeleteDialog = true
-                            }
-                        )
+                        NavigationLink(destination: QnAFormView(model: .init(qnaId: qna.id))) {
+                            QnAItemView(
+                                qna: qna,
+                                onDelete: {
+                                    deleteItemIndex = index
+                                    showDeleteDialog = true
+                                }
+                            )
+                        }
                     }
                     
                     if model.isEnoughQNAs == false {
