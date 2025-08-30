@@ -7,8 +7,11 @@
 
 import SwiftUI
 
-struct AppLogo: View {
-    var body: some View {
+public struct AppLogo: View {
+    
+    public init() { }
+    
+    public var body: some View {
         RoundedRectangle(cornerRadius: 24)
             .fill(
                 LinearGradient(

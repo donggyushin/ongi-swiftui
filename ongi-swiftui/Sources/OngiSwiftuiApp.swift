@@ -17,11 +17,13 @@ struct OngiSwiftuiApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView(model: Container.shared.contentViewModel())
+//            ContentView(model: Container.shared.contentViewModel())
+//                .tint(OngiSwiftuiAsset.Assets.accentColor.swiftUIColor)
+//                .onOpenURL { url in
+//                    urlSchemeManager.implement(url)
+//                }
+            AppLogo()
                 .tint(OngiSwiftuiAsset.Assets.accentColor.swiftUIColor)
-                .onOpenURL { url in
-                    urlSchemeManager.implement(url)
-                }
         }
     }
 }
