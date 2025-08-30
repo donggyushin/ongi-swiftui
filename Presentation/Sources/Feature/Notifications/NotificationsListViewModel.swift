@@ -29,10 +29,12 @@ public final class NotificationsListViewModel: ObservableObject {
             await UIApplication.shared.open(url)
         }
         
-        try await notificationsUseCase.read(notificationId: notification.id)
-        
-        guard let index = notifications.notifications.firstIndex(where: { $0.id == notification.id }) else { return }
-        notifications.notifications[index].isRead = true 
+        if notification.isRead == false {
+            try await notificationsUseCase.read(notificationId: notification.id)
+            
+            guard let index = notifications.notifications.firstIndex(where: { $0.id == notification.id }) else { return }
+            notifications.notifications[index].isRead = true
+        }
     }
     
     @MainActor
