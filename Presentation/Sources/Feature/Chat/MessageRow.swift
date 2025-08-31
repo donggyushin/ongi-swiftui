@@ -32,7 +32,8 @@ struct MessageRow: View {
             VStack(alignment: isMyMessage ? .trailing : .leading, spacing: 4) {
                 if !isMyMessage && showProfile {
                     Text(message.writer.nickname)
-                        .pretendardBody()
+                        .pretendardCaption()
+                        .fontWeight(.bold)
                         .foregroundColor(.primary)
                 }
                 
