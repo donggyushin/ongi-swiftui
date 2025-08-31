@@ -50,12 +50,21 @@ struct ChatSidebar: View {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 12) {
                         ForEach(participants, id: \.id) { participant in
+                            let isMe = participant.id == model.myId
                             VStack(spacing: 4) {
-                                CircleProfileImage(url: participant.profileImage?.url, size: 50)
+                                ZStack {
+                                    CircleProfileImage(url: participant.profileImage?.url, size: 50)
+                                    
+                                    if isMe {
+                                        Circle()
+                                            .stroke(Color.blue, lineWidth: 2)
+                                            .frame(width: 50, height: 50)
+                                    }
+                                }
                                 
-                                Text(participant.nickname)
-                                    .pretendardCaption2(.medium)
-                                    .foregroundColor(.primary)
+                                Text(isMe ? "나" : participant.nickname)
+                                    .pretendardCaption2(isMe ? .bold : .medium)
+                                    .foregroundColor(isMe ? .blue : .primary)
                                     .lineLimit(1)
                                     .frame(maxWidth: 60)
                             }
