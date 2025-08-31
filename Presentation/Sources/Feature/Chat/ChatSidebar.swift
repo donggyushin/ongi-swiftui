@@ -36,6 +36,48 @@ struct ChatSidebar: View {
             
             Divider()
             
+            // Participants
+            VStack(alignment: .leading, spacing: 8) {
+                Text("참가자")
+                    .pretendardCaption(.semiBold)
+                    .foregroundColor(.secondary)
+                    .padding(.horizontal, 20)
+                
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 12) {
+                        ForEach(participants, id: \.id) { participant in
+                            VStack(spacing: 4) {
+                                AsyncImage(url: participant.profileImage?.imageURL) { image in
+                                    image
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                } placeholder: {
+                                    Circle()
+                                        .fill(Color(.systemGray5))
+                                        .overlay(
+                                            Image(systemName: "person.fill")
+                                                .foregroundColor(.secondary)
+                                                .font(.system(size: 20))
+                                        )
+                                }
+                                .frame(width: 50, height: 50)
+                                .clipShape(Circle())
+                                
+                                Text(participant.nickname)
+                                    .pretendardCaption2(.medium)
+                                    .foregroundColor(.primary)
+                                    .lineLimit(1)
+                                    .frame(maxWidth: 60)
+                            }
+                        }
+                    }
+                    .padding(.horizontal, 20)
+                }
+            }
+            .padding(.vertical, 16)
+            
+            Divider()
+            
             // Menu Items
             VStack(spacing: 0) {
                 Button(action: leaveChatTap) {

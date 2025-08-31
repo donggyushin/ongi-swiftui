@@ -22,7 +22,7 @@ final class ChatViewModel: ObservableObject {
     
     var pagination: PaginationEntity?
     
-    private var participants: [ProfileEntitiy] = []
+    var participants: [ProfileEntitiy] = []
     
     @Injected(\.chatUseCase) private var chatUseCase
     @Injected(\.contentViewModel) private var contentViewModel
