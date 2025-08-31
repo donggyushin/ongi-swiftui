@@ -145,7 +145,7 @@ struct ChatView: View {
                 HStack {
                     Spacer()
                     
-                    ChatSidebar(participants: model.participants)
+                    ChatSidebar(participants: model.participants, model: .init())
                         .onLeaveChatTap {
                             withAnimation(.easeInOut(duration: 0.3)) {
                                 model.showSidebar = false

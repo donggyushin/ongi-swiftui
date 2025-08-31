@@ -9,6 +9,9 @@ import SwiftUI
 import Domain
 
 struct ChatSidebar: View {
+    
+    @StateObject var model: ChatSideBarModel
+    
     let participants: [ProfileEntitiy]
     var leaveChatTap: (() -> Void) = {}
     func onLeaveChatTap(_ action: @escaping (() -> Void)) -> Self {
@@ -17,8 +20,9 @@ struct ChatSidebar: View {
         return copy
     }
     
-    init(participants: [ProfileEntitiy]) {
+    init(participants: [ProfileEntitiy], model: ChatSideBarModel) {
         self.participants = participants
+        _model = .init(wrappedValue: model)
     }
     
     var body: some View {
