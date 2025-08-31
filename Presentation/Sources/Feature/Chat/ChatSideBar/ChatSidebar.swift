@@ -70,7 +70,7 @@ struct ChatSidebar: View {
                                     .frame(maxWidth: 60)
                             }
                             .onTapGesture {
-                                navigationManager?.append(.profileDetail(participant.id))
+                                navigationManager?.append(.profileDetailStack(participant.id))
                             }
                         }
                     }
