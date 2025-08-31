@@ -21,6 +21,7 @@ final class ChatViewModel: ObservableObject {
     @Published var showSidebar = false
     
     var pagination: PaginationEntity?
+    private var lastFetchedAt: Date?
     
     var participants: [ProfileEntitiy] = []
     
@@ -39,6 +40,7 @@ final class ChatViewModel: ObservableObject {
         self.realTimeChatUseCase = .init(chatId: chatId, realTimeChatRepository: Container.shared.realTimeChatRepository())
         
         bind()
+        setupAppLifecycleObservers()
         realTimeChatUseCase.connect()
     }
     
@@ -148,5 +150,66 @@ final class ChatViewModel: ObservableObject {
                 }
             }
             .store(in: &cancellables)
+    }
+    
+    private func setupAppLifecycleObservers() {
+        NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)
+            .sink { [weak self] _ in
+                Task { @MainActor in
+                    await self?.handleAppWillEnterForeground()
+                }
+            }
+            .store(in: &cancellables)
+        
+        NotificationCenter.default.publisher(for: UIApplication.didEnterBackgroundNotification)
+            .sink { [weak self] _ in
+                self?.handleAppDidEnterBackground()
+            }
+            .store(in: &cancellables)
+    }
+    
+    @MainActor
+    private func handleAppWillEnterForeground() async {
+        guard !loading else { return }
+        
+        realTimeChatUseCase.connect()
+        
+        if let lastFetchedAt = lastFetchedAt {
+            let timeSinceLastFetch = Date().timeIntervalSince(lastFetchedAt)
+            if timeSinceLastFetch > 10 {
+                try? await syncMissedMessages()
+            }
+        } else {
+            try? await syncMissedMessages()
+        }
+    }
+    
+    private func handleAppDidEnterBackground() {
+        lastFetchedAt = Date()
+    }
+    
+    @MainActor
+    private func syncMissedMessages() async throws {
+        guard loading == false else { return }
+        loading = true
+        defer { loading = false }
+        
+        let result = try await chatUseCase.getChat(chatId: chatId, cursor: nil)
+        let chat = result.0
+        participants = chat.participants
+        
+        let newMessages = chat.messages.compactMap { message in
+            MessagePresentation(message: message, participants: participants)
+        }
+        
+        let existingMessageIds = Set(messages.map { $0.id })
+        let missedMessages = newMessages.filter { !existingMessageIds.contains($0.id) }
+        
+        if !missedMessages.isEmpty {
+            messages.insert(contentsOf: missedMessages.reversed(), at: 0)
+            scrollToMessageSubject.send(nil)
+        }
+        
+        lastFetchedAt = Date()
     }
 }

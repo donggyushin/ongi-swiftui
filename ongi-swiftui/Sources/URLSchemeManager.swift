@@ -31,6 +31,11 @@ final class URLSchemeManager {
         } else if host == "chats" && !path.isEmpty {
             // ongi://chats/:chatId 형태의 URL 파싱
             let chatId = String(path.dropFirst()) // "/" 제거
+            
+            if let currentChatId = navigationManager?.currentChatId, currentChatId == chatId {
+                return
+            }
+            
             navigationManager?.append(.chat(chatId))
         }
     }
