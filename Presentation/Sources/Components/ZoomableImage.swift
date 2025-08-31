@@ -87,13 +87,14 @@ public struct ZoomableImage: View {
     }
     
     public var body: some View {
-//        KFImage(url)
-//            .resizable()
-//            .scaledToFit()
-        
-        
-        ZoomableImageViewControllerRepresentable(source: url)
+        KFImage(url)
+            .resizable()
+            .scaledToFill()
             .ignoresSafeArea()
+        
+        
+//        ZoomableImageViewControllerRepresentable(source: url)
+//            .ignoresSafeArea()
         
     }
 }

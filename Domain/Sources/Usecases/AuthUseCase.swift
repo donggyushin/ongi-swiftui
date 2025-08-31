@@ -29,10 +29,9 @@ public final class AuthUseCase {
     }
     
     public func loginOrSignup(id: String, type: String) async throws {
-//        guard type == "apple" else { throw AppError.dataError(.corruptedData) }
-//        let tokens = try await authRepository.loginOrSignup(id: id, type: type)
+        let tokens = try await authRepository.loginOrSignup(id: id, type: type)
         // For test
-        let tokens = try await authRepository.loginOrSignup(id: "nickname_test_0023", type: "kakao")
+//        let tokens = try await authRepository.loginOrSignup(id: "nickname_test_0023", type: "kakao")
         jwtRepository.saveTokens(tokens)
     }
     
