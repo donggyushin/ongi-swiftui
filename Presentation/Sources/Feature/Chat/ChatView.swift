@@ -30,6 +30,7 @@ struct ChatView: View {
                         
                         ForEach(Array(model.messages.reversed().enumerated()), id: \.element.id) { index, message in
                             let shouldShowDateDivider = shouldShowDateDivider(at: index, in: model.messages.reversed())
+                            let shouldShowProfile = shouldShowProfile(at: index, in: model.messages.reversed())
                             
                             if shouldShowDateDivider {
                                 DateDivider(date: message.createdAt)
@@ -47,7 +48,8 @@ struct ChatView: View {
                             } else {
                                 MessageRow(
                                     message: message,
-                                    isMyMessage: model.me?.id == message.writer.id
+                                    isMyMessage: model.me?.id == message.writer.id,
+                                    showProfile: shouldShowProfile
                                 )
                                 .onAppear {
                                     Task {
@@ -167,6 +169,26 @@ struct ChatView: View {
         let previousMessage = messages[index - 1]
         
         return !currentMessage.createdAt.isSameDay(as: previousMessage.createdAt)
+    }
+    
+    private func shouldShowProfile(at index: Int, in messages: [MessagePresentation]) -> Bool {
+        let currentMessage = messages[index]
+        
+        // 내 메시지는 항상 프로필을 숨김
+        if model.me?.id == currentMessage.writer.id {
+            return false
+        }
+        
+        // 첫 번째 메시지는 항상 프로필 표시
+        if index == 0 {
+            return true
+        }
+        
+        let previousMessage = messages[index - 1]
+        
+        // 이전 메시지와 작성자가 다르거나, 날짜가 다르면 프로필 표시
+        return currentMessage.writer.id != previousMessage.writer.id || 
+               !currentMessage.createdAt.isSameDay(as: previousMessage.createdAt)
     }
 }
 

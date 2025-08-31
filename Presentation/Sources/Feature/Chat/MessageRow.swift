@@ -10,20 +10,26 @@ import SwiftUI
 struct MessageRow: View {
     let message: MessagePresentation
     let isMyMessage: Bool
+    let showProfile: Bool
     
     var body: some View {
         HStack(alignment: .top, spacing: 8) {
             if !isMyMessage {
-                CircleProfileImage(url: message.writer.profileImage?.url)
-                    .onTapGesture {
-                        navigationManager?.append(.profileDetailStack(message.writer.id))
-                    }
+                if showProfile {
+                    CircleProfileImage(url: message.writer.profileImage?.url)
+                        .onTapGesture {
+                            navigationManager?.append(.profileDetailStack(message.writer.id))
+                        }
+                } else {
+                    CircleProfileImage(url: nil)
+                        .opacity(0)
+                }
             } else {
                 Spacer()
             }
             
             VStack(alignment: isMyMessage ? .trailing : .leading, spacing: 4) {
-                if !isMyMessage {
+                if !isMyMessage && showProfile {
                     Text(message.writer.nickname)
                         .pretendardBody()
                         .foregroundColor(.primary)
