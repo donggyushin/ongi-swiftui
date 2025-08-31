@@ -6,9 +6,20 @@
 //
 
 import SwiftUI
+import Domain
 
 struct ChatSidebar: View {
-    let onLeaveChatTap: () -> Void
+    let participants: [ProfileEntitiy]
+    var leaveChatTap: (() -> Void) = {}
+    func onLeaveChatTap(_ action: @escaping (() -> Void)) -> Self {
+        var copy = self
+        copy.leaveChatTap = action
+        return copy
+    }
+    
+    init(participants: [ProfileEntitiy]) {
+        self.participants = participants
+    }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -27,7 +38,7 @@ struct ChatSidebar: View {
             
             // Menu Items
             VStack(spacing: 0) {
-                Button(action: onLeaveChatTap) {
+                Button(action: leaveChatTap) {
                     HStack(spacing: 12) {
                         Image(systemName: "rectangle.portrait.and.arrow.right")
                             .font(.system(size: 16, weight: .medium))

@@ -145,14 +145,13 @@ struct ChatView: View {
                 HStack {
                     Spacer()
                     
-                    ChatSidebar(
-                        onLeaveChatTap: {
+                    ChatSidebar(participants: model.pagination)
+                        .onLeaveChatTap {
                             withAnimation(.easeInOut(duration: 0.3)) {
                                 model.showSidebar = false
                             }
                             model.showLeaveChatDialog = true
                         }
-                    )
                 }
                 .transition(.move(edge: .trailing).combined(with: .opacity))
             }

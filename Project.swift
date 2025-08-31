@@ -70,7 +70,7 @@ let project = Project(
             infoPlist: .extendingDefault(
                 with: [
                     "CFBundleDisplayName": "온기",
-                    "CFBundleVersion": "4",
+                    "CFBundleVersion": "5",
                     "CFBundleShortVersionString": "1.0.0",
                     "CFBundleURLTypes": [
                         [
