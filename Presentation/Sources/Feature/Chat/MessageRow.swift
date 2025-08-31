@@ -11,6 +11,7 @@ struct MessageRow: View {
     let message: MessagePresentation
     let isMyMessage: Bool
     let showProfile: Bool
+    let showTime: Bool
     
     var body: some View {
         HStack(alignment: .top, spacing: 8) {
@@ -35,17 +36,28 @@ struct MessageRow: View {
                         .foregroundColor(.primary)
                 }
                 
-                Text(message.text)
-                    .pretendardBody()
-                    .foregroundColor(isMyMessage ? .white : .primary)
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 8)
-                    .background(isMyMessage ? Color.blue : Color(.systemGray6))
-                    .cornerRadius(16)
-                
-                Text(message.createdAt, style: .time)
-                    .pretendardCaption()
-                    .foregroundColor(.secondary)
+                HStack(alignment: .bottom, spacing: 4) {
+                    
+                    if showTime && isMyMessage {
+                        Text(message.createdAt, style: .time)
+                            .pretendardCaption()
+                            .foregroundColor(.secondary)
+                    }
+                    
+                    Text(message.text)
+                        .pretendardBody()
+                        .foregroundColor(isMyMessage ? .white : .primary)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 8)
+                        .background(isMyMessage ? Color.blue : Color(.systemGray6))
+                        .cornerRadius(16)
+                    
+                    if showTime && !isMyMessage {
+                        Text(message.createdAt, style: .time)
+                            .pretendardCaption()
+                            .foregroundColor(.secondary)
+                    }
+                }
             }
             
             if !isMyMessage {

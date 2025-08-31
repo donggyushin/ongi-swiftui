@@ -31,6 +31,7 @@ struct ChatView: View {
                         ForEach(Array(model.messages.reversed().enumerated()), id: \.element.id) { index, message in
                             let shouldShowDateDivider = shouldShowDateDivider(at: index, in: model.messages.reversed())
                             let shouldShowProfile = shouldShowProfile(at: index, in: model.messages.reversed())
+                            let shouldShowTime = shouldShowTime(at: index, in: model.messages.reversed())
                             
                             if shouldShowDateDivider {
                                 DateDivider(date: message.createdAt)
@@ -49,7 +50,8 @@ struct ChatView: View {
                                 MessageRow(
                                     message: message,
                                     isMyMessage: model.me?.id == message.writer.id,
-                                    showProfile: shouldShowProfile
+                                    showProfile: shouldShowProfile,
+                                    showTime: shouldShowTime
                                 )
                                 .onAppear {
                                     Task {
@@ -179,16 +181,38 @@ struct ChatView: View {
             return false
         }
         
-        // 첫 번째 메시지는 항상 프로필 표시
-        if index == 0 {
+        // 마지막 메시지면 항상 프로필 표시
+        if index == messages.count - 1 {
             return true
         }
         
-        let previousMessage = messages[index - 1]
+        let nextMessage = messages[index + 1]
         
-        // 이전 메시지와 작성자가 다르거나, 날짜가 다르면 프로필 표시
-        return currentMessage.writer.id != previousMessage.writer.id || 
-               !currentMessage.createdAt.isSameDay(as: previousMessage.createdAt)
+        // 다음 메시지와 작성자가 다르거나, 날짜가 다르면 프로필 표시
+        return currentMessage.writer.id != nextMessage.writer.id || 
+               !currentMessage.createdAt.isSameDay(as: nextMessage.createdAt)
+    }
+    
+    private func shouldShowTime(at index: Int, in messages: [MessagePresentation]) -> Bool {
+        let currentMessage = messages[index]
+        
+        // 마지막 메시지면 항상 시간 표시
+        if index == messages.count - 1 {
+            return true
+        }
+        
+        let nextMessage = messages[index + 1]
+        
+        // 다음 메시지와 작성자가 다르면 시간 표시
+        if currentMessage.writer.id != nextMessage.writer.id {
+            return true
+        }
+        
+        // 다음 메시지와 분 단위까지 시간이 다르면 시간 표시
+        let currentComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: currentMessage.createdAt)
+        let nextComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: nextMessage.createdAt)
+        
+        return currentComponents != nextComponents
     }
 }
 
