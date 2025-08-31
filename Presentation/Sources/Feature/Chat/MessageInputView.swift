@@ -13,12 +13,26 @@ struct MessageInputView: View {
     
     var body: some View {
         HStack(spacing: 12) {
-            TextField("메시지를 입력하세요", text: $text)
-                .pretendardBody()
-                .padding(.horizontal, 16)
-                .padding(.vertical, 12)
-                .background(Color(.systemGray6))
-                .cornerRadius(20)
+            ZStack(alignment: .topLeading) {
+                TextEditor(text: $text)
+                    .pretendardBody()
+                    .scrollContentBackground(.hidden)
+                    .background(Color.clear)
+                    .frame(minHeight: 36, maxHeight: 100)
+                
+                if text.isEmpty {
+                    Text("메시지를 입력하세요")
+                        .pretendardBody()
+                        .foregroundColor(.gray)
+                        .padding(.leading, 4)
+                        .padding(.top, 8)
+                }
+            }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 4)
+            .background(Color(.systemGray6))
+            .cornerRadius(20)
+            .fixedSize(horizontal: false, vertical: true)
             
             Button(action: onSend) {
                 Image(systemName: "arrow.up.circle.fill")
@@ -32,3 +46,20 @@ struct MessageInputView: View {
         .background(Color(.systemBackground))
     }
 }
+
+#if DEBUG
+private struct MessageInputViewPreview: View {
+    
+    @State private var text = ""
+    
+    var body: some View {
+        MessageInputView(text: $text) {
+            
+        }
+    }
+}
+
+#Preview {
+    MessageInputViewPreview()
+}
+#endif
