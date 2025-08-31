@@ -57,16 +57,20 @@ struct ChatSidebar: View {
                                     
                                     if isMe {
                                         Circle()
-                                            .stroke(Color.blue, lineWidth: 2)
+                                            .stroke(Color.accentColor, lineWidth: 1)
                                             .frame(width: 50, height: 50)
+                                            .padding(0.5)
                                     }
                                 }
                                 
                                 Text(isMe ? "나" : participant.nickname)
                                     .pretendardCaption2(isMe ? .bold : .medium)
-                                    .foregroundColor(isMe ? .blue : .primary)
+                                    .foregroundColor(isMe ? Color.accentColor : .primary)
                                     .lineLimit(1)
                                     .frame(maxWidth: 60)
+                            }
+                            .onTapGesture {
+                                navigationManager?.append(.profileDetail(participant.id))
                             }
                         }
                     }
