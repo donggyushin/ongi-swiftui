@@ -47,21 +47,7 @@ struct ChatSidebar: View {
                     HStack(spacing: 12) {
                         ForEach(participants, id: \.id) { participant in
                             VStack(spacing: 4) {
-                                AsyncImage(url: participant.profileImage?.imageURL) { image in
-                                    image
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fill)
-                                } placeholder: {
-                                    Circle()
-                                        .fill(Color(.systemGray5))
-                                        .overlay(
-                                            Image(systemName: "person.fill")
-                                                .foregroundColor(.secondary)
-                                                .font(.system(size: 20))
-                                        )
-                                }
-                                .frame(width: 50, height: 50)
-                                .clipShape(Circle())
+                                CircleProfileImage(url: participant.profileImage?.url, size: 50)
                                 
                                 Text(participant.nickname)
                                     .pretendardCaption2(.medium)
