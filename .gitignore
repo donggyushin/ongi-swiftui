@@ -68,3 +68,7 @@ Derived/
 
 ### Tuist managed dependencies ###
 Tuist/.build
+
+ongi_swiftui.ipa
+ongi_swiftui.app.dSYM.zip
+report.xml
