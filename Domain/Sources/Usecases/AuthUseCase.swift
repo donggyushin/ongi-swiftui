@@ -46,4 +46,8 @@ public final class AuthUseCase {
     public func makeNewAccount(email: String, password: String) async throws -> AuthTokensEntity {
         try await authRepository.makeNewAccount(email: email, password: password)
     }
+    
+    public func login(email: String, password: String) async throws -> AuthTokensEntity {
+        try await authRepository.login(email: email, password: password)
+    }
 }

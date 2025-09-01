@@ -34,4 +34,10 @@ public final class AuthRepository: PAuthRepository {
         jwtLocalDataSource.saveTokens(token)
         return token
     }
+    
+    public func login(email: String, password: String) async throws -> AuthTokensEntity {
+        let token = try await accountRemoteDataSource.login(email: email, password: password)
+        jwtLocalDataSource.saveTokens(token)
+        return token
+    }
 }
