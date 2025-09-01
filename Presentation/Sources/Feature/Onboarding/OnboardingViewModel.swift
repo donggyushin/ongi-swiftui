@@ -18,6 +18,7 @@ public final class OnboardingViewModel: ObservableObject {
     
     var skipMultipleImages = false
     var skipProfileCompletion = false
+    var skipEmailVerification = false
     
     private var cancellables = Set<AnyCancellable>()
     
@@ -64,7 +65,7 @@ public final class OnboardingViewModel: ObservableObject {
                 path.append(.introduce)
             } else if myProfile.qnas.isEmpty {
                 path.append(.qnas)
-            } else if myProfile.email == nil {
+            } else if myProfile.email == nil && skipEmailVerification == false {
                 path.append(.email)
             } else {
                 path.append(.complete)

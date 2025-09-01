@@ -102,6 +102,7 @@ public struct OnboardingView: View {
                 case .email:
                     OnboardingCompanyEmailVerificationView(model: .init())
                         .onNext {
+                            model.skipEmailVerification = true 
                             model.nextStep()
                         }
                         .navigationBarBackButtonHidden()
