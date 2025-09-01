@@ -38,4 +38,8 @@ public final class AuthUseCase {
     public func logout() {
         jwtRepository.removeToken()
     }
+    
+    public func searchAccount(email: String) async throws -> ProfileEntitiy {
+        try await authRepository.searchAccount(email: email)
+    }
 }

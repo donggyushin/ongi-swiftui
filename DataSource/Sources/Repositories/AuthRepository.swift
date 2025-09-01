@@ -11,6 +11,7 @@ public final class AuthRepository: PAuthRepository {
     
     let jwtLocalDataSource = JWTLocalDataSource()
     let jwtRemoteDataSource = JWTRemoteDataSource()
+    let accountRemoteDataSource = AccountRemoteDataSource()
     
     public init() {
         
@@ -22,5 +23,9 @@ public final class AuthRepository: PAuthRepository {
     
     public func logout() {
         jwtLocalDataSource.clearTokens()
+    }
+    
+    public func searchAccount(email: String) async throws -> ProfileEntitiy {
+        try await accountRemoteDataSource.searchAccount(email: email)
     }
 }
