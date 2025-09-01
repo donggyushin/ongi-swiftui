@@ -32,7 +32,6 @@ struct EmailNewAccountComponent: View {
             // Complete Button
             completeButton
         }
-        .padding(.horizontal, 24)
     }
     
     private var headerSection: some View {

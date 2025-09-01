@@ -25,11 +25,12 @@ struct EmailInputView: View {
             
             // Input Section
             VStack(spacing: 24) {
-                emailInputField
-                
                 
                 if loginFlow == false && newAccountFlow == false {
+                    emailInputField
                     nextButton
+                } else {
+                    emailDisplaySection
                 }
                 
                 if newAccountFlow {
@@ -106,9 +107,26 @@ struct EmailInputView: View {
                 .foregroundColor(.white)
         }
         .frame(maxWidth: .infinity, minHeight: 50)
-        .background(Color.blue)
+        .background(model.isNextButtonEnabled ? Color.blue : Color(.systemGray4))
         .cornerRadius(12)
         .disabled(!model.isNextButtonEnabled)
+    }
+    
+    private var emailDisplaySection: some View {
+        HStack {
+            Image(systemName: "envelope.fill")
+                .foregroundColor(.blue)
+                .font(.system(size: 16))
+            
+            Text(model.email)
+                .pretendardBody()
+                .foregroundColor(.primary)
+            
+            Spacer()
+        }
+        .padding(16)
+        .background(Color(.systemGray6))
+        .cornerRadius(12)
     }
 }
 
