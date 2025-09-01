@@ -20,8 +20,18 @@ final class EmailInputViewModel: ObservableObject {
     
     private var cancellables = Set<AnyCancellable>()
     
+    @Injected(\.authUseCase) private var authUseCase
+    
     init() {
         bind()
+    }
+    
+    @MainActor
+    func searchAccount() async throws -> ProfileEntitiy {
+        guard loading == false else { throw AppError.dataError(.duplicateEntry) }
+        loading = true
+        defer { loading = false }
+        return try await authUseCase.searchAccount(email: email)
     }
     
     private func bind() {

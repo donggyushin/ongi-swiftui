@@ -11,6 +11,9 @@ struct EmailInputView: View {
     
     @StateObject var model: EmailInputViewModel
     
+    @State var loginFlow = false
+    @State var newAccountFlow = false
+    
     var body: some View {
         VStack(spacing: 0) {
             Spacer()
@@ -23,7 +26,12 @@ struct EmailInputView: View {
             // Input Section
             VStack(spacing: 24) {
                 emailInputField
-                nextButton
+                
+                
+                if loginFlow == false && newAccountFlow == false {
+                    nextButton
+                }
+                
             }
             .padding(.horizontal, 24)
             
@@ -73,7 +81,18 @@ struct EmailInputView: View {
     
     private var nextButton: some View {
         Button {
-            // 다음 단계 로직 구현 예정
+            Task {
+                do {
+                    let _ = try await model.searchAccount()
+                    withAnimation {
+                        loginFlow = true
+                    }
+                } catch {
+                    withAnimation {
+                        newAccountFlow = true
+                    }
+                }
+            }
         } label: {
             Text("다음")
                 .pretendardBody()
