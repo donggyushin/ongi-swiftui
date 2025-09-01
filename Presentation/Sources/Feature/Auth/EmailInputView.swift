@@ -61,6 +61,13 @@ struct EmailInputView: View {
                 .background(Color(.systemGray6))
                 .cornerRadius(12)
                 .pretendardBody()
+            
+            if let errorMessage = model.errorMessage {
+                Text(errorMessage)
+                    .pretendardCaption()
+                    .foregroundColor(.red)
+                    .padding(.top, 4)
+            }
         }
     }
     
