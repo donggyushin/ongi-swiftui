@@ -46,6 +46,19 @@ struct EmailInputView: View {
                             }
                         }
                 }
+                
+                if loginFlow {
+                    EmailLoginComponent()
+                        .onPasswordCompletion { password in
+                            Task {
+                                do {
+                                    try await model.login(pw: password)
+                                } catch AppError.custom(let message, code: _) {
+                                    model.errorMessage = message
+                                }
+                            }
+                        }
+                }
             }
             .padding(.horizontal, 24)
             

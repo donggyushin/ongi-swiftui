@@ -28,6 +28,12 @@ final class EmailInputViewModel: ObservableObject {
     }
     
     @MainActor
+    func login(pw: String) async throws {
+        _ = try await authUseCase.login(email: email, password: pw)
+        try await contentViewModel.getMe()
+    }
+    
+    @MainActor
     func makeNewAccount(pw: String) async throws {
         _ = try await authUseCase.makeNewAccount(email: email, password: pw)
         try await contentViewModel.getMe()
