@@ -31,6 +31,7 @@ struct EmailInputView: View {
         }
         .modifier(BackgroundModifier())
         .navigationBarTitleDisplayMode(.inline)
+        .loading(model.loading)
     }
     
     private var headerSection: some View {
@@ -74,6 +75,7 @@ struct EmailInputView: View {
         .frame(maxWidth: .infinity, minHeight: 50)
         .background(Color.blue)
         .cornerRadius(12)
+        .disabled(!model.isNextButtonEnabled)
     }
 }
 

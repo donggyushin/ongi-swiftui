@@ -11,6 +11,9 @@ import Combine
 import Factory
 
 final class EmailInputViewModel: ObservableObject {
+    
+    @Published var loading = false 
+    
     @Published var email = ""
     @Published var errorMessage: String?
     @Published var isNextButtonEnabled: Bool = false
