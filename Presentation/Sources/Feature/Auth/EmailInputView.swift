@@ -41,7 +41,9 @@ struct EmailInputView: View {
                                 do {
                                     try await model.makeNewAccount(pw: password)
                                 } catch AppError.custom(let message, code: _) {
-                                    model.errorMessage = message
+                                    withAnimation {
+                                        model.errorMessage = message
+                                    }
                                 }
                             }
                         }
@@ -54,7 +56,9 @@ struct EmailInputView: View {
                                 do {
                                     try await model.login(pw: password)
                                 } catch AppError.custom(let message, code: _) {
-                                    model.errorMessage = message
+                                    withAnimation {
+                                        model.errorMessage = message
+                                    }
                                 }
                             }
                         }
