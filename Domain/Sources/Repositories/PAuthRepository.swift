@@ -9,4 +9,5 @@ public protocol PAuthRepository {
     func loginOrSignup(id: String, type: String) async throws -> AuthTokensEntity
     func logout()
     func searchAccount(email: String) async throws -> ProfileEntitiy
+    func makeNewAccount(email: String, password: String) async throws -> AuthTokensEntity
 }

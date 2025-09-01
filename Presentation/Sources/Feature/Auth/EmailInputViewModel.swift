@@ -21,9 +21,16 @@ final class EmailInputViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     
     @Injected(\.authUseCase) private var authUseCase
+    @Injected(\.contentViewModel) private var contentViewModel
     
     init() {
         bind()
+    }
+    
+    @MainActor
+    func makeNewAccount(pw: String) async throws {
+        _ = try await authUseCase.makeNewAccount(email: email, password: pw)
+        try await contentViewModel.getMe()
     }
     
     @MainActor

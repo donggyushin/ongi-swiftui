@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Domain
 
 struct EmailInputView: View {
     
@@ -36,10 +37,15 @@ struct EmailInputView: View {
                 if newAccountFlow {
                     EmailNewAccountComponent(model: .init())
                         .onPasswordCompletion { password in
-                            print(password)
+                            Task {
+                                do {
+                                    try await model.makeNewAccount(pw: password)
+                                } catch AppError.custom(let message, code: _) {
+                                    model.errorMessage = message
+                                }
+                            }
                         }
                 }
-                
             }
             .padding(.horizontal, 24)
             

@@ -42,4 +42,8 @@ public final class AuthUseCase {
     public func searchAccount(email: String) async throws -> ProfileEntitiy {
         try await authRepository.searchAccount(email: email)
     }
+    
+    public func makeNewAccount(email: String, password: String) async throws -> AuthTokensEntity {
+        try await authRepository.makeNewAccount(email: email, password: password)
+    }
 }

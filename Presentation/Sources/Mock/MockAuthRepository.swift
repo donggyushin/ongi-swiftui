@@ -20,4 +20,8 @@ final class MockAuthRepository: PAuthRepository {
     func searchAccount(email: String) async throws -> ProfileEntitiy {
         throw AppError.custom("존재하지 않는 유저", code: nil)
     }
+    
+    func makeNewAccount(email: String, password: String) async throws -> AuthTokensEntity {
+        return .init(accessToken: "", refreshToken: "")
+    }
 }
