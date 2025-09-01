@@ -29,12 +29,18 @@ final class EmailInputViewModel: ObservableObject {
     
     @MainActor
     func login(pw: String) async throws {
+        guard loading == false else { throw AppError.dataError(.duplicateEntry) }
+        loading = true
+        defer { loading = false }
         _ = try await authUseCase.login(email: email, password: pw)
         try await contentViewModel.getMe()
     }
     
     @MainActor
     func makeNewAccount(pw: String) async throws {
+        guard loading == false else { throw AppError.dataError(.duplicateEntry) }
+        loading = true
+        defer { loading = false }
         _ = try await authUseCase.makeNewAccount(email: email, password: pw)
         try await contentViewModel.getMe()
     }
