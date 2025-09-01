@@ -63,7 +63,9 @@ public struct ContentView: View {
                     }
                 }
             } else {
-                LoginView(model: model.loginViewModel)
+                NavigationView {
+                    LoginView(model: model.loginViewModel)
+                }
             }
         }
         .modifier(BackgroundModifier())
