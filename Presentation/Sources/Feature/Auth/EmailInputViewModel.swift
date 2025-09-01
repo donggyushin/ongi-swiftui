@@ -39,12 +39,14 @@ final class EmailInputViewModel: ObservableObject {
             .map { [weak self] email in
                 self?.validateEmail(email) ?? false
             }
+            .receive(on: DispatchQueue.main)
             .assign(to: &$isNextButtonEnabled)
         
         $email
             .map { [weak self] email in
                 self?.getEmailErrorMessage(email)
             }
+            .receive(on: DispatchQueue.main)
             .assign(to: &$errorMessage)
     }
     

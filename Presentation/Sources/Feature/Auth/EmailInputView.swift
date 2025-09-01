@@ -32,6 +32,13 @@ struct EmailInputView: View {
                     nextButton
                 }
                 
+                if newAccountFlow {
+                    EmailNewAccountComponent(model: .init())
+                        .onPasswordCompletion { password in
+                            print(password)
+                        }
+                }
+                
             }
             .padding(.horizontal, 24)
             
