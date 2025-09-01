@@ -89,10 +89,10 @@ struct EmailNewAccountComponent: View {
             Text("계정 생성")
                 .pretendardBody()
                 .foregroundColor(.white)
+                .frame(maxWidth: .infinity, minHeight: 50)
+                .background(model.isButtonEnabled ? Color.blue : Color(.systemGray4))
+                .cornerRadius(12)
         }
-        .frame(maxWidth: .infinity, minHeight: 50)
-        .background(model.isButtonEnabled ? Color.blue : Color(.systemGray4))
-        .cornerRadius(12)
         .disabled(!model.isButtonEnabled)
     }
 }
