@@ -24,9 +24,13 @@ public struct LoginView: View {
             // Header Section
             headerSection
             Spacer()
-            appleSignInButton
-                .padding(.horizontal, 24)
-                .padding(.top, 40)
+            VStack(spacing: 16) {
+                appleSignInButton
+                
+                emailSignInButton
+            }
+            .padding(.horizontal, 24)
+            .padding(.top, 40)
         }
         .modifier(BackgroundModifier())
     }
@@ -66,6 +70,23 @@ public struct LoginView: View {
         )
         .signInWithAppleButtonStyle(.black)
         .frame(height: 50)
+        .cornerRadius(12)
+    }
+    
+    private var emailSignInButton: some View {
+        Button {
+            // 이메일 로그인 기능 구현 예정
+        } label: {
+            HStack {
+                Image(systemName: "envelope")
+                    .foregroundColor(.white)
+                Text("이메일로 시작하기")
+                    .pretendardBody()
+                    .foregroundColor(.white)
+            }
+        }
+        .frame(maxWidth: .infinity, minHeight: 50)
+        .background(Color.blue)
         .cornerRadius(12)
     }
 }
