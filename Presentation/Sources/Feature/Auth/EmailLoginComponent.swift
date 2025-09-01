@@ -33,7 +33,6 @@ struct EmailLoginComponent: View {
             }) {
                 Text("다음")
                     .frame(maxWidth: .infinity)
-                    .padding()
                     .background(isPasswordValid ? Color.blue : Color.gray)
                     .foregroundColor(.white)
                     .cornerRadius(8)
