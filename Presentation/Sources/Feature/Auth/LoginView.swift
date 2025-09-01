@@ -74,8 +74,8 @@ public struct LoginView: View {
     }
     
     private var emailSignInButton: some View {
-        Button {
-            // 이메일 로그인 기능 구현 예정
+        NavigationLink {
+            EmailInputView(model: .init())
         } label: {
             HStack {
                 Image(systemName: "envelope")
@@ -84,10 +84,10 @@ public struct LoginView: View {
                     .pretendardBody()
                     .foregroundColor(.white)
             }
+            .frame(maxWidth: .infinity, minHeight: 50)
+            .background(Color.blue)
+            .cornerRadius(12)
         }
-        .frame(maxWidth: .infinity, minHeight: 50)
-        .background(Color.blue)
-        .cornerRadius(12)
     }
 }
 
