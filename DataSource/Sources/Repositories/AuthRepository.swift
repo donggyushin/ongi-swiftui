@@ -12,6 +12,7 @@ public final class AuthRepository: PAuthRepository {
     let jwtLocalDataSource = JWTLocalDataSource()
     let jwtRemoteDataSource = JWTRemoteDataSource()
     let accountRemoteDataSource = AccountRemoteDataSource()
+    let passwordResetRemoteDataSource = PasswordResetRemoteDataSource()
     
     public init() {
         
@@ -39,5 +40,17 @@ public final class AuthRepository: PAuthRepository {
         let token = try await accountRemoteDataSource.login(email: email, password: password)
         jwtLocalDataSource.saveTokens(token)
         return token
+    }
+    
+    public func sendCode(email: String) async throws {
+        try await passwordResetRemoteDataSource.sendCode(email: email)
+    }
+    
+    public func verifyCode(code: String) async throws -> String {
+        try await passwordResetRemoteDataSource.verifyCode(code: code)
+    }
+    
+    public func reset(code: String, newPassword: String) async throws {
+        try await passwordResetRemoteDataSource.reset(code: code, newPassword: newPassword)
     }
 }

@@ -11,4 +11,7 @@ public protocol PAuthRepository {
     func searchAccount(email: String) async throws -> ProfileEntitiy
     func makeNewAccount(email: String, password: String) async throws -> AuthTokensEntity
     func login(email: String, password: String) async throws -> AuthTokensEntity
+    func sendCode(email: String) async throws
+    func verifyCode(code: String) async throws -> String
+    func reset(code: String, newPassword: String) async throws
 }

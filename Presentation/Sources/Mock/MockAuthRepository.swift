@@ -28,4 +28,16 @@ final class MockAuthRepository: PAuthRepository {
     func login(email: String, password: String) async throws -> AuthTokensEntity {
         return .init(accessToken: "", refreshToken: "")
     }
+    
+    func sendCode(email: String) async throws {
+        
+    }
+    
+    func verifyCode(code: String) async throws -> String {
+        return "user@example.com"
+    }
+    
+    func reset(code: String, newPassword: String) async throws {
+        
+    }
 }
