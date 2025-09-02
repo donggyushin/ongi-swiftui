@@ -153,6 +153,13 @@ extension Container {
         }
         .singleton
     }
+    
+    var passwordResetUseCase: Factory<PasswordResetUseCase> {
+        self {
+            PasswordResetUseCase(authRepository: self.authRepository())
+        }
+        .singleton
+    }
 }
 
 extension Container {
