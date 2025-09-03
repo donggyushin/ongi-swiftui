@@ -29,12 +29,12 @@ struct ResetPasswordView: View {
                     verificationCodeInputField
                     confirmButton
                     resendCodeButton
-                    
-                    if let errorMessage = errorMessage {
-                        errorMessageView(errorMessage)
-                    }
                 }
                 .padding(.horizontal, 24)
+            }
+            
+            if let errorMessage = errorMessage {
+                errorMessageView(errorMessage)
             }
             
             Spacer()
