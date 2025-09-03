@@ -65,6 +65,10 @@ struct EmailInputView: View {
                             }
                         }
                 }
+                
+                if resetPasswordButtonVisible {
+                    resetPasswordButton
+                }
             }
             .padding(.horizontal, 24)
             
@@ -152,6 +156,17 @@ struct EmailInputView: View {
         .padding(16)
         .background(Color(.systemGray6))
         .cornerRadius(12)
+    }
+    
+    private var resetPasswordButton: some View {
+        Button {
+            // TODO: 비밀번호 찾기 화면으로 이동
+        } label: {
+            Text("비밀번호를 잊으셨나요?")
+                .pretendardCaption()
+                .foregroundColor(.blue)
+                .underline()
+        }
     }
 }
 
