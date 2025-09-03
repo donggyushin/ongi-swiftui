@@ -14,6 +14,7 @@ struct EmailInputView: View {
     
     @State var loginFlow = false
     @State var newAccountFlow = false
+    @State var resetPasswordButtonVisible = false
     
     var body: some View {
         VStack(spacing: 0) {
@@ -58,6 +59,7 @@ struct EmailInputView: View {
                                 } catch AppError.custom(let message, code: _) {
                                     withAnimation {
                                         model.errorMessage = message
+                                        resetPasswordButtonVisible = true
                                     }
                                 }
                             }
