@@ -159,14 +159,15 @@ struct EmailInputView: View {
     }
     
     private var resetPasswordButton: some View {
-        Button {
-            // TODO: 비밀번호 찾기 화면으로 이동
+        NavigationLink {
+            ResetPasswordView(model: .init(email: model.email))
         } label: {
             Text("비밀번호를 잊으셨나요?")
                 .pretendardCaption()
                 .foregroundColor(.blue)
                 .underline()
         }
+
     }
 }
 
