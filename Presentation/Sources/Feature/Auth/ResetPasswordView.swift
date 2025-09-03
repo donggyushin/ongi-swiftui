@@ -1,0 +1,106 @@
+//
+//  ResetPasswordView.swift
+//  Presentation
+//
+//  Created by 신동규 on 9/3/25.
+//
+
+import SwiftUI
+
+struct ResetPasswordView: View {
+    
+    @StateObject var model: ResetPasswordViewModel
+    
+    var body: some View {
+        VStack(spacing: 0) {
+            Spacer()
+            
+            // Header Section
+            headerSection
+            
+            Spacer()
+            
+            // Input Section
+            VStack(spacing: 24) {
+                verificationCodeInputField
+                confirmButton
+                resendCodeButton
+            }
+            .padding(.horizontal, 24)
+            
+            Spacer()
+        }
+        .modifier(BackgroundModifier())
+        .navigationBarTitleDisplayMode(.inline)
+        .loading(model.loading)
+        .task {
+            try? await model.requestVerificationCode()
+        }
+    }
+    
+    private var headerSection: some View {
+        VStack(spacing: 16) {
+            Text("인증번호를 입력해주세요")
+                .pretendardTitle1()
+                .foregroundColor(.primary)
+            
+            Text("이메일로 전송된 6자리 인증번호를\\n입력해주세요")
+                .pretendardBody()
+                .foregroundColor(.secondary)
+                .multilineTextAlignment(.center)
+        }
+    }
+    
+    private var verificationCodeInputField: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Text("인증번호")
+                    .pretendardBody()
+                    .foregroundColor(.primary)
+                
+                Spacer()
+                
+                Text("\(String(format: "%d:%02d", Int(model.leftTimeInterval) / 60, Int(model.leftTimeInterval) % 60))")
+                    .pretendardCaption()
+                    .foregroundColor(model.leftTimeInterval > 0 ? .blue : .red)
+            }
+            
+            TextField("인증번호 6자리를 입력하세요", text: $model.code)
+                .keyboardType(.numberPad)
+                .padding(16)
+                .background(Color(.systemGray6))
+                .cornerRadius(12)
+                .pretendardBody()
+        }
+    }
+    
+    private var confirmButton: some View {
+        Button {
+            Task {
+                try? await model.verifyCode()
+            }
+        } label: {
+            Text("확인")
+                .pretendardBody()
+                .foregroundColor(.white)
+                .frame(maxWidth: .infinity, minHeight: 50)
+                .background(model.code.count == 6 ? Color.blue : Color(.systemGray4))
+                .cornerRadius(12)
+        }
+        .disabled(model.code.count != 6)
+    }
+    
+    private var resendCodeButton: some View {
+        Button {
+            Task {
+                try? await model.requestVerificationCode()
+            }
+        } label: {
+            Text("인증번호 재발송")
+                .pretendardCaption()
+                .foregroundColor(.blue)
+                .underline()
+        }
+        .disabled(model.leftTimeInterval > 0)
+    }
+}
