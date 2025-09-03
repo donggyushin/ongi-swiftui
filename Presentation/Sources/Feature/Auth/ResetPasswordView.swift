@@ -6,27 +6,36 @@
 //
 
 import SwiftUI
+import Domain
 
 struct ResetPasswordView: View {
     
     @StateObject var model: ResetPasswordViewModel
+    @State private var errorMessage: String?
+    @State private var verifyCodeMode = true
     
     var body: some View {
         VStack(spacing: 0) {
             Spacer()
             
-            // Header Section
-            headerSection
-            
-            Spacer()
-            
-            // Input Section
-            VStack(spacing: 24) {
-                verificationCodeInputField
-                confirmButton
-                resendCodeButton
+            if verifyCodeMode {
+                // Header Section
+                headerSection
+                
+                Spacer()
+                
+                // Input Section
+                VStack(spacing: 24) {
+                    verificationCodeInputField
+                    confirmButton
+                    resendCodeButton
+                    
+                    if let errorMessage = errorMessage {
+                        errorMessageView(errorMessage)
+                    }
+                }
+                .padding(.horizontal, 24)
             }
-            .padding(.horizontal, 24)
             
             Spacer()
         }
@@ -77,7 +86,14 @@ struct ResetPasswordView: View {
     private var confirmButton: some View {
         Button {
             Task {
-                try? await model.verifyCode()
+                do {
+                    try await model.verifyCode()
+                } catch AppError.custom(let message, code: _) {
+                    withAnimation {
+                        errorMessage = message
+                    }
+
+                }
             }
         } label: {
             Text("확인")
@@ -93,7 +109,13 @@ struct ResetPasswordView: View {
     private var resendCodeButton: some View {
         Button {
             Task {
-                try? await model.requestVerificationCode()
+                do {
+                    try await model.requestVerificationCode()
+                } catch AppError.custom(let message, _) {
+                    withAnimation {
+                        errorMessage = message
+                    }
+                }
             }
         } label: {
             Text("인증번호 재발송")
@@ -102,6 +124,23 @@ struct ResetPasswordView: View {
                 .underline()
         }
         .disabled(model.leftTimeInterval > 0)
+    }
+    
+    private func errorMessageView(_ message: String) -> some View {
+        HStack {
+            Image(systemName: "exclamationmark.circle.fill")
+                .foregroundColor(.red)
+                .font(.system(size: 16))
+            
+            Text(message)
+                .pretendardCaption()
+                .foregroundColor(.red)
+            
+            Spacer()
+        }
+        .padding(12)
+        .background(Color.red.opacity(0.1))
+        .cornerRadius(8)
     }
 }
 
