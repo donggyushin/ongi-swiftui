@@ -21,11 +21,13 @@ final class ResetPasswordViewModel: ObservableObject {
     @Published var password = ""
     
     private var verificationCodeExpiredAt = Date()
+    private var timerCancellable: AnyCancellable?
     
     private let email: String
     
     init(email: String) {
         self.email = email
+        startTimer()
     }
     
     @MainActor
@@ -60,9 +62,18 @@ final class ResetPasswordViewModel: ObservableObject {
         verificationCodeExpiredAt = Date() + 180
     }
     
-    // TODO: - 0.5초에 한 번씩 불려야 함
     @MainActor
     private func setLeftTimeInterval() {
         leftTimeInterval = max(0, verificationCodeExpiredAt.timeIntervalSince1970 - Date().timeIntervalSince1970)
+    }
+    
+    private func startTimer() {
+        timerCancellable = Timer.publish(every: 0.5, on: .main, in: .common)
+            .autoconnect()
+            .sink { [weak self] _ in
+                Task { @MainActor in
+                    self?.setLeftTimeInterval()
+                }
+            }
     }
 }
