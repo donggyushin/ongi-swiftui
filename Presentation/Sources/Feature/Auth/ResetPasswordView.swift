@@ -104,3 +104,7 @@ struct ResetPasswordView: View {
         .disabled(model.leftTimeInterval > 0)
     }
 }
+
+#Preview {
+    ResetPasswordView(model: .init(email: "user@example.com"))
+}
