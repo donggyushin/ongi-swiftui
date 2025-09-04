@@ -61,6 +61,11 @@ struct EmailInputView: View {
                                         model.errorMessage = message
                                         resetPasswordButtonVisible = true
                                     }
+                                } catch {
+                                    withAnimation {
+                                        model.errorMessage = error.localizedDescription
+                                        resetPasswordButtonVisible = true
+                                    }
                                 }
                             }
                         }

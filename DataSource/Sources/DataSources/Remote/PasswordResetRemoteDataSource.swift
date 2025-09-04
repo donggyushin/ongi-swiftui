@@ -18,7 +18,7 @@ final class PasswordResetRemoteDataSource {
             "email": email
         ]
         
-        let response: APIResponse<Empty> = try await networkManager.request(url: url, method: .post)
+        let response: APIResponse<Empty> = try await networkManager.request(url: url, method: .post, parameters: parameters)
         
         guard response.success == false else { return }
         

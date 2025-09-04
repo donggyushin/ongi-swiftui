@@ -169,6 +169,11 @@ private final class JWTInterceptor: RequestInterceptor {
             return
         }
         
+        if jwtLocalDataSource.getTokens() == nil {
+            completion(.doNotRetry)
+            return
+        }
+        
         Task {
             do {
                 try await jwtRepository.refreshToken()

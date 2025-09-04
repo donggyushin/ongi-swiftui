@@ -53,7 +53,7 @@ struct ResetPasswordView: View {
                 .pretendardTitle1()
                 .foregroundColor(.primary)
             
-            Text("이메일로 전송된 6자리 인증번호를\\n입력해주세요")
+            Text("이메일로 전송된 6자리 인증번호를\n입력해주세요")
                 .pretendardBody()
                 .foregroundColor(.secondary)
                 .multilineTextAlignment(.center)
