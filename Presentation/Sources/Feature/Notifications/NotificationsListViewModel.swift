@@ -15,10 +15,16 @@ public final class NotificationsListViewModel: ObservableObject {
     @Published var loading = false
     @Published var bigLoading = false
     @Published var notifications: NotificationsEntity = .init(notifications: [], nextCursor: nil, hasMore: true)
+    @Published var unreadCount = 0
     
     @Injected(\.notificationsUseCase) private var notificationsUseCase
     
     public init() { }
+    
+    @MainActor
+    func fetchUnreadCount() async throws {
+        unreadCount = try await notificationsUseCase.unreadCount()
+    }
     
     @MainActor
     func readAll() async throws {
@@ -28,9 +34,13 @@ public final class NotificationsListViewModel: ObservableObject {
         
         try await notificationsUseCase.readAll()
         
-        for index in notifications.notifications.indices {
-            notifications.notifications[index].isRead = true
+        notifications.notifications = notifications.notifications.map { notification in
+            var updatedNotification = notification
+            updatedNotification.isRead = true
+            return updatedNotification
         }
+        
+        try await fetchUnreadCount()
     }
     
     @MainActor
@@ -49,6 +59,8 @@ public final class NotificationsListViewModel: ObservableObject {
             guard let index = notifications.notifications.firstIndex(where: { $0.id == notification.id }) else { return }
             notifications.notifications[index].isRead = true
         }
+        
+        try await fetchUnreadCount()
     }
     
     @MainActor
@@ -66,5 +78,6 @@ public final class NotificationsListViewModel: ObservableObject {
             print(error)
         }
         
+        try await fetchUnreadCount()
     }
 }

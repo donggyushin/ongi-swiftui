@@ -24,6 +24,7 @@ final class ResetPasswordViewModel: ObservableObject {
     private var timerCancellable: AnyCancellable?
     
     private let email: String
+    var onPasswordResetSuccess: (() -> Void)?
     
     init(email: String) {
         self.email = email
@@ -37,6 +38,7 @@ final class ResetPasswordViewModel: ObservableObject {
         defer { loading = false }
         
         try await passwordResetUseCase.reset(code: code, newPassword: password)
+        onPasswordResetSuccess?()
     }
     
     @MainActor

@@ -15,6 +15,7 @@ struct EmailInputView: View {
     @State var loginFlow = false
     @State var newAccountFlow = false
     @State var resetPasswordButtonVisible = false
+    @State var showResetPassword = false
     
     @FocusState private var emailFocus
     
@@ -170,15 +171,35 @@ struct EmailInputView: View {
     }
     
     private var resetPasswordButton: some View {
-        NavigationLink {
-            ResetPasswordView(model: .init(email: model.email))
+        Button {
+            showResetPassword = true
         } label: {
             Text("비밀번호를 잊으셨나요?")
                 .pretendardCaption()
                 .foregroundColor(.blue)
                 .underline()
         }
-
+        .sheet(isPresented: $showResetPassword) {
+            NavigationView {
+                ResetPasswordView(model: createResetPasswordViewModel())
+                    .navigationBarTitleDisplayMode(.inline)
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarLeading) {
+                            Button("취소") {
+                                showResetPassword = false
+                            }
+                        }
+                    }
+            }
+        }
+    }
+    
+    private func createResetPasswordViewModel() -> ResetPasswordViewModel {
+        let viewModel = ResetPasswordViewModel(email: model.email)
+        viewModel.onPasswordResetSuccess = {
+            showResetPassword = false
+        }
+        return viewModel
     }
 }
 
