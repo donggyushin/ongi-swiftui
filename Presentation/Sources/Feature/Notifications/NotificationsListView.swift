@@ -59,6 +59,7 @@ public struct NotificationsListView: View {
                 }
                 .pretendardCallout(.medium)
                 .foregroundColor(.orange)
+                .disabled(model.unreadCount == 0)
             }
         }
         .modifier(BackgroundModifier())
