@@ -14,6 +14,8 @@ struct ResetPasswordView: View {
     @State private var errorMessage: String?
     @State private var verifyCodeMode = true
     
+    @FocusState private var focus
+    
     var body: some View {
         VStack(spacing: 0) {
             Spacer()
@@ -80,6 +82,10 @@ struct ResetPasswordView: View {
                 .background(Color(.systemGray6))
                 .cornerRadius(12)
                 .pretendardBody()
+                .focused($focus)
+                .onAppear {
+                    focus = true
+                }
         }
     }
     
@@ -92,7 +98,6 @@ struct ResetPasswordView: View {
                     withAnimation {
                         errorMessage = message
                     }
-
                 }
             }
         } label: {

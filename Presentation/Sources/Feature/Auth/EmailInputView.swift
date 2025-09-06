@@ -16,6 +16,8 @@ struct EmailInputView: View {
     @State var newAccountFlow = false
     @State var resetPasswordButtonVisible = false
     
+    @FocusState private var emailFocus
+    
     var body: some View {
         VStack(spacing: 0) {
             Spacer()
@@ -111,6 +113,10 @@ struct EmailInputView: View {
                 .background(Color(.systemGray6))
                 .cornerRadius(12)
                 .pretendardBody()
+                .focused($emailFocus)
+                .onAppear {
+                    emailFocus = true 
+                }
             
             if let errorMessage = model.errorMessage {
                 Text(errorMessage)

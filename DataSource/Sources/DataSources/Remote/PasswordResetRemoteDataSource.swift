@@ -24,6 +24,8 @@ final class PasswordResetRemoteDataSource {
         
         if let message = response.message {
             throw AppError.custom(message)
+        } else if let error = response.error {
+            throw AppError.custom(error)
         } else {
             throw AppError.networkError(.invalidResponse)
         }
@@ -45,6 +47,8 @@ final class PasswordResetRemoteDataSource {
             return email
         } else if let message = response.message {
             throw AppError.custom(message)
+        } else if let error = response.error {
+            throw AppError.custom(error)
         } else {
             throw AppError.networkError(.invalidResponse)
         }
@@ -62,6 +66,8 @@ final class PasswordResetRemoteDataSource {
         
         if let message = response.message {
             throw AppError.custom(message)
+        } else if let error = response.error {
+            throw AppError.custom(error)
         } else {
             throw AppError.networkError(.invalidResponse)
         }

@@ -10,6 +10,7 @@ import SwiftUI
 struct EmailLoginComponent: View {
     
     @State private var password = ""
+    @FocusState private var focusPassword
     
     var passwordCompletion: ((String) -> ())?
     func onPasswordCompletion(_ action: ((String) -> ())?) -> Self {
@@ -27,6 +28,10 @@ struct EmailLoginComponent: View {
             SecureField("비밀번호를 입력하세요", text: $password)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .textContentType(.password)
+                .focused($focusPassword)
+                .onAppear {
+                    focusPassword = true
+                }
             
             Button(action: {
                 passwordCompletion?(password)
