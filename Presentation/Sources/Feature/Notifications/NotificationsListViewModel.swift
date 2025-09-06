@@ -50,7 +50,12 @@ public final class NotificationsListViewModel: ObservableObject {
         defer { bigLoading = false }
         
         if let url = notification.urlScheme {
-            await UIApplication.shared.open(url)
+            
+            if notification.urlScheme?.absoluteString == "ongi://" {
+                navigationManager?.pop()
+            } else {
+                await UIApplication.shared.open(url)
+            }
         }
         
         if notification.isRead == false {
