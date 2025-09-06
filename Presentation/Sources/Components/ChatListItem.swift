@@ -27,8 +27,8 @@ struct ChatListItemView: View {
         chat.messages.sorted { $0.createdAt > $1.createdAt }.first
     }
     
-    private var otherParticipant: ProfileEntitiy? {
-        chat.participants.first
+    private var lastMessageUser: ProfileEntitiy? {
+        chat.participants.first(where: { $0.id == lastMessage?.writerProfileId })
     }
     
     private var hasUnreadMessages: Bool {
@@ -52,14 +52,14 @@ struct ChatListItemView: View {
         HStack(spacing: 12) {
             // Profile Image
             CircleProfileImage(
-                url: otherParticipant?.profileImage?.url,
+                url: lastMessageUser?.profileImage?.url,
                 size: 40
             )
             
             VStack(alignment: .leading, spacing: 4) {
                 HStack {
                     // Nickname
-                    Text(otherParticipant?.nickname ?? "알 수 없음")
+                    Text(lastMessageUser?.nickname ?? "알 수 없음")
                         .pretendardSubheadline(.semiBold)
                         .foregroundColor(.primary)
                     
