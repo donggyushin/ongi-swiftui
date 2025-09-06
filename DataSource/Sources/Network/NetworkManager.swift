@@ -43,7 +43,6 @@ public final class NetworkManager {
                 encoding: encoding,
                 headers: headers
             )
-            .validate()
             .responseDecodable(of: T.self) { response in
                 switch response.result {
                 case .success(let data):

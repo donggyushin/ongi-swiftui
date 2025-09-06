@@ -37,6 +37,7 @@ struct ResetPasswordView: View {
             
             if let errorMessage = errorMessage {
                 errorMessageView(errorMessage)
+                    .padding()
             }
             
             Spacer()
